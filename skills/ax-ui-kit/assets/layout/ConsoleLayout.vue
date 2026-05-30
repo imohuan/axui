@@ -5,6 +5,7 @@ import { Toaster } from 'vue-sonner'
 import { useNotify } from '../hooks/useNotify'
 import ComponentsView from './ComponentsView.vue'
 import SettingsView from './SettingsView.vue'
+import SettingsDialog from './SettingsDialog.vue'
 import DemoView from './DemoView.vue'
 import type { AppSettings } from './SettingsView.vue'
 import AxInput from '../AxInput.vue'
@@ -219,6 +220,19 @@ const executeSystemReset = () => {
 }
 
 const showProfileDropdown = ref(false)
+const settingsDialogRef = ref<InstanceType<typeof SettingsDialog> | null>(null)
+const settingsActiveTab = ref('general')
+const settingsNavItems = [
+  { id: 'general',       label: '通用设置',     icon: 'settings' },
+  { id: 'performance',   label: '性能与算力',   icon: 'speed' },
+  { id: 'security',      label: '安全与权限',   icon: 'security' },
+  { id: 'notifications', label: '通知与告警',   icon: 'notifications' },
+  { id: 'advanced',      label: '高级配置',     icon: 'build' },
+]
+const settingsBottomNavItems = [
+  { id: 'help',   label: '帮助文档', icon: 'help_outline' },
+  { id: 'status', label: '系统状态', icon: 'analytics' },
+]
 const triggerDropdownAction = (action: string) => {
   if (action === 'export') triggerNotify('正在压缩状态并导出为 JSON。', 'info', '导出状态包')
   else if (action === 'logs') clearLogs()
@@ -433,6 +447,14 @@ onBeforeUnmount(() => {
               >{{ activeNotificationCount }}</span>
             </button>
           </AxTooltip>
+          <AxTooltip content="对话框式设置中心" placement="bottom">
+            <button
+              class="w-8 h-8 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors border border-outline-variant shrink-0"
+              @click="settingsDialogRef?.open()"
+            >
+              <span class="material-symbols-outlined text-[18px]">display_settings</span>
+            </button>
+          </AxTooltip>
         </div>
       </header>
 
@@ -565,5 +587,30 @@ onBeforeUnmount(() => {
         <AxButton @click="close">知道了</AxButton>
       </template>
     </AxDialog>
+
+    <!-- 方式二：对话框式设置面板 -->
+    <SettingsDialog
+      ref="settingsDialogRef"
+      v-model:active-tab="settingsActiveTab"
+      :nav-items="settingsNavItems"
+      :bottom-nav-items="settingsBottomNavItems"
+      title="系统设置中心"
+      subtitle="管理系统运行参数"
+      @save="saveSettings"
+      @cancel="resetSettings"
+      @nav-click="(item) => triggerNotify(`「${item.label}」页面正在开发中`, 'info', '功能提示')"
+    >
+      <SettingsView
+        :settings="settings"
+        :cpu-limit="cpuLimit"
+        :selected-clearance="selectedClearance"
+        :clearance-options="clearanceOptions"
+        @update:cpu-limit="(v) => (cpuLimit = v)"
+        @update:selected-clearance="(v) => (selectedClearance = v)"
+        @reset="resetSettings"
+        @save="saveSettings"
+        @notify="(msg, type, title) => triggerNotify(msg, type as 'info' | 'success' | 'error' | 'secondary', title)"
+      />
+    </SettingsDialog>
   </div>
 </template>

@@ -66,22 +66,26 @@ const navItems = ref<NavItem[]>([
 
 const activeTabTitle = computed(() => navItems.value.find((i) => i.id === activeTab.value)?.name ?? '工作台')
 
+/** 手风琴单开：仅保留指定项的展开状态，其余全部收起 */
+const setExpandedNav = (itemId: string, expanded: boolean) => {
+  navItems.value.forEach((nav) => {
+    nav.expanded = nav.id === itemId && expanded
+  })
+}
+
 const handleParentClick = (item: NavItem) => {
-  // 如果之前不在这个 tab，先切换 tab 并自动展开
   if (activeTab.value !== item.id) {
     activeTab.value = item.id
-    item.expanded = true
+    setExpandedNav(item.id, true)
   } else {
-    // 如果在当前 tab，则切换展开/折叠
-    item.expanded = !item.expanded
+    setExpandedNav(item.id, !item.expanded)
   }
 }
 
 const handleSubClick = (item: NavItem, sectionId: string) => {
-  // 如果当前不在该父级 tab，先切换过去
   if (activeTab.value !== item.id) {
     activeTab.value = item.id
-    item.expanded = true
+    setExpandedNav(item.id, true)
   }
   // 等待 DOM 更新后滚动
   nextTick(() => {
@@ -328,21 +332,25 @@ onBeforeUnmount(() => {
               </div>
             </div>
 
-            <!-- 子菜单列表（可折叠） -->
+            <!-- 子菜单列表（手风琴单开） -->
             <div
-              v-show="item.expanded"
-              class="ml-4 mt-ax-xs space-y-ax-xs border-l-2 border-outline-variant/60 pl-2"
+              class="grid transition-[grid-template-rows] duration-200 ease-out"
+              :class="item.expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
             >
-              <a
-                v-for="sub in item.subMenus"
-                :key="sub.id"
-                href="#"
-                class="flex items-center gap-ax-sm rounded-lg py-1 px-2 font-body-sm text-body-sm text-secondary hover:bg-surface-container-low hover:text-primary transition-colors duration-100"
-                @click.prevent="handleSubClick(item, sub.sectionId)"
-              >
-                <span class="h-1 w-1 rounded-full bg-outline shrink-0"></span>
-                <span>{{ sub.name }}</span>
-              </a>
+              <div class="overflow-hidden">
+                <div class="ml-4 mt-ax-xs space-y-ax-xs border-l-2 border-outline-variant/60 pl-2">
+                  <a
+                    v-for="sub in item.subMenus"
+                    :key="sub.id"
+                    href="#"
+                    class="flex items-center gap-ax-sm rounded-lg py-1 px-2 font-body-sm text-body-sm text-secondary hover:bg-surface-container-low hover:text-primary transition-colors duration-100"
+                    @click.prevent="handleSubClick(item, sub.sectionId)"
+                  >
+                    <span class="h-1 w-1 rounded-full bg-outline shrink-0"></span>
+                    <span>{{ sub.name }}</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </nav>

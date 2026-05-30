@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import type { PropPanelSchemaItem } from '../types'
 import { FloatingBall } from '../functional'
 import type { FloatingBallPrefs } from '../functional'
+import { useNotify } from '../hooks/useNotify'
 
 const emit = defineEmits<{
   'open-dialog': []
@@ -251,6 +252,20 @@ const ballSchema: PropPanelSchemaItem[] = [
   { key: 'shrunk', label: '缩小', description: '切换更小的悬浮球尺寸', type: 'switch' },
   { key: 'hidden', label: '隐藏', description: '完全隐藏悬浮球', type: 'switch' },
 ]
+
+// ---- Notify ----
+const notify = useNotify()
+const notifyProps = ref({ type: 'info' as 'info' | 'success' | 'error' | 'secondary', title: '通知气泡', message: '核心集群控制链已就绪，当前各项数据运行处于标准健康状态。', showActions: false })
+const notifySchema: PropPanelSchemaItem[] = [
+  { key: 'type', label: '类型', type: 'segmented', options: [{ value: 'info', label: 'Info' }, { value: 'success', label: 'Success' }, { value: 'error', label: 'Error' }, { value: 'secondary', label: 'Secondary' }] },
+  { key: 'title', label: '标题', type: 'input', placeholder: '通知标题' },
+  { key: 'message', label: '消息内容', type: 'textarea', placeholder: '通知内容', rows: 2 },
+  { key: 'showActions', label: '显示操作区', description: '展示角标数量和日志统计', type: 'switch' },
+]
+
+function handleNotifyShow() {
+  notify.triggerNotify(notifyProps.value.message, notifyProps.value.type, notifyProps.value.title)
+}
 
 function handleBallSave(prefs: FloatingBallPrefs) {
   ballPrefs.value = prefs
@@ -666,6 +681,95 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <code class="bg-surface-container px-1 rounded text-primary">#default</code>、
             <code class="bg-surface-container px-1 rounded text-primary">#footer</code> 三个插槽。Footer 槽的 close 参数可直接关闭弹窗。焦点锁定通过 Tab 键循环限制在对话框内部。
           </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notify -->
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Notify</span>
+        <span class="font-body-sm text-[11px] text-secondary">通知气泡 — 4 种语义、自动关闭、关闭按钮、日志记录</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[320px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
+          <!-- Static preview: all 4 types -->
+          <div class="w-full space-y-ax-sm">
+            <span class="font-label-md text-[10px] text-secondary">所有类型静态预览：</span>
+            <!-- Info -->
+            <div class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
+              <span class="material-symbols-outlined mt-0.5 text-primary text-[18px]">info</span>
+              <div class="flex-1">
+                <h4 class="font-headline-sm text-body-md font-semibold text-primary mb-0.5">信息通知</h4>
+                <p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">系统服务已启动，运行状态正常。</p>
+              </div>
+              <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+              </button>
+            </div>
+            <!-- Success -->
+            <div class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
+              <span class="material-symbols-outlined mt-0.5 text-primary text-[18px]">check_circle</span>
+              <div class="flex-1">
+                <h4 class="font-headline-sm text-body-md font-semibold text-primary mb-0.5">操作成功</h4>
+                <p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">配置已成功保存至云端，将在下次启动时自动加载。</p>
+              </div>
+              <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+              </button>
+            </div>
+            <!-- Error -->
+            <div class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
+              <span class="material-symbols-outlined mt-0.5 text-error text-[18px]">error</span>
+              <div class="flex-1">
+                <h4 class="font-headline-sm text-body-md font-semibold text-primary mb-0.5">连接中断</h4>
+                <p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">核心服务连接已断开，请检查网络后重试。</p>
+              </div>
+              <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+              </button>
+            </div>
+            <!-- Secondary -->
+            <div class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
+              <span class="material-symbols-outlined mt-0.5 text-secondary text-[18px]">settings</span>
+              <div class="flex-1">
+                <h4 class="font-headline-sm text-body-md font-semibold text-primary mb-0.5">系统设置</h4>
+                <p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">数据缓存清理完毕，释放空间 12.8 MB。</p>
+              </div>
+              <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive triggers -->
+          <div class="flex items-center gap-ax-md">
+            <span class="font-label-md text-[10px] text-secondary self-center">动态触发：</span>
+            <AxButton size="sm" @click="handleNotifyShow">
+              <template #prefix><span class="material-symbols-outlined text-[16px]">notifications</span></template>
+              发送通知
+            </AxButton>
+          </div>
+
+          <!-- Stats area -->
+          <div v-if="notifyProps.showActions" class="flex flex-wrap gap-ax-md w-full max-w-md">
+            <div class="flex items-center gap-ax-sm bg-surface-container-low rounded-lg px-3 py-2">
+              <span class="font-body-sm text-[11px] text-secondary">活跃通知数：</span>
+              <span class="font-headline-sm text-[14px] text-primary">{{ notify.activeNotificationCount }}</span>
+            </div>
+            <div class="flex items-center gap-ax-sm bg-surface-container-low rounded-lg px-3 py-2">
+              <span class="font-body-sm text-[11px] text-secondary">日志总数：</span>
+              <span class="font-headline-sm text-[14px] text-primary">{{ notify.notificationHistory.length }}</span>
+            </div>
+            <AxButton variant="outline" size="sm" @click="notify.clearLogs()">
+              <template #prefix><span class="material-symbols-outlined text-[16px]">delete</span></template>
+              清空日志
+            </AxButton>
+          </div>
+          <p class="font-body-sm text-[11px] text-secondary">通知 4 秒后自动关闭，也可点 × 手动关闭。基于 <code class="bg-surface-container px-1 rounded text-primary">vue-sonner</code> 的 <code class="bg-surface-container px-1 rounded text-primary">toast.custom()</code> 渲染。</p>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="notifyProps" :schema="notifySchema" title="通知属性" />
         </div>
       </div>
     </div>

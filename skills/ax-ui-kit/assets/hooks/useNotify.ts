@@ -30,7 +30,7 @@ export function useNotify() {
     const id = Date.now()
 
     toast.custom(
-      (tId) =>
+      (props: { onCloseToast: () => void }) =>
         h(
           'div',
           {
@@ -72,7 +72,7 @@ export function useNotify() {
             h(
               'button',
               {
-                onClick: () => toast.dismiss(tId),
+                onClick: props.onCloseToast,
                 class:
                   'w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0',
               },

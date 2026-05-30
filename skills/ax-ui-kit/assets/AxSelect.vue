@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 import AxDropdown from './AxDropdown.vue'
-import type { SelectOption } from './types'
+import type { ControlSize, SelectOption } from './types'
+
+const SIZE_CLASSES: Record<ControlSize, string> = {
+  sm: 'px-2.5 py-1 text-body-sm',
+  md: 'px-3 py-1.5 text-label-md',
+  lg: 'px-4 py-2.5 text-label-md',
+}
 
 const props = withDefaults(
   defineProps<{
@@ -17,6 +23,7 @@ const props = withDefaults(
     tagMaxWidth?: string
     triggerWidth?: string
     triggerMaxWidth?: string
+    size?: ControlSize
   }>(),
   {
     modelValue: '',
@@ -31,6 +38,7 @@ const props = withDefaults(
     tagMaxWidth: '120px',
     triggerWidth: '',
     triggerMaxWidth: '',
+    size: 'md',
   },
 )
 
@@ -229,7 +237,7 @@ watch(open, (val) => {
           <button
             v-if="!isOpen"
             type="button"
-            class="w-full flex flex-wrap items-center gap-1 px-3 py-1.5 font-label-md text-label-md bg-surface-container-low border border-outline-variant rounded-md hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left"
+            :class="['w-full flex flex-wrap items-center gap-1 bg-surface-container-low border border-outline-variant rounded-md hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left', SIZE_CLASSES[props.size]]"
             :style="triggerStyle"
             @click="openDropdown()"
           >
@@ -262,7 +270,7 @@ watch(open, (val) => {
           <!-- 打开态：搜索输入框（标签行 + 输入行分层布局） -->
           <div
             v-else
-            class="w-full flex flex-col gap-1 px-3 py-1.5 font-label-md text-label-md bg-surface-container-low border border-outline-variant rounded-md ring-1 ring-primary border-primary text-left"
+            :class="['w-full flex flex-col gap-1 bg-surface-container-low border border-outline-variant rounded-md ring-1 ring-primary border-primary text-left', SIZE_CLASSES[props.size]]"
             :style="triggerStyle"
           >
             <!-- 标签行（仅多选） -->
@@ -311,7 +319,7 @@ watch(open, (val) => {
           <button
             v-if="multiple"
             type="button"
-            class="w-full flex flex-wrap items-center gap-1 px-3 py-1.5 font-label-md text-label-md bg-surface-container-low border border-outline-variant rounded-md hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left"
+            :class="['w-full flex flex-wrap items-center gap-1 bg-surface-container-low border border-outline-variant rounded-md hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left', SIZE_CLASSES[props.size]]"
             :style="triggerStyle"
             @click="isOpen ? closeDropdown() : openDropdown()"
           >
@@ -353,7 +361,7 @@ watch(open, (val) => {
           <button
             v-else
             type="button"
-            class="w-full flex items-center justify-between px-3 py-1.5 font-label-md text-label-md bg-surface-container-low border border-outline-variant rounded-md hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left"
+            :class="['w-full flex items-center justify-between bg-surface-container-low border border-outline-variant rounded-md hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left', SIZE_CLASSES[props.size]]"
             :style="triggerStyle"
             @click="isOpen ? closeDropdown() : openDropdown()"
           >

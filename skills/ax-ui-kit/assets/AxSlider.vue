@@ -52,15 +52,16 @@ const displayValue = computed(() => {
 
 const onInput = (e: Event) => {
   isDragging.value = true
-  internalValue.value = Number((e.target as HTMLInputElement).value)
+  const val = Number((e.target as HTMLInputElement).value)
+  internalValue.value = val
+  // 拖拽过程中实时触发 v-model，父组件同步感知变化
+  emit('update:modelValue', val)
 }
 
-const onChange = async (e: Event) => {
+const onChange = async () => {
   isDragging.value = false
-  const val = Number((e.target as HTMLInputElement).value)
-  emit('update:modelValue', val)
   // 等父组件响应后，用 prop 值同步回来
-  // v-model → prop 已更新为 val → 保持新值
+  // v-model → prop 已更新 → 保持新值（input 阶段已 emit）
   // :model-value → prop 未变 → 弹回原值
   await nextTick()
   internalValue.value = props.modelValue

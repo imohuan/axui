@@ -1,5 +1,6 @@
 ﻿<script setup lang="ts">
 import type { PropPanelModel, PropPanelSchemaItem } from './types'
+import AxSwitch from './AxSwitch.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -57,18 +58,10 @@ const sliderPercent = (item: PropPanelSchemaItem) => {
 
       <div class="shrink-0 flex items-center">
         <template v-if="item.type === 'switch'">
-          <button
-            role="switch"
-            :aria-checked="!!modelValue[item.key]"
-            :class="modelValue[item.key] ? 'bg-primary' : 'bg-outline'"
-            class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-primary"
-            @click="set(item.key, !modelValue[item.key])"
-          >
-            <span
-              :class="modelValue[item.key] ? 'translate-x-4' : 'translate-x-0'"
-              class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out"
-            />
-          </button>
+          <AxSwitch
+            :model-value="!!modelValue[item.key]"
+            @update:model-value="set(item.key, $event)"
+          />
         </template>
 
         <template v-else-if="item.type === 'segmented'">

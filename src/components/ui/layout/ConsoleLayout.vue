@@ -9,22 +9,102 @@ import DemoView from './DemoView.vue'
 import type { AppSettings } from './SettingsView.vue'
 import AxInput from '../AxInput.vue'
 
-type TabId = 'components' | 'settings' | 'demo'
+interface SubMenuItem {
+  id: string
+  name: string
+  sectionId: string
+}
 
 interface NavItem {
-  id: TabId
+  id: string
   name: string
   icon: string
   badge: string | null
+  expanded: boolean
+  subMenus: SubMenuItem[]
 }
 
-const activeTab = ref<TabId>('components')
-const navItems: NavItem[] = [
-  { id: 'components', name: 'UI 组件列表', icon: 'widgets', badge: '8 个组件' },
-  { id: 'settings', name: '设置界面', icon: 'settings', badge: null },
-  { id: 'demo', name: 'DEMO 展示', icon: 'analytics', badge: null },
-]
-const activeTabTitle = computed(() => navItems.find((i) => i.id === activeTab.value)?.name ?? '工作台')
+const activeTab = ref<string>('components')
+const navItems = ref<NavItem[]>([
+  {
+    id: 'components',
+    name: 'UI 组件列表',
+    icon: 'widgets',
+    badge: '12 个组件',
+    expanded: true,
+    subMenus: [
+      { id: 'btn', name: 'Button 按钮', sectionId: 'section-btn' },
+      { id: 'input', name: 'Input 输入框', sectionId: 'section-input' },
+      { id: 'slider', name: 'Slider 滑块', sectionId: 'section-slider' },
+      { id: 'switch', name: 'Switch 开关', sectionId: 'section-switch' },
+      { id: 'alert', name: 'Alert 提示', sectionId: 'section-alert' },
+      { id: 'select', name: 'Select 选择器', sectionId: 'section-select' },
+      { id: 'tooltip', name: 'Tooltip 气泡', sectionId: 'section-tooltip' },
+      { id: 'dropdown', name: 'Dropdown 下拉', sectionId: 'section-dropdown' },
+      { id: 'popover', name: 'Popover 弹出', sectionId: 'section-popover' },
+      { id: 'dialog', name: 'Dialog 对话框', sectionId: 'section-dialog' },
+      { id: 'notify', name: 'Notify 通知', sectionId: 'section-notify' },
+      { id: 'floating-ball', name: 'FloatingBall 悬浮球', sectionId: 'section-floating-ball' },
+    ],
+  },
+  {
+    id: 'settings',
+    name: '设置界面',
+    icon: 'settings',
+    badge: null,
+    expanded: false,
+    subMenus: [
+      { id: 'general', name: 'General 通用设置', sectionId: 'section-general' },
+      { id: 'performance', name: 'Performance 性能与算力', sectionId: 'section-performance' },
+      { id: 'security', name: 'Security 安全与权限', sectionId: 'section-security' },
+      { id: 'notifications', name: 'Notifications 通知与告警', sectionId: 'section-notifications' },
+      { id: 'advanced', name: 'Advanced 高级配置', sectionId: 'section-advanced' },
+    ],
+  },
+  {
+    id: 'demo',
+    name: 'DEMO 展示',
+    icon: 'analytics',
+    badge: null,
+    expanded: false,
+    subMenus: [
+      { id: 'overview', name: 'Overview 控制台概览', sectionId: 'section-overview' },
+      { id: 'metrics', name: 'Metrics 指标卡片', sectionId: 'section-metrics' },
+      { id: 'nav-cards', name: 'Quick Nav 快捷导航', sectionId: 'section-nav-cards' },
+      { id: 'settings-groups', name: 'Settings Groups 设置分组', sectionId: 'section-settings-groups' },
+      { id: 'faq', name: 'FAQ 常见问题', sectionId: 'section-faq' },
+      { id: 'activities', name: 'Activities 最近活动', sectionId: 'section-activities' },
+    ],
+  },
+])
+
+const activeTabTitle = computed(() => navItems.value.find((i) => i.id === activeTab.value)?.name ?? '工作台')
+
+const handleParentClick = (item: NavItem) => {
+  // 如果之前不在这个 tab，先切换 tab 并自动展开
+  if (activeTab.value !== item.id) {
+    activeTab.value = item.id
+    item.expanded = true
+  } else {
+    // 如果在当前 tab，则切换展开/折叠
+    item.expanded = !item.expanded
+  }
+}
+
+const handleSubClick = (item: NavItem, sectionId: string) => {
+  // 如果当前不在该父级 tab，先切换过去
+  if (activeTab.value !== item.id) {
+    activeTab.value = item.id
+    item.expanded = true
+  }
+  // 等待 DOM 更新后滚动
+  nextTick(() => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  })
+}
 
 const { activeNotificationCount, notificationHistory, triggerNotify, clearLogs } = useNotify()
 
@@ -219,30 +299,53 @@ onBeforeUnmount(() => {
 
         <nav class="space-y-ax-xs">
           <p class="font-label-md text-[10px] text-secondary uppercase tracking-wider px-2 pb-1">主要视图</p>
-          <a
-            v-for="item in navItems"
-            :key="item.id"
-            href="#"
-            :class="[
-              activeTab === item.id
-                ? 'bg-secondary-container text-on-secondary-container font-medium scale-[0.98]'
-                : 'text-secondary hover:bg-surface-container-low',
-            ]"
-            class="flex items-center justify-between rounded-xl py-1.5 px-2 font-label-md text-label-md transition-all duration-100"
-            @click.prevent="activeTab = item.id"
-          >
-            <div class="flex items-center gap-ax-sm">
-              <span
-                class="material-symbols-outlined"
-                :style="{ fontVariationSettings: activeTab === item.id ? '\'FILL\' 1' : '\'FILL\' 0' }"
-              >{{ item.icon }}</span>
-              <span>{{ item.name }}</span>
+          <div v-for="item in navItems" :key="item.id">
+            <!-- 父级菜单项 — 点击整行可折叠/展开 -->
+            <div
+              :class="[
+                activeTab === item.id
+                  ? 'bg-secondary-container text-on-secondary-container font-medium'
+                  : 'text-secondary hover:bg-surface-container-low',
+              ]"
+              class="flex items-center justify-between rounded-xl py-1.5 px-2 font-label-md text-label-md transition-all duration-100 cursor-pointer select-none"
+              @click="handleParentClick(item)"
+            >
+              <div class="flex items-center gap-ax-sm">
+                <span
+                  class="material-symbols-outlined"
+                  :style="{ fontVariationSettings: activeTab === item.id ? '\'FILL\' 1' : '\'FILL\' 0' }"
+                >{{ item.icon }}</span>
+                <span>{{ item.name }}</span>
+              </div>
+              <div class="flex items-center gap-ax-xs">
+                <span
+                  v-if="item.badge"
+                  class="font-label-md text-[10px] px-1.5 py-0.5 rounded bg-surface-container font-medium text-primary border border-outline-variant"
+                >{{ item.badge }}</span>
+                <span
+                  class="material-symbols-outlined text-[14px] text-secondary transition-transform duration-200 shrink-0"
+                  :class="item.expanded ? 'rotate-180' : ''"
+                >expand_more</span>
+              </div>
             </div>
-            <span
-              v-if="item.badge"
-              class="font-label-md text-[10px] px-1.5 py-0.5 rounded bg-surface-container font-medium text-primary border border-outline-variant"
-            >{{ item.badge }}</span>
-          </a>
+
+            <!-- 子菜单列表（可折叠） -->
+            <div
+              v-show="item.expanded"
+              class="ml-4 mt-ax-xs space-y-ax-xs border-l-2 border-outline-variant/60 pl-2"
+            >
+              <a
+                v-for="sub in item.subMenus"
+                :key="sub.id"
+                href="#"
+                class="flex items-center gap-ax-sm rounded-lg py-1 px-2 font-body-sm text-body-sm text-secondary hover:bg-surface-container-low hover:text-primary transition-colors duration-100"
+                @click.prevent="handleSubClick(item, sub.sectionId)"
+              >
+                <span class="h-1 w-1 rounded-full bg-outline shrink-0"></span>
+                <span>{{ sub.name }}</span>
+              </a>
+            </div>
+          </div>
         </nav>
 
         <div class="space-y-ax-xs">

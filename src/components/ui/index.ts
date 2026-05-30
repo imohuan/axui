@@ -8,6 +8,7 @@ import AxDropdown from './AxDropdown.vue'
 import AxSelect from './AxSelect.vue'
 import AxDialog from './AxDialog.vue'
 import AxPropPanel from './AxPropPanel.vue'
+import AxSwitch from './AxSwitch.vue'
 
 const components = {
   AxButton,
@@ -19,6 +20,7 @@ const components = {
   AxSelect,
   AxDialog,
   AxPropPanel,
+  AxSwitch,
 }
 
 export function registerComponents(app: App) {
@@ -37,6 +39,7 @@ export {
   AxSelect,
   AxDialog,
   AxPropPanel,
+  AxSwitch,
 }
 
 export { useNotify } from './hooks/useNotify'

@@ -3,7 +3,7 @@ name: ax-ui-kit
 description: >
   Axiom UI — 自研 Vue 3 组件库（Tailwind v4 + Floating UI + Material Symbols）。
   This skill should be used when the project requires a design-system-driven Vue 3 component set
-  (buttons, inputs, selects, dialogs, dropdowns, tooltips, sliders, alerts, property panels),
+  (buttons, inputs, selects, dialogs, dropdowns, tooltips, sliders, alerts, switches, property panels),
   or when building tool-style admin/dashboard interfaces with consistent spacing, typography, and semantic color tokens.
   Also used when AI editors (WorkBuddy, Cursor, Copilot) need to be instructed to prefer these components
   during UI development.
@@ -12,7 +12,7 @@ agent_created: true
 
 # Axiom UI 组件库
 
-自研 Vue 3 组件库，提供 9 个基础组件 + 功能模块 + 布局示例。基于 Tailwind v4、Floating UI、Material Symbols 图标、Geist / JetBrains Mono 字体。
+自研 Vue 3 组件库，提供 10 个基础组件 + 功能模块 + 布局示例。基于 Tailwind v4、Floating UI、Material Symbols 图标、Geist / JetBrains Mono 字体。
 
 ## 组件清单
 
@@ -27,6 +27,7 @@ agent_created: true
 | `AxSlider` | `AxSlider.vue` | 范围滑块 |
 | `AxTooltip` | `AxTooltip.vue` | hover 文字提示 |
 | `AxPropPanel` | `AxPropPanel.vue` | schema 驱动属性面板（switch / slider / select / input / textarea / segmented） |
+| `AxSwitch` | `AxSwitch.vue` | 开关组件，支持 v-model、disabled、aria 可访问性 |
 | `FloatingBall` | `functional/floating-ball/` | 浮动球组件 |
 | `useNotify` | `hooks/useNotify.ts` | 封装 vue-sonner 通知 |
 | `useFloating` | `hooks/useFloating.ts` | Floating UI 定位 hook |
@@ -83,6 +84,25 @@ import { AxButton, useNotify, useFloating } from '@/components/ui'
 import { FloatingBall } from '@/components/ui'
 ```
 
+## 更新同步
+
+组件库更新后，在目标项目中执行同步：
+
+```bash
+# 一条命令完成：更新 skill + 同步组件到项目
+node <skill-dir>/scripts/sync.js
+```
+
+`sync.js` 自动执行两步：
+1. `npx skills update ax-ui-kit` — 拉取最新 skill
+2. 将 `assets/` 覆盖写入 `src/components/ui/`
+
+若目标路径不同，可传参指定：
+
+```bash
+node <skill-dir>/scripts/sync.js src/renderer/components/ui
+```
+
 ## 为 AI 编辑器配置规则
 
 组件库接入后，必须配置规则让 AI 优先使用 `Ax*` 组件。
@@ -123,7 +143,7 @@ import { FloatingBall } from '@/components/ui'
 
 ```markdown
 Prefer Ax* Vue components from src/components/ui/:
-- AxButton, AxInput, AxSelect, AxDialog, AxDropdown, AxTooltip, AxAlert, AxSlider, AxPropPanel
+- AxButton, AxInput, AxSelect, AxDialog, AxDropdown, AxTooltip, AxAlert, AxSlider, AxSwitch, AxPropPanel
 - Space: gap-ax-sm, p-ax-md; Colors: semantic Tailwind tokens
 - Icons: span.material-symbols-outlined; Notifications: useNotify()
 ```
@@ -147,7 +167,7 @@ ax-ui-kit/
 ├── assets/                        # 组件库源码（复制到目标项目 src/components/ui/）
 │   ├── index.ts                   # 组件注册入口（registerComponents）
 │   ├── types.ts
-│   ├── AxButton.vue ...           # 9 个 Vue 组件
+│   ├── AxButton.vue ...           # 10 个 Vue 组件
 │   ├── hooks/                     # useNotify / useFloating
 │   ├── functional/                # FloatingBall
 │   └── layout/                    # 示例布局页面

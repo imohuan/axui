@@ -47,6 +47,12 @@ const sliderSchema: PropPanelSchemaItem[] = [
   { key: 'showValue', label: '显示数值', description: '滑块上方数值气泡', type: 'switch' },
 ]
 
+const switchProps = ref({ checked: true, disabled: false })
+const switchSchema: PropPanelSchemaItem[] = [
+  { key: 'checked', label: '开关', description: '开关状态，支持 v-model', type: 'switch' },
+  { key: 'disabled', label: '禁用', description: '不可交互状态，半透明显示', type: 'switch' },
+]
+
 const alertProps = ref({
   type: 'info' as const,
   title: '系统通知',
@@ -279,7 +285,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">展示所有组件的每一种状态变体。左侧预览区，右侧属性配置面板，实时联动。</p>
     </div>
 
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-btn" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Button</span>
         <span class="font-body-sm text-[11px] text-secondary">按钮组件 — 支持 4 种变体、3 种尺寸、图标、加载态、禁用态</span>
@@ -321,7 +327,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-input" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Input</span>
         <span class="font-body-sm text-[11px] text-secondary">单行输入框 — 3 种尺寸、前缀图标、密码模式、禁用态</span>
@@ -387,7 +393,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-slider" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Slider</span>
         <span class="font-body-sm text-[11px] text-secondary">滑块组件 — 支持自定义范围、标签、数值显示</span>
@@ -419,7 +425,51 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-switch" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Switch</span>
+        <span class="font-body-sm text-[11px] text-secondary">开关组件 — 支持 v-model、禁用态、aria 可访问性</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[180px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
+          <div class="flex items-center gap-ax-md">
+            <span class="font-label-md text-[10px] text-secondary">动态预览：</span>
+            <AxSwitch
+              :model-value="switchProps.checked"
+              :disabled="switchProps.disabled"
+              @update:model-value="switchProps.checked = $event"
+            />
+            <span class="font-body-sm text-[12px] text-primary ml-ax-sm">{{ switchProps.checked ? '开启' : '关闭' }}</span>
+          </div>
+          <div class="w-full space-y-ax-sm max-w-sm">
+            <span class="font-label-md text-[10px] text-secondary">所有状态：</span>
+            <div class="flex flex-wrap items-center gap-ax-md">
+              <div class="flex items-center gap-ax-sm">
+                <AxSwitch :model-value="true" />
+                <span class="font-body-sm text-[11px] text-secondary">开启</span>
+              </div>
+              <div class="flex items-center gap-ax-sm">
+                <AxSwitch :model-value="false" />
+                <span class="font-body-sm text-[11px] text-secondary">关闭</span>
+              </div>
+              <div class="flex items-center gap-ax-sm">
+                <AxSwitch :model-value="true" disabled />
+                <span class="font-body-sm text-[11px] text-secondary">禁用-开</span>
+              </div>
+              <div class="flex items-center gap-ax-sm">
+                <AxSwitch :model-value="false" disabled />
+                <span class="font-body-sm text-[11px] text-secondary">禁用-关</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="switchProps" :schema="switchSchema" title="开关属性" />
+        </div>
+      </div>
+    </div>
+
+    <div id="section-alert" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Alert</span>
         <span class="font-body-sm text-[11px] text-secondary">警示横幅 — 4 种语义、可关闭、带标题</span>
@@ -441,7 +491,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-select" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Select</span>
         <span class="font-body-sm text-[11px] text-secondary">自定义下拉选择 — 支持搜索过滤</span>
@@ -462,7 +512,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-tooltip" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Tooltip</span>
         <span class="font-body-sm text-[11px] text-secondary">悬停提示气泡 — 8 个方向，Floating UI 精准定位</span>
@@ -487,7 +537,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-dropdown" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Dropdown</span>
         <span class="font-body-sm text-[11px] text-secondary">上下文菜单 — 任意 Slot 内容，Floating UI 定位</span>
@@ -531,7 +581,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-popover" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Popover</span>
         <span class="font-body-sm text-[11px] text-secondary">通用浮层容器 — 支持 click/hover/contextmenu 三种触发，内容完全由 Slot 自定义</span>
@@ -662,7 +712,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-dialog" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Dialog</span>
         <span class="font-body-sm text-[11px] text-secondary">模态弹窗 — 焦点陷阱、ESC 关闭、遮罩关闭</span>
@@ -686,7 +736,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
     </div>
 
     <!-- Notify -->
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-notify" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Notify</span>
         <span class="font-body-sm text-[11px] text-secondary">通知气泡 — 4 种语义、自动关闭、关闭按钮、日志记录</span>
@@ -775,7 +825,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
     </div>
 
     <!-- FloatingBall -->
-    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <div id="section-floating-ball" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">FloatingBall</span>
         <span class="font-body-sm text-[11px] text-secondary">可拖拽悬浮球 — 支持贴边、展开菜单、亮暗主题、缩小模式</span>

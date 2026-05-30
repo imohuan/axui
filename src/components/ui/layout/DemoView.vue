@@ -80,7 +80,7 @@ const settingGroups = [
 
 <template>
   <div class="space-y-ax-lg">
-    <section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-lg relative overflow-hidden pro-shadow">
+    <section id="section-overview" class="bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-lg relative overflow-hidden pro-shadow scroll-mt-4">
       <div class="relative z-10 max-w-xl">
         <div class="flex items-center gap-ax-xs mb-2">
           <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -94,7 +94,7 @@ const settingGroups = [
       <div class="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-surface-container-low to-transparent opacity-40 pointer-events-none"></div>
     </section>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+    <div id="section-metrics" class="grid grid-cols-1 md:grid-cols-4 gap-gutter scroll-mt-4">
       <div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md transition-all duration-300 pro-shadow">
         <div class="flex items-center justify-between text-secondary mb-ax-sm">
           <span class="font-label-md text-[11px] uppercase tracking-wider">算力占用</span>
@@ -153,7 +153,7 @@ const settingGroups = [
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+    <div id="section-nav-cards" class="grid grid-cols-1 md:grid-cols-3 gap-gutter scroll-mt-4">
       <div
         v-for="card in navCards"
         :key="card.label"
@@ -172,6 +172,7 @@ const settingGroups = [
 
     <div class="grid grid-cols-1 md:grid-cols-5 gap-gutter">
       <div class="md:col-span-3 space-y-gutter">
+        <div id="section-settings-groups" class="scroll-mt-4">
         <div v-for="group in settingGroups" :key="group.title" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
           <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low">
             <span class="font-label-md text-[10px] text-secondary uppercase tracking-wider">{{ group.title }}</span>
@@ -191,8 +192,9 @@ const settingGroups = [
             </div>
           </div>
         </div>
+        </div>
 
-        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+        <div id="section-faq" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
           <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
             <span class="material-symbols-outlined text-[16px] text-secondary">quiz</span>
             <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">常见问题</span>
@@ -218,7 +220,7 @@ const settingGroups = [
       </div>
 
       <div class="md:col-span-2">
-        <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow sticky top-0">
+        <div id="section-activities" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow sticky top-0 scroll-mt-4">
           <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center justify-between">
             <div class="flex items-center gap-ax-sm">
               <span class="material-symbols-outlined text-[16px] text-secondary">history</span>

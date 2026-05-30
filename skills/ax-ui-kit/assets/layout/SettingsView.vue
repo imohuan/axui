@@ -78,7 +78,7 @@ const toggleNotify = (key: ToggleKey, msgOn: string, msgOff: string, type?: stri
       <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">在此配置控制台的全局运行参数、安全策略及个性化选项。</p>
     </div>
 
-    <section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <section id="section-general" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
         <span class="material-symbols-outlined text-[16px] text-secondary">tune</span>
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">通用设置</span>
@@ -168,7 +168,7 @@ const toggleNotify = (key: ToggleKey, msgOn: string, msgOff: string, type?: stri
       </div>
     </section>
 
-    <section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <section id="section-performance" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
         <span class="material-symbols-outlined text-[16px] text-secondary">speed</span>
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">性能与算力</span>
@@ -233,7 +233,7 @@ const toggleNotify = (key: ToggleKey, msgOn: string, msgOff: string, type?: stri
       </div>
     </section>
 
-    <section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <section id="section-security" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
         <span class="material-symbols-outlined text-[16px] text-secondary">security</span>
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">安全与权限</span>
@@ -324,7 +324,7 @@ const toggleNotify = (key: ToggleKey, msgOn: string, msgOff: string, type?: stri
       </div>
     </section>
 
-    <section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <section id="section-notifications" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
         <span class="material-symbols-outlined text-[16px] text-secondary">notifications</span>
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">通知与告警</span>
@@ -351,7 +351,7 @@ const toggleNotify = (key: ToggleKey, msgOn: string, msgOff: string, type?: stri
       </div>
     </section>
 
-    <section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+    <section id="section-advanced" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
         <span class="material-symbols-outlined text-[16px] text-secondary">build</span>
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">高级配置</span>

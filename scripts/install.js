@@ -11,8 +11,8 @@
  * 技能结构：
  *   ax-ui-kit/
  *   ├── SKILL.md          ← 技能说明（从 web/scripts/SKILL.md 读取）
- *   └── assets/
- *       └── ui/           ← 完整的组件库源码
+ *   ├── assets/           ← Vue 组件 + hooks + functional + layout
+ *   └── references/       ← 安装文档 + 设计规范（从 docs/ 提取）
  */
 
 import { readFileSync, cpSync, rmSync, mkdirSync, existsSync } from 'node:fs'
@@ -22,13 +22,13 @@ import { fileURLToPath } from 'node:url'
 // ─── 路径常量 ────────────────────────────────────────────────────
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const ROOT = resolve(__dirname, '..')              // web/
-const REPO_ROOT = resolve(ROOT, '..')               // 仓库根目录
+const ROOT = resolve(__dirname, '..')              // web/（GitHub 仓库根目录）
 const SKILL_SOURCE = resolve(__dirname, 'SKILL.md')
 const UI_SOURCE = resolve(ROOT, 'src', 'components', 'ui')
-const OUTPUT_DIR = resolve(REPO_ROOT, '.workbuddy', 'skills', 'ax-ui-kit')
+const OUTPUT_DIR = resolve(ROOT, 'skills', 'ax-ui-kit')
 const OUTPUT_SKILL = resolve(OUTPUT_DIR, 'SKILL.md')
-const OUTPUT_ASSETS = resolve(OUTPUT_DIR, 'assets', 'ui')
+const OUTPUT_ASSETS = resolve(OUTPUT_DIR, 'assets')
+const OUTPUT_REFS = resolve(OUTPUT_DIR, 'references')
 
 // ─── npx skills 目标路径 ─────────────────────────────────────────
 const SKILLS_TARGET = '.workbuddy/skills/ax-ui-kit'

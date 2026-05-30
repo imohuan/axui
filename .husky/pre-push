@@ -1,0 +1,23 @@
+# Axiom UI Kit — pre-push hook（由 husky 管理）
+# 每次 git push 前自动执行技能构建脚本
+
+echo ""
+echo "=========================================="
+echo "  Axiom UI Kit — 技能构建"
+echo "=========================================="
+echo ""
+
+node scripts/install.js
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ 技能构建失败，已阻止推送。请修复后重试。"
+  echo ""
+  exit 1
+fi
+
+git add skills/
+
+echo ""
+echo "✅ 技能构建成功，继续推送..."
+echo ""

@@ -1,0 +1,778 @@
+﻿<script setup lang="ts">
+import { ref } from 'vue'
+import type { PropPanelSchemaItem } from '../types'
+import { FloatingBall } from '../functional'
+import type { FloatingBallPrefs } from '../functional'
+
+const emit = defineEmits<{
+  'open-dialog': []
+  'open-simple-dialog': []
+}>()
+
+const btnProps = ref({
+  variant: 'primary' as const,
+  size: 'md' as const,
+  disabled: false,
+  showIcon: false,
+  loading: false,
+  block: false,
+  label: '操作按钮',
+})
+const btnSchema: PropPanelSchemaItem[] = [
+  { key: 'variant', label: '变体', type: 'segmented', options: [{ value: 'primary', label: 'Primary' }, { value: 'outline', label: 'Outline' }, { value: 'ghost', label: 'Ghost' }, { value: 'danger', label: 'Danger' }] },
+  { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'icon', label: 'Icon' }, { value: 'icon-lg', label: 'Icon-lg' }] },
+  { key: 'label', label: '文案', type: 'input', placeholder: '按钮文字' },
+  { key: 'showIcon', label: '显示图标', description: '在按钮左侧显示 bolt 图标', type: 'switch' },
+  { key: 'loading', label: '加载状态', description: '展示旋转加载动画', type: 'switch' },
+  { key: 'disabled', label: '禁用', description: '点击无响应，透明度降低', type: 'switch' },
+  { key: 'block', label: '块级', description: '宽度撑满父容器', type: 'switch' },
+]
+
+const inputProps = ref({ value: '', size: 'md' as const, disabled: false, showPrefix: false, showPassword: false, placeholder: '请输入内容...' })
+const inputSchema: PropPanelSchemaItem[] = [
+  { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }] },
+  { key: 'placeholder', label: '占位符', type: 'input', placeholder: '占位文本' },
+  { key: 'showPassword', label: '密码模式', description: '显示密码显隐切换小眼睛', type: 'switch' },
+  { key: 'showPrefix', label: '前缀图标', description: '在输入框左侧显示搜索图标', type: 'switch' },
+  { key: 'disabled', label: '禁用', description: '不可输入状态', type: 'switch' },
+]
+
+const sliderProps = ref({ value: 50, min: 0, max: 100, showLabels: true, showValue: true })
+const sliderSchema: PropPanelSchemaItem[] = [
+  { key: 'value', label: '当前值', type: 'slider', min: 0, max: 100 },
+  { key: 'min', label: '最小值', type: 'slider', min: 0, max: 50 },
+  { key: 'max', label: '最大值', type: 'slider', min: 50, max: 200 },
+  { key: 'showLabels', label: '显示标签', description: '左右端点标签文字', type: 'switch' },
+  { key: 'showValue', label: '显示数值', description: '滑块上方数值气泡', type: 'switch' },
+]
+
+const alertProps = ref({
+  type: 'info' as const,
+  title: '系统通知',
+  message: '核心集群控制链已就绪，当前各项数据运行处于标准健康状态。',
+  dismissible: true,
+})
+const alertSchema: PropPanelSchemaItem[] = [
+  { key: 'type', label: '类型', type: 'segmented', options: [{ value: 'info', label: 'Info' }, { value: 'success', label: 'Success' }, { value: 'warning', label: 'Warning' }, { value: 'error', label: 'Error' }] },
+  { key: 'title', label: '标题', type: 'input', placeholder: '警示标题' },
+  { key: 'message', label: '内容', type: 'textarea', placeholder: '警示内容', rows: 2 },
+  { key: 'dismissible', label: '可关闭', description: '显示右上角关闭按钮', type: 'switch' },
+]
+
+const demoSelectOptions = [
+  { value: 'opt1', label: 'Vue 3 — 渐进式框架' },
+  { value: 'opt2', label: 'React — UI 组件库' },
+  { value: 'opt3', label: 'Angular — 全量框架' },
+  { value: 'opt4', label: 'Svelte — 编译时框架' },
+  { value: 'opt5', label: 'Solid.js — 细粒度响应' },
+]
+const selectProps = ref({ value: 'opt1' as unknown, searchable: false, multiple: false, placeholder: '请选择框架...', placement: 'bottom-start', dropdownWidth: 'match' as string, dropdownMaxWidth: '' as string, tagMaxWidth: '120px' as string, triggerWidth: '' as string, triggerMaxWidth: '' as string })
+const selectSchema: PropPanelSchemaItem[] = [
+  { key: 'placeholder', label: '占位符', type: 'input', placeholder: '占位文本' },
+  { key: 'searchable', label: '可搜索', description: '点击下拉后按钮变为搜索输入框', type: 'switch' },
+  { key: 'multiple', label: '多选', description: '支持勾选多项，已选项以标签展示', type: 'switch' },
+  {
+    key: 'placement',
+    label: '弹出方向',
+    type: 'input',
+    placeholder: '如 bottom-start、top',
+  },
+  {
+    key: 'dropdownWidth',
+    label: '下拉最小宽度',
+    type: 'input',
+    placeholder: 'match / auto / 200px',
+  },
+  {
+    key: 'dropdownMaxWidth',
+    label: '下拉最大宽度',
+    type: 'input',
+    placeholder: '如 320px（留空=不限制）',
+  },
+  {
+    key: 'tagMaxWidth',
+    label: '标签最大宽度',
+    type: 'input',
+    placeholder: '如 120px（留空=不限制）',
+  },
+  {
+    key: 'triggerWidth',
+    label: '触发框最小宽度',
+    type: 'input',
+    placeholder: '如 200px（留空=自适应）',
+  },
+  {
+    key: 'triggerMaxWidth',
+    label: '触发框最大宽度',
+    type: 'input',
+    placeholder: '如 320px（留空=不限制）',
+  },
+]
+
+const tooltipProps = ref({ content: '这是一条 Tooltip 提示文字', placement: 'top' as const, arrow: true, offset: 8 })
+const tooltipSchema: PropPanelSchemaItem[] = [
+  { key: 'content', label: '提示文字', type: 'input', placeholder: 'Tooltip 内容' },
+  {
+    key: 'placement',
+    label: '方向',
+    type: 'select',
+    options: [
+      { value: 'top', label: 'top' },
+      { value: 'bottom', label: 'bottom' },
+      { value: 'left', label: 'left' },
+      { value: 'right', label: 'right' },
+      { value: 'top-start', label: 'top-start' },
+      { value: 'top-end', label: 'top-end' },
+      { value: 'bottom-start', label: 'bottom-start' },
+      { value: 'bottom-end', label: 'bottom-end' },
+    ],
+  },
+  { key: 'offset', label: '距离', type: 'slider', min: 0, max: 32 },
+  { key: 'arrow', label: '显示箭头', description: '指向触发元素的小三角箭头', type: 'switch' },
+]
+
+const showDropdownDemo1 = ref(false)
+const showDropdownDemo2 = ref(false)
+
+const popoverProps = ref({
+  title: '通知详情',
+  icon: 'notifications',
+  placement: 'bottom-start' as const,
+  offset: 6,
+  trigger: 'click' as const,
+  hoverCloseDelay: 150,
+  width: '',
+  maxWidth: '',
+  teleport: true,
+})
+const popoverSchema: PropPanelSchemaItem[] = [
+  { key: 'title', label: '标题', type: 'input', placeholder: 'Popover 标题' },
+  { key: 'icon', label: '图标名', type: 'input', placeholder: 'Material Symbol 图标名' },
+  {
+    key: 'trigger',
+    label: '触发方式',
+    type: 'segmented',
+    options: [
+      { value: 'click', label: '左键点击' },
+      { value: 'hover', label: '悬停' },
+      { value: 'contextmenu', label: '右键' },
+    ],
+  },
+  { key: 'hoverCloseDelay', label: '悬停关闭延迟', description: 'hover 模式下鼠标离开后等待关闭的毫秒数', type: 'slider', min: 0, max: 500 },
+  {
+    key: 'placement',
+    label: '弹出方向',
+    type: 'select',
+    options: [
+      { value: 'bottom-start', label: '左下 (bottom-start)' },
+      { value: 'bottom', label: '下方 (bottom)' },
+      { value: 'bottom-end', label: '右下 (bottom-end)' },
+      { value: 'top-start', label: '左上 (top-start)' },
+      { value: 'top', label: '上方 (top)' },
+      { value: 'top-end', label: '右上 (top-end)' },
+      { value: 'left-start', label: '左对齐 (left-start)' },
+      { value: 'left', label: '左侧 (left)' },
+      { value: 'left-end', label: '左下对齐 (left-end)' },
+      { value: 'right-start', label: '右对齐 (right-start)' },
+      { value: 'right', label: '右侧 (right)' },
+      { value: 'right-end', label: '右下对齐 (right-end)' },
+    ],
+  },
+  { key: 'offset', label: '偏移距离', type: 'slider', min: 0, max: 24 },
+  { key: 'width', label: '面板最小宽度', type: 'input', placeholder: '如: 260px' },
+  { key: 'maxWidth', label: '面板最大宽度', type: 'input', placeholder: '如: 400px' },
+  { key: 'teleport', label: '传送至 body', description: '将面板渲染到 body 元素下', type: 'switch' },
+]
+
+const showPopoverDemo1 = ref(false)
+const showPopoverDemo2 = ref(false)
+const showPopoverDemo3 = ref(false)
+
+const dropdownProps = ref({
+  placement: 'bottom-start' as const,
+  offset: 6,
+  matchWidth: false,
+  trigger: 'click' as const,
+  menuWidth: '',
+  menuMaxWidth: '',
+  teleport: true,
+})
+const dropdownSchema: PropPanelSchemaItem[] = [
+  {
+    key: 'trigger',
+    label: '触发方式',
+    type: 'segmented',
+    options: [
+      { value: 'click', label: '左键点击' },
+      { value: 'hover', label: '悬停' },
+      { value: 'contextmenu', label: '右键' },
+    ],
+  },
+  {
+    key: 'placement',
+    label: '弹出方向',
+    type: 'select',
+    options: [
+      { value: 'bottom-start', label: '左下 (bottom-start)' },
+      { value: 'bottom', label: '下方 (bottom)' },
+      { value: 'bottom-end', label: '右下 (bottom-end)' },
+      { value: 'top-start', label: '左上 (top-start)' },
+      { value: 'top', label: '上方 (top)' },
+      { value: 'top-end', label: '右上 (top-end)' },
+      { value: 'left-start', label: '左对齐 (left-start)' },
+      { value: 'left', label: '左侧 (left)' },
+      { value: 'left-end', label: '左下对齐 (left-end)' },
+      { value: 'right-start', label: '右对齐 (right-start)' },
+      { value: 'right', label: '右侧 (right)' },
+      { value: 'right-end', label: '右下对齐 (right-end)' },
+    ],
+  },
+  { key: 'offset', label: '偏移距离', type: 'slider', min: 0, max: 24 },
+  { key: 'matchWidth', label: '匹配宽度', description: '菜单宽度与触发元素一致', type: 'switch' },
+  { key: 'menuWidth', label: '菜单宽度', type: 'input', placeholder: '如: 200px' },
+  { key: 'menuMaxWidth', label: '最大宽度', type: 'input', placeholder: '如: 320px' },
+  { key: 'teleport', label: '传送至 body', description: '将菜单渲染到 body 元素下', type: 'switch' },
+]
+
+// ---- FloatingBall ----
+const ballPrefs = ref<FloatingBallPrefs>({ theme: 'light', shrunk: false, hidden: false, label: 'FB' })
+const showBall = ref(false)
+const ballSchema: PropPanelSchemaItem[] = [
+  {
+    key: 'theme',
+    label: '主题',
+    type: 'segmented',
+    options: [
+      { value: 'light', label: '亮色' },
+      { value: 'dark', label: '暗色' },
+    ],
+  },
+  { key: 'label', label: '标签文字', type: 'input', placeholder: '悬浮球内文字' },
+  { key: 'shrunk', label: '缩小', description: '切换更小的悬浮球尺寸', type: 'switch' },
+  { key: 'hidden', label: '隐藏', description: '完全隐藏悬浮球', type: 'switch' },
+]
+
+function handleBallSave(prefs: FloatingBallPrefs) {
+  ballPrefs.value = prefs
+}
+</script>
+
+<template>
+  <div class="space-y-ax-lg">
+    <div class="border-b border-outline-variant pb-ax-md">
+      <h2 class="font-headline-sm text-headline-md text-primary">UI 组件列表</h2>
+      <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">展示所有组件的每一种状态变体。左侧预览区，右侧属性配置面板，实时联动。</p>
+    </div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Button</span>
+        <span class="font-body-sm text-[11px] text-secondary">按钮组件 — 支持 4 种变体、3 种尺寸、图标、加载态、禁用态</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[200px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
+          <div class="flex flex-wrap items-center gap-ax-sm">
+            <AxButton
+              :variant="btnProps.variant"
+              :size="btnProps.size"
+              :disabled="btnProps.disabled"
+              :icon="btnProps.showIcon ? 'bolt' : ''"
+              :block="btnProps.block"
+            >
+              <span v-if="btnProps.loading" class="inline-flex items-center gap-ax-xs">
+                <svg class="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                </svg>
+                处理中...
+              </span>
+              <span v-else>{{ btnProps.label }}</span>
+            </AxButton>
+          </div>
+          <div class="flex flex-wrap gap-ax-xs">
+            <span class="font-label-md text-[10px] text-secondary mr-1">所有变体：</span>
+            <AxButton variant="primary" size="sm">Primary</AxButton>
+            <AxButton variant="outline" size="sm">Outline</AxButton>
+            <AxButton variant="ghost" size="sm">Ghost</AxButton>
+            <AxButton variant="danger" size="sm">Danger</AxButton>
+            <AxButton variant="primary" size="sm" icon="bolt">带图标</AxButton>
+            <AxButton variant="primary" size="icon"><span class="material-symbols-outlined text-[16px]">settings</span></AxButton>
+            <AxButton variant="outline" size="sm" disabled>禁用</AxButton>
+          </div>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="btnProps" :schema="btnSchema" title="按钮属性" />
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Input</span>
+        <span class="font-body-sm text-[11px] text-secondary">单行输入框 — 3 种尺寸、前缀图标、密码模式、禁用态</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[220px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-md items-start justify-center">
+          <form class="w-64 relative" autocomplete="off" @submit.prevent>
+            <input
+              v-if="inputProps.showPassword"
+              type="text"
+              name="username"
+              autocomplete="username"
+              tabindex="-1"
+              aria-hidden="true"
+              class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 opacity-0 pointer-events-none"
+              value=""
+            >
+            <AxInput
+              v-model="inputProps.value"
+              :size="inputProps.size"
+              :placeholder="inputProps.placeholder"
+              :disabled="inputProps.disabled"
+              :password="inputProps.showPassword"
+            >
+              <template v-if="inputProps.showPrefix && !inputProps.showPassword" #prefix><span class="material-symbols-outlined text-[16px]">search</span></template>
+            </AxInput>
+          </form>
+          <div class="flex flex-wrap gap-ax-sm">
+            <span class="font-label-md text-[10px] text-secondary self-center">所有尺寸：</span>
+            <AxInput size="sm" placeholder="Small" class="w-28" />
+            <AxInput size="md" placeholder="Medium" class="w-28" />
+            <AxInput size="lg" placeholder="Large" class="w-28" />
+          </div>
+          <div class="flex flex-wrap gap-ax-sm">
+            <span class="font-label-md text-[10px] text-secondary self-center">带图标：</span>
+            <AxInput size="md" placeholder="带前缀" class="w-40">
+              <template #prefix><span class="material-symbols-outlined text-[16px]">person</span></template>
+            </AxInput>
+            <AxInput size="md" placeholder="禁用状态" class="w-36" disabled />
+          </div>
+          <form
+            class="relative flex flex-wrap gap-ax-sm items-center"
+            autocomplete="off"
+            @submit.prevent
+          >
+            <input
+              type="text"
+              name="username"
+              autocomplete="username"
+              tabindex="-1"
+              aria-hidden="true"
+              class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 opacity-0 pointer-events-none"
+              value=""
+            >
+            <span class="font-label-md text-[10px] text-secondary self-center">密码模式：</span>
+            <AxInput size="md" placeholder="请输入密码" class="w-44" password />
+            <AxInput size="md" placeholder="密码已输入" class="w-44" password model-value="Admin@2026" autocomplete="current-password" />
+          </form>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="inputProps" :schema="inputSchema" title="输入框属性" />
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Slider</span>
+        <span class="font-body-sm text-[11px] text-secondary">滑块组件 — 支持自定义范围、标签、数值显示</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[180px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
+          <div class="w-72">
+            <AxSlider
+              v-model="sliderProps.value"
+              :min="sliderProps.min"
+              :max="sliderProps.max"
+              :show-labels="sliderProps.showLabels"
+              :show-value="sliderProps.showValue"
+              label-left="最小"
+              label-right="最大"
+              :value-label="sliderProps.value + '%'"
+            />
+          </div>
+          <div class="w-full space-y-ax-sm max-w-sm">
+            <span class="font-label-md text-[10px] text-secondary">带标签与数值：</span>
+            <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载" value-label="72%" />
+            <span class="font-label-md text-[10px] text-secondary">无标签简洁模式：</span>
+            <AxSlider :model-value="40" :min="0" :max="100" />
+          </div>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="sliderProps" :schema="sliderSchema" title="滑块属性" />
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Alert</span>
+        <span class="font-body-sm text-[11px] text-secondary">警示横幅 — 4 种语义、可关闭、带标题</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[180px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-sm items-start justify-center">
+          <AxAlert :type="alertProps.type" :title="alertProps.title" :dismissible="alertProps.dismissible" model-value>{{ alertProps.message }}</AxAlert>
+          <div class="w-full max-w-md space-y-ax-xs mt-2">
+            <span class="font-label-md text-[10px] text-secondary">所有类型：</span>
+            <AxAlert type="info" title="信息" model-value :dismissible="false">这是一条系统信息提示。</AxAlert>
+            <AxAlert type="success" title="成功" model-value :dismissible="false">操作已成功完成。</AxAlert>
+            <AxAlert type="warning" title="警告" model-value :dismissible="false">请注意当前系统资源使用情况。</AxAlert>
+            <AxAlert type="error" title="错误" model-value :dismissible="false">核心服务连接已中断。</AxAlert>
+          </div>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="alertProps" :schema="alertSchema" title="警示属性" />
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Select</span>
+        <span class="font-body-sm text-[11px] text-secondary">自定义下拉选择 — 支持搜索过滤</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[180px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
+          <div>
+            <AxSelect v-model="selectProps.value" :options="demoSelectOptions" :searchable="selectProps.searchable" :multiple="selectProps.multiple" :placeholder="selectProps.placeholder" :placement="selectProps.placement" :dropdown-width="selectProps.dropdownWidth" :dropdown-max-width="selectProps.dropdownMaxWidth" :tag-max-width="selectProps.tagMaxWidth" :trigger-width="selectProps.triggerWidth" :trigger-max-width="selectProps.triggerMaxWidth" />
+          </div>
+          <div>
+            <span class="font-label-md text-[10px] text-secondary">带搜索的选择器：</span>
+            <AxSelect model-value="opt2" :options="demoSelectOptions" searchable placeholder="选择框架..." class="mt-1" />
+          </div>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="selectProps" :schema="selectSchema" title="下拉选择属性" />
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Tooltip</span>
+        <span class="font-body-sm text-[11px] text-secondary">悬停提示气泡 — 8 个方向，Floating UI 精准定位</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[180px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-center justify-center">
+          <AxTooltip :content="tooltipProps.content" :placement="tooltipProps.placement" :arrow="tooltipProps.arrow" :offset="tooltipProps.offset">
+            <AxButton variant="outline">悬停此处查看效果</AxButton>
+          </AxTooltip>
+          <div class="flex flex-wrap gap-ax-sm justify-center">
+            <AxTooltip content="top 提示" placement="top"><AxButton variant="ghost" size="sm">上方</AxButton></AxTooltip>
+            <AxTooltip content="bottom 提示" placement="bottom"><AxButton variant="ghost" size="sm">下方</AxButton></AxTooltip>
+            <AxTooltip content="left 提示" placement="left"><AxButton variant="ghost" size="sm">左侧</AxButton></AxTooltip>
+            <AxTooltip content="right 提示" placement="right"><AxButton variant="ghost" size="sm">右侧</AxButton></AxTooltip>
+            <AxTooltip content="top-start 提示" placement="top-start"><AxButton variant="ghost" size="sm">左上角</AxButton></AxTooltip>
+            <AxTooltip content="top-end 提示" placement="top-end"><AxButton variant="ghost" size="sm">右上角</AxButton></AxTooltip>
+          </div>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="tooltipProps" :schema="tooltipSchema" title="气泡属性" />
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Dropdown</span>
+        <span class="font-body-sm text-[11px] text-secondary">上下文菜单 — 任意 Slot 内容，Floating UI 定位</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[180px]">
+        <div class="flex-1 p-ax-lg comp-preview flex items-center justify-center gap-ax-xl">
+          <div class="flex flex-col items-center gap-ax-sm">
+            <span class="font-label-md text-[10px] text-secondary">功能菜单</span>
+            <AxDropdown v-model="showDropdownDemo1" :trigger="dropdownProps.trigger" :placement="dropdownProps.placement" :offset="dropdownProps.offset" :match-width="dropdownProps.matchWidth" :menu-width="dropdownProps.menuWidth" :menu-max-width="dropdownProps.menuMaxWidth" :teleport="dropdownProps.teleport" :menu-class="dropdownProps.menuWidth || dropdownProps.matchWidth ? '' : 'w-44'">
+              <template #trigger>
+                <AxButton>打开菜单<template #suffix><span class="material-symbols-outlined text-[16px]">expand_more</span></template></AxButton>
+              </template>
+              <template #default="{ close }">
+                <div class="py-1">
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[16px]">download</span><span>导出配置</span></button>
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[16px]">edit</span><span>编辑设置</span></button>
+                  <div class="my-1 border-t border-outline-variant"></div>
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-error hover:bg-error-container hover:text-on-error-container rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[16px]">delete</span><span>删除</span></button>
+                </div>
+              </template>
+            </AxDropdown>
+          </div>
+          <div class="flex flex-col items-center gap-ax-sm">
+            <span class="font-label-md text-[10px] text-secondary">图标按钮触发</span>
+            <AxDropdown v-model="showDropdownDemo2" placement="bottom-end" menu-class="w-40">
+              <template #trigger>
+                <AxButton variant="outline" size="icon"><span class="material-symbols-outlined text-[16px]">more_vert</span></AxButton>
+              </template>
+              <template #default="{ close }">
+                <div class="py-1">
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[16px]">info</span><span>查看详情</span></button>
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[16px]">share</span><span>分享链接</span></button>
+                </div>
+              </template>
+            </AxDropdown>
+          </div>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="dropdownProps" :schema="dropdownSchema" title="下拉菜单属性" />
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Popover</span>
+        <span class="font-body-sm text-[11px] text-secondary">通用浮层容器 — 支持 click/hover/contextmenu 三种触发，内容完全由 Slot 自定义</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[220px]">
+        <div class="flex-1 p-ax-lg comp-preview flex items-center justify-center gap-ax-xl">
+          <!-- 通知卡片 (click) -->
+          <div class="flex flex-col items-center gap-ax-sm">
+            <span class="font-label-md text-[10px] text-secondary">通知卡片</span>
+            <AxDropdown
+              v-model="showPopoverDemo1"
+              :trigger="popoverProps.trigger"
+              :placement="popoverProps.placement"
+              :offset="popoverProps.offset"
+              :teleport="popoverProps.teleport"
+              :menu-width="popoverProps.width || undefined"
+              :menu-max-width="popoverProps.maxWidth || undefined"
+              :panel-class="popoverProps.width ? 'p-0' : 'p-0 w-64'"
+            >
+              <template #trigger>
+                <AxButton variant="outline">
+                  <template #prefix><span class="material-symbols-outlined text-[16px]">notifications</span></template>
+                  查看通知
+                </AxButton>
+              </template>
+              <template #default="{ close }">
+                <!-- 标题栏（纯 slot 实现） -->
+                <div class="flex items-center justify-between px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low">
+                  <div class="flex items-center gap-ax-sm">
+                    <span class="material-symbols-outlined text-[16px] text-primary">{{ popoverProps.icon }}</span>
+                    <span class="font-headline-sm text-[13px] font-semibold text-primary">{{ popoverProps.title }}</span>
+                  </div>
+                  <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[14px]">close</span></button>
+                </div>
+                <!-- 内容 -->
+                <div class="p-ax-md space-y-ax-sm">
+                  <div class="flex items-start gap-ax-sm p-ax-sm bg-surface-container-low rounded-lg">
+                    <span class="material-symbols-outlined text-[16px] text-primary mt-0.5">info</span>
+                    <div class="min-w-0">
+                      <p class="font-body-sm text-[12px] font-semibold text-primary">系统更新 v2.4.0</p>
+                      <p class="font-body-sm text-[11px] text-secondary leading-relaxed">新增 Popover 组件，支持富内容展示。</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-ax-sm p-ax-sm bg-surface-container-low rounded-lg">
+                    <span class="material-symbols-outlined text-[16px] text-primary mt-0.5">schedule</span>
+                    <div class="min-w-0">
+                      <p class="font-body-sm text-[12px] font-semibold text-primary">定时备份完成</p>
+                      <p class="font-body-sm text-[11px] text-secondary leading-relaxed">数据库已于 02:00 自动备份至云端。</p>
+                    </div>
+                  </div>
+                  <button class="w-full border border-outline-variant text-primary rounded-md py-1.5 font-label-md text-label-md hover:bg-surface-container-low transition-colors" @click="close()">查看全部通知</button>
+                </div>
+              </template>
+            </AxDropdown>
+          </div>
+
+          <!-- 悬停触发 -->
+          <div class="flex flex-col items-center gap-ax-sm">
+            <span class="font-label-md text-[10px] text-secondary">悬停触发</span>
+            <AxDropdown v-model="showPopoverDemo2" trigger="hover" placement="bottom" panel-class="p-ax-md">
+              <template #trigger>
+                <AxButton variant="outline" size="sm">悬停此处</AxButton>
+              </template>
+              <template #default="{ close }">
+                <div class="w-48 space-y-ax-sm">
+                  <p class="font-body-sm text-[12px] text-on-surface-variant leading-relaxed">鼠标悬停即可展示。移入面板后不会关闭。</p>
+                  <div class="flex gap-ax-xs justify-end">
+                    <AxButton variant="outline" size="sm" @click="close()">知道了</AxButton>
+                  </div>
+                </div>
+              </template>
+            </AxDropdown>
+          </div>
+
+          <!-- 右键菜单 -->
+          <div class="flex flex-col items-center gap-ax-sm">
+            <span class="font-label-md text-[10px] text-secondary">右键菜单 (AxDropdown)</span>
+            <AxDropdown v-model="showPopoverDemo3" trigger="contextmenu" placement="bottom-start" panel-class="p-0.5">
+              <template #trigger>
+                <div class="px-4 py-2 border border-dashed border-outline-variant rounded-lg flex items-center gap-ax-sm text-secondary font-label-md text-[11px] cursor-context-menu select-none">
+                  <span class="material-symbols-outlined text-[16px]">mouse</span>
+                  <span>在此区域右键点击</span>
+                </div>
+              </template>
+              <template #default="{ close }">
+                <div class="w-44 py-1">
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                    <span class="material-symbols-outlined text-[16px]">arrow_back</span><span>向后</span>
+                    <kbd class="ml-auto font-label-md text-[10px] text-outline">⌘[</kbd>
+                  </button>
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors opacity-40 pointer-events-none">
+                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span><span>向前</span>
+                    <kbd class="ml-auto font-label-md text-[10px] text-outline">⌘]</kbd>
+                  </button>
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                    <span class="material-symbols-outlined text-[16px]">refresh</span><span>重新加载</span>
+                    <kbd class="ml-auto font-label-md text-[10px] text-outline">⌘R</kbd>
+                  </button>
+                  <div class="my-1 border-t border-outline-variant"></div>
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                    <span class="material-symbols-outlined text-[16px]">save_alt</span><span>另存为...</span>
+                    <kbd class="ml-auto font-label-md text-[10px] text-outline">⌘S</kbd>
+                  </button>
+                  <div class="my-1 border-t border-outline-variant"></div>
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                    <span class="material-symbols-outlined text-[16px]">print</span><span>打印...</span>
+                    <kbd class="ml-auto font-label-md text-[10px] text-outline">⌘P</kbd>
+                  </button>
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                    <span class="material-symbols-outlined text-[16px]">cast</span><span>投射...</span>
+                  </button>
+                  <div class="my-1 border-t border-outline-variant"></div>
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-[12px] text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                    <span class="material-symbols-outlined text-[16px]">check</span><span>查找...</span>
+                  </button>
+                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                    <span class="w-4"></span><span>更多工具</span>
+                    <span class="ml-auto material-symbols-outlined text-[16px] text-secondary">chevron_right</span>
+                  </button>
+                </div>
+              </template>
+            </AxDropdown>
+          </div>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="popoverProps" :schema="popoverSchema" title="气泡卡片属性" />
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Dialog</span>
+        <span class="font-body-sm text-[11px] text-secondary">模态弹窗 — 焦点陷阱、ESC 关闭、遮罩关闭</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[180px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-md items-center justify-center">
+          <div class="flex gap-ax-sm flex-wrap justify-center">
+            <AxButton @click="emit('open-dialog')">打开确认对话框</AxButton>
+            <AxButton variant="outline" @click="emit('open-simple-dialog')">打开简单提示框</AxButton>
+          </div>
+          <p class="font-body-sm text-[11px] text-secondary">点击上方按钮打开对话框，可通过 ESC 键或点击遮罩关闭。</p>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto flex items-center">
+          <p class="font-body-sm text-[11px] text-secondary leading-relaxed">
+            Dialog 支持 <code class="bg-surface-container px-1 rounded text-primary">#header</code>、
+            <code class="bg-surface-container px-1 rounded text-primary">#default</code>、
+            <code class="bg-surface-container px-1 rounded text-primary">#footer</code> 三个插槽。Footer 槽的 close 参数可直接关闭弹窗。焦点锁定通过 Tab 键循环限制在对话框内部。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FloatingBall -->
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">FloatingBall</span>
+        <span class="font-body-sm text-[11px] text-secondary">可拖拽悬浮球 — 支持贴边、展开菜单、亮暗主题、缩小模式</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[280px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-md items-center justify-center">
+          <!-- Static preview balls -->
+          <div class="flex flex-wrap items-center gap-ax-xl">
+            <!-- Normal size -->
+            <div class="flex flex-col items-center gap-ax-sm">
+              <span class="font-label-md text-[10px] text-secondary">标准尺寸</span>
+              <div
+                class="size-[36px] flex items-center justify-center rounded-full shadow-md border border-gray-100/90 bg-white shadow-black/10"
+                :class="ballPrefs.hidden ? 'opacity-30' : ''"
+              >
+                <span
+                  class="relative flex items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-white shadow-sm shadow-ball/40"
+                  :style="{ width: '30px', height: '30px' }"
+                >
+                  <span class="text-[11px] font-extrabold italic leading-none tracking-tight text-white">{{ ballPrefs.label || 'FB' }}</span>
+                </span>
+              </div>
+            </div>
+            <!-- Shrunk -->
+            <div class="flex flex-col items-center gap-ax-sm">
+              <span class="font-label-md text-[10px] text-secondary">缩小模式</span>
+              <div
+                class="size-[30px] flex items-center justify-center rounded-full shadow-md border border-gray-100/90 bg-white shadow-black/10"
+              >
+                <span
+                  class="relative flex items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-white shadow-sm shadow-ball/40"
+                  :style="{ width: '24px', height: '24px' }"
+                >
+                  <span class="text-[9px] font-extrabold italic leading-none tracking-tight text-white">{{ ballPrefs.label || 'FB' }}</span>
+                </span>
+              </div>
+            </div>
+            <!-- Expanded with settings -->
+            <div class="flex flex-col items-center gap-ax-sm">
+              <span class="font-label-md text-[10px] text-secondary">展开态（带设置按钮）</span>
+              <div class="relative flex flex-col items-center gap-ax-xs">
+                <div class="size-[36px] flex items-center justify-center rounded-full shadow-md border border-gray-100/90 bg-white shadow-black/10">
+                  <span
+                    class="relative flex items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-white shadow-sm shadow-ball/40"
+                    :style="{ width: '30px', height: '30px' }"
+                  >
+                    <span class="text-[11px] font-extrabold italic leading-none tracking-tight text-white">{{ ballPrefs.label || 'FB' }}</span>
+                  </span>
+                </div>
+                <div class="size-[36px] flex items-center justify-center rounded-full shadow-sm border border-gray-100/80 bg-white text-gray-500">
+                  <svg viewBox="0 0 24 24" fill="none" class="size-[18px] text-ball">
+                    <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M6 9h12M8 14h8M10 19h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <circle cx="6" cy="9" r="1.5" fill="currentColor" />
+                    <circle cx="16" cy="14" r="1.5" fill="currentColor" />
+                    <circle cx="12" cy="19" r="1.5" fill="currentColor" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- Dark theme -->
+            <div class="flex flex-col items-center gap-ax-sm">
+              <span class="font-label-md text-[10px] text-secondary">暗色主题</span>
+              <div
+                class="size-[36px] flex items-center justify-center rounded-full shadow-md border border-white/12 bg-zinc-800 shadow-black/40"
+              >
+                <span
+                  class="relative flex items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-white shadow-sm shadow-ball/40"
+                  :style="{ width: '30px', height: '30px' }"
+                >
+                  <span class="text-[11px] font-extrabold italic leading-none tracking-tight text-white">{{ ballPrefs.label || 'FB' }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Control buttons -->
+          <div class="flex gap-ax-sm mt-ax-md">
+            <button
+              class="relative overflow-hidden inline-flex items-center justify-center gap-ax-xs font-label-md rounded-md transition-colors outline-none border-0 shrink-0 bg-primary text-on-primary hover:opacity-90 px-4 py-1.5 text-label-md cursor-pointer"
+              @click="showBall = !showBall"
+            >
+              {{ showBall ? '隐藏页面悬浮球' : '在页面上展示悬浮球' }}
+            </button>
+          </div>
+          <p class="font-body-sm text-[11px] text-secondary">点击上方按钮将悬浮球渲染到页面中（固定定位，可在右下角找到）。</p>
+          <p class="font-body-sm text-[11px] text-secondary">支持拖拽、贴边吸附、悬停展开菜单、点击齿轮打开设置弹窗。</p>
+        </div>
+        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="ballPrefs" :schema="ballSchema" title="悬浮球属性" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FloatingBall (rendered to document body) -->
+  <FloatingBall
+    v-if="showBall"
+    :prefs="ballPrefs"
+    @save-prefs="handleBallSave"
+    @main-click="() => {}"
+    @open-settings="() => {}"
+  />
+</template>

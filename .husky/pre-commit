@@ -1,0 +1,13 @@
+# Axiom UI Kit -- pre-commit hook (husky)
+# 每次 git commit 前自动构建技能，变更并入本次提交
+
+node scripts/install.js
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "skills build failed, commit aborted."
+  echo ""
+  exit 1
+fi
+
+git add skills/

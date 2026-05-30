@@ -128,8 +128,8 @@ web/
 | @vueuse/core                        | 组合式工具（onClickOutside 等）           |
 | vue-sonner                          | 通知队列（useNotify）                   |
 | material-symbols                    | Material Symbols 图标               |
-| @fontsource/geist                   | Geist UI 正文字体                     |
-| @fontsource-variable/jetbrains-mono | JetBrains Mono 等宽字体               |
+| @fontsource/geist                   | Geist UI 正文字体（400、600 字重）        |
+| @fontsource/jetbrains-mono          | JetBrains Mono 标签/等宽字体（400、500） |
 
 
 ## 注意事项

@@ -41,14 +41,37 @@
   --spacing-gutter: 16px;
   --spacing-margin: 24px;
 
-  --font-headline-sm: Geist, system-ui, -apple-system, sans-serif;
-  --font-body-sm: Geist, system-ui, -apple-system, sans-serif;
-  --font-body-md: Geist, system-ui, -apple-system, sans-serif;
-  --font-label-md: "JetBrains Mono Variable", system-ui, -apple-system, sans-serif;
+  --font-display: Geist;
+  --font-headline-lg: Geist;
+  --font-headline-lg-mobile: Geist;
+  --font-headline-md: Geist;
+  --font-headline-sm: Geist;
+  --font-body-lg: Geist;
+  --font-body-sm: Geist;
+  --font-body-md: Geist;
+  --font-label-md: "JetBrains Mono";
 
+  --text-display: 36px;
+  --text-display--line-height: 40px;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 600;
+  --text-headline-lg: 24px;
+  --text-headline-lg--line-height: 32px;
+  --text-headline-lg--letter-spacing: -0.02em;
+  --text-headline-lg--font-weight: 600;
+  --text-headline-lg-mobile: 20px;
+  --text-headline-lg-mobile--line-height: 28px;
+  --text-headline-lg-mobile--font-weight: 600;
+  --text-headline-md: 20px;
+  --text-headline-md--line-height: 28px;
+  --text-headline-md--letter-spacing: -0.01em;
+  --text-headline-md--font-weight: 600;
   --text-headline-sm: 16px;
   --text-headline-sm--line-height: 24px;
   --text-headline-sm--font-weight: 600;
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 24px;
+  --text-body-lg--font-weight: 400;
   --text-body-sm: 12px;
   --text-body-sm--line-height: 16px;
   --text-body-sm--font-weight: 400;
@@ -62,7 +85,7 @@
 }
 
 body {
-  font-family: Geist, system-ui, sans-serif;
+  font-family: 'Geist', sans-serif;
 }
 
 .material-symbols-outlined {

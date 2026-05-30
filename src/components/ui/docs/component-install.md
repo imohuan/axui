@@ -18,7 +18,7 @@
 ```bash
 # dependencies
 bun add @floating-ui/dom @floating-ui/vue @tailwindcss/vite tailwindcss @vueuse/core vue vue-sonner \
-  material-symbols @fontsource/geist @fontsource-variable/jetbrains-mono
+  material-symbols @fontsource/geist @fontsource/jetbrains-mono
 
 # devDependencies（Vite + TS 工程通常已有，缺哪项补哪项）
 bun add -d @tailwindcss/forms @vitejs/plugin-vue typescript vite vue-tsc
@@ -32,8 +32,8 @@ bun add -d @tailwindcss/forms @vitejs/plugin-vue typescript vite vue-tsc
 | `@vueuse/core` | 组合式工具（点击外部、快捷键等） |
 | `vue-sonner` | 通知队列（`useNotify`） |
 | `material-symbols` | Material Symbols 图标字体（outlined 可变体） |
-| `@fontsource/geist` | Geist UI 正文字体 |
-| `@fontsource-variable/jetbrains-mono` | JetBrains Mono 等宽可变字体 |
+| `@fontsource/geist` | Geist UI 正文字体（按字重分文件引入，见 §4） |
+| `@fontsource/jetbrains-mono` | JetBrains Mono 标签/等宽字体（400、500） |
 
 ---
 
@@ -101,14 +101,37 @@ export default defineConfig({
   --spacing-gutter: 16px;
   --spacing-margin: 24px;
 
-  --font-headline-sm: Geist, system-ui, -apple-system, sans-serif;
-  --font-body-sm: Geist, system-ui, -apple-system, sans-serif;
-  --font-body-md: Geist, system-ui, -apple-system, sans-serif;
-  --font-label-md: "JetBrains Mono Variable", system-ui, -apple-system, sans-serif;
+  --font-display: Geist;
+  --font-headline-lg: Geist;
+  --font-headline-lg-mobile: Geist;
+  --font-headline-md: Geist;
+  --font-headline-sm: Geist;
+  --font-body-lg: Geist;
+  --font-body-sm: Geist;
+  --font-body-md: Geist;
+  --font-label-md: "JetBrains Mono";
 
+  --text-display: 36px;
+  --text-display--line-height: 40px;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 600;
+  --text-headline-lg: 24px;
+  --text-headline-lg--line-height: 32px;
+  --text-headline-lg--letter-spacing: -0.02em;
+  --text-headline-lg--font-weight: 600;
+  --text-headline-lg-mobile: 20px;
+  --text-headline-lg-mobile--line-height: 28px;
+  --text-headline-lg-mobile--font-weight: 600;
+  --text-headline-md: 20px;
+  --text-headline-md--line-height: 28px;
+  --text-headline-md--letter-spacing: -0.01em;
+  --text-headline-md--font-weight: 600;
   --text-headline-sm: 16px;
   --text-headline-sm--line-height: 24px;
   --text-headline-sm--font-weight: 600;
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 24px;
+  --text-body-lg--font-weight: 400;
   --text-body-sm: 12px;
   --text-body-sm--line-height: 16px;
   --text-body-sm--font-weight: 400;
@@ -122,7 +145,7 @@ export default defineConfig({
 }
 
 body {
-  font-family: Geist, system-ui, sans-serif;
+  font-family: 'Geist', sans-serif;
 }
 
 .material-symbols-outlined {
@@ -195,13 +218,15 @@ import './style.css'
 
 ```ts
 import 'material-symbols/outlined.css'
-import '@fontsource/geist'
-import '@fontsource-variable/jetbrains-mono'
+import '@fontsource/geist/400.css'
+import '@fontsource/geist/600.css'
+import '@fontsource/jetbrains-mono/400.css'
+import '@fontsource/jetbrains-mono/500.css'
 ```
 
-> **注意**：`@fontsource-variable` 可变字体的 CSS font-family 会带 ` Variable` 后缀（如 `"JetBrains Mono Variable"`），确保 `style.css` 中 `--font-label-md` 的字体栈使用该名称。
+> **注意**：不要只引入 `@fontsource/geist` 默认入口（通常仅含 400）。标题与按钮的 `font-semibold`（600）需要单独引入 `600.css`，否则会由浏览器合成加粗。标签字体使用静态 **JetBrains Mono**（非 `@fontsource-variable/jetbrains-mono`），与 HTML 参考稿 [`settings.html`](./settings.html) 一致。
 
-字体栈与中文回退等细节以 [`ui-style.md`](./ui-style.md) 为准。
+字体栈、字号 token 与 HTML 原型对齐方式见 [`ui-style.md`](./ui-style.md) §3。
 
 ---
 
@@ -211,8 +236,10 @@ import '@fontsource-variable/jetbrains-mono'
 import { createApp } from 'vue'
 import { Toaster } from 'vue-sonner'
 import 'material-symbols/outlined.css'
-import '@fontsource/geist'
-import '@fontsource-variable/jetbrains-mono'
+import '@fontsource/geist/400.css'
+import '@fontsource/geist/600.css'
+import '@fontsource/jetbrains-mono/400.css'
+import '@fontsource/jetbrains-mono/500.css'
 import 'vue-sonner/style.css'
 import './style.css'
 import App from './App.vue'
@@ -271,7 +298,7 @@ import { FloatingBall, useFloatingBall } from '@/components/ui' // FloatingBall
 
 - [ ] 依赖已安装，`vite.config.ts` 含 `tailwindcss()` 插件
 - [ ] `style.css` 含 `@import "tailwindcss"`、`@plugin "@tailwindcss/forms"` 及完整 `@theme`
-- [ ] `main.ts` 已引入图标与字体（`material-symbols`、`@fontsource/geist`、`@fontsource-variable/jetbrains-mono`）
+- [ ] `main.ts` 已引入图标与字体（`material-symbols`、`@fontsource/geist/400`+`600`、`@fontsource/jetbrains-mono/400`+`500`）
 - [ ] `main.ts` 引入 `style.css`、`registerComponents`、`Toaster` 全局注册
 - [ ] 根组件已渲染 `<Toaster />`（若使用通知）
 - [ ] 后续对照 [`ui-style.md`](./ui-style.md) 校对 token 与组件用法

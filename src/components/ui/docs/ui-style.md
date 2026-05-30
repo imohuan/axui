@@ -39,27 +39,31 @@
 <link
   href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
   rel="stylesheet">
-<!-- 字体 -->
-<link href="https://cdn.jsdelivr.net/npm/@fontsource/geist@5.2.9/index.css" rel="stylesheet">
+<!-- 字体（与 docs/settings.html 参考稿一致） -->
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Geist：可用 @fontsource CDN，或与 settings.html 相同的 geist 包链接 -->
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/geist@5.2.9/400.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/geist@5.2.9/600.css" rel="stylesheet">
 ```
 
 #### Vue 项目（本仓库）：`main.ts` npm 包
 
 ```ts
 import 'material-symbols/outlined.css'
-import '@fontsource/geist'
-import '@fontsource-variable/jetbrains-mono'
+import '@fontsource/geist/400.css'
+import '@fontsource/geist/600.css'
+import '@fontsource/jetbrains-mono/400.css'
+import '@fontsource/jetbrains-mono/500.css'
 ```
 
-对应依赖：`material-symbols`、`@fontsource/geist`、`@fontsource-variable/jetbrains-mono`（见 [`component-install.md`](./component-install.md)）。
+对应依赖：`material-symbols`、`@fontsource/geist`、`@fontsource/jetbrains-mono`（见 [`component-install.md`](./component-install.md)）。视觉基准见 [`settings.html`](./settings.html)。
 
-> **注意**：Material Symbols 只需引入一次，勿重复。
+> **注意**：Material Symbols 只需引入一次，勿重复。Geist 须同时引入 400 与 600，避免 semibold 被浏览器合成加粗。
 
 ```css
-/* 本仓库 style.css 当前为简栈；含中文页面建议按 §3.3 补全回退 */
+/* 与 settings.html、web/src/style.css 一致 */
 body {
-  font-family: Geist, system-ui, sans-serif;
+  font-family: 'Geist', sans-serif;
 }
 
 .material-symbols-outlined {
@@ -167,18 +171,28 @@ body {
           gutter: '16px',
           margin: '24px',
         },
-        /* 字体栈必须含中文回退，见 §3.3 */
+        /* 与 docs/settings.html tailwind.config 一致 */
         fontFamily: {
-          'headline-sm': ['Geist', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Microsoft YaHei', 'sans-serif'],
-          'body-sm':     ['Geist', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Microsoft YaHei', 'sans-serif'],
-          'body-md':     ['Geist', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Microsoft YaHei', 'sans-serif'],
-          'label-md':    ['JetBrains Mono', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Microsoft YaHei', 'sans-serif'],
+          'display': ['Geist'],
+          'headline-lg': ['Geist'],
+          'headline-lg-mobile': ['Geist'],
+          'headline-md': ['Geist'],
+          'headline-sm': ['Geist'],
+          'body-lg': ['Geist'],
+          'body-sm': ['Geist'],
+          'body-md': ['Geist'],
+          'label-md': ['JetBrains Mono'],
         },
         fontSize: {
+          'display': ['36px', { lineHeight: '40px', letterSpacing: '-0.02em', fontWeight: '600' }],
+          'headline-lg': ['24px', { lineHeight: '32px', letterSpacing: '-0.02em', fontWeight: '600' }],
+          'headline-lg-mobile': ['20px', { lineHeight: '28px', fontWeight: '600' }],
+          'headline-md': ['20px', { lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: '600' }],
           'headline-sm': ['16px', { lineHeight: '24px', fontWeight: '600' }],
-          'body-sm':     ['12px', { lineHeight: '16px', fontWeight: '400' }],
-          'body-md':     ['14px', { lineHeight: '20px', fontWeight: '400' }],
-          'label-md':    ['12px', { lineHeight: '16px', letterSpacing: '0.02em', fontWeight: '500' }],
+          'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+          'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+          'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+          'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.02em', fontWeight: '500' }],
         },
       },
     },
@@ -221,13 +235,18 @@ body {
   --spacing-gutter: 16px;
   --spacing-margin: 24px;
 
-  /* 字号 token：font-headline-sm + text-headline-sm 等 */
-  --font-headline-sm: Geist, system-ui, -apple-system, sans-serif;
-  --font-label-md: "JetBrains Mono Variable", system-ui, -apple-system, sans-serif;
+  /* 字号 token：与 settings.html 一致，完整列表见 web/src/style.css */
+  --font-headline-sm: Geist;
+  --font-body-md: Geist;
+  --font-label-md: "JetBrains Mono";
   --text-headline-sm: 16px;
   --text-headline-sm--line-height: 24px;
   --text-headline-sm--font-weight: 600;
-  /* …body-sm / body-md / label-md 见 style.css … */
+  /* …display / headline-lg / body-lg / body-sm / label-md 等见 style.css … */
+}
+
+body {
+  font-family: 'Geist', sans-serif;
 }
 ```
 
@@ -250,16 +269,21 @@ Vue 组件使用语义色 + `ax` 间距，例如 `bg-surface-container-lowest ga
 
 ### 3.2 字号阶梯
 
-**已写入 `web/src/style.css` `@theme` 的 token**（`Ax*` 组件实际使用）：
+**已写入 `web/src/style.css` `@theme` 的 token**（与 [`settings.html`](./settings.html) 对齐，`Ax*` 与布局页均可使用）：
 
-| Token          | 字号 / 行高     | 字重  | 字距      | 典型场景          |
-| -------------- | ----------- | --- | ------- | ------------- |
-| `headline-sm`  | 16px / 24px | 600 | —       | 侧栏标题、`AxDialog` 标题 |
-| `body-md`      | 14px / 20px | 400 | —       | 默认正文、Toast 标题辅助 |
-| `body-sm`      | 12px / 16px | 400 | —       | 辅助说明、`AxAlert` 正文 |
-| `label-md`     | 12px / 16px | 500 | +0.02em | 按钮、导航、表单标签（JetBrains Mono Variable） |
+| Token | 字号 / 行高 | 字重 | 字距 | 典型场景 |
+| ----- | ----------- | ---- | ---- | -------- |
+| `display` | 36px / 40px | 600 | -0.02em | 大标题 |
+| `headline-lg` | 24px / 32px | 600 | -0.02em | 页面主标题 |
+| `headline-lg-mobile` | 20px / 28px | 600 | — | 移动端主标题 |
+| `headline-md` | 20px / 28px | 600 | -0.01em | 区块标题 |
+| `headline-sm` | 16px / 24px | 600 | — | 侧栏标题、`AxDialog` 标题 |
+| `body-lg` | 16px / 24px | 400 | — | 强调正文 |
+| `body-md` | 14px / 20px | 400 | — | 默认正文、Toast 辅助 |
+| `body-sm` | 12px / 16px | 400 | — | 辅助说明、`AxAlert` 正文 |
+| `label-md` | 12px / 16px | 500 | +0.02em | 按钮、导航、表单标签（**JetBrains Mono**） |
 
-**仅 HTML CDN 原型扩展**（Vue 组件库未定义对应 `--text-*`）：`display`、`headline-lg`、`headline-md`、`body-lg` 等，见 §2.2.2。
+HTML CDN 原型使用同名 class（`font-headline-sm text-headline-sm` 等），配置见 §2.2.2。
 
 
 ```html
@@ -268,24 +292,25 @@ Vue 组件使用语义色 + `ax` 间距，例如 `bg-surface-container-lowest ga
 <label class="font-label-md text-label-md font-semibold text-primary">字段标签</label>
 ```
 
-### 3.3 中文回退（必读）
+### 3.3 中文回退
 
-Geist 与 JetBrains Mono **均不含中文字形**。若字体栈末尾仅写 `sans-serif` 或 `monospace`，Windows 会将中文回退到**宋体 (SimSun)**，与西文形成严重视觉撕裂。
+Geist 与 JetBrains Mono **均不含中文字形**。本仓库 Vue 工程与 HTML 参考稿 [`settings.html`](./settings.html) 采用相同策略：
 
-**所有字体栈末尾必须追加现代中文无衬线回退：**
+- `@theme` 中 `--font-*` 仅声明 `Geist` / `"JetBrains Mono"`
+- `body` 使用 `font-family: 'Geist', sans-serif;`，中文由系统 `sans-serif` 回退（Windows 通常为微软雅黑）
+
+| 字符类型 | 实际渲染字体 |
+| -------- | ------------ |
+| 英文、数字 | Geist 或 JetBrains Mono（须引入对应字重文件，见 §2.1） |
+| 中文 | 系统 sans-serif（跳过无中文字形的西文字体） |
+
+`font-label-md` 用于导航、按钮等含中文场景时，中文不会使用等宽体，而是回退到系统无衬线体。
+
+**若个别环境仍出现宋体回退**，可在 `body` 或 `--font-*` 末尾追加显式中文栈（可选，与参考稿视觉会略有差异）：
 
 ```
-system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Microsoft YaHei, sans-serif
+system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, "Microsoft YaHei", sans-serif
 ```
-
-
-| 字符类型  | 实际渲染字体                                    |
-| ----- | ----------------------------------------- |
-| 英文、数字 | Geist 或 JetBrains Mono                    |
-| 中文    | Microsoft YaHei / system-ui（自动跳过无字形的西文字体） |
-
-
-`font-label-md` 用于导航项、按钮等含中文场景时，中文不会使用等宽体，但会正确回退到雅黑而非宋体。
 
 ---
 
@@ -861,7 +886,7 @@ watch([meta_k, ctrl_k, slash], (v) => { if (v.some(Boolean)) searchRef.value?.fo
 
 ### 视觉与 Token
 
-- 字体：正文 Geist，标签 JetBrains Mono，**含中文回退栈**（§3.3）
+- 字体：正文 Geist（400+600），标签 JetBrains Mono（400+500），与 `settings.html` 一致（§2.1、§3.3）
 - 图标：Material Symbols Outlined，激活态 FILL=1
 - 颜色：全部使用语义 token，无硬编码色值
 - 圆角：卡片 `rounded-lg`，导航 `rounded-xl`，按钮 `rounded-md`

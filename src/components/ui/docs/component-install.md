@@ -259,7 +259,7 @@ import { Toaster } from 'vue-sonner'
 **按需导入**（不全局注册时）：
 
 ```ts
-import { AxButton, useNotify, useFloating } from '@/components/ui'
+import { AxButton, useNotify, useFloating, provideTeleportTarget, useTeleportTarget } from '@/components/ui'
 import { FloatingBall, useFloatingBall } from '@/components/ui' // FloatingBall
 ```
 
@@ -275,6 +275,35 @@ import { FloatingBall, useFloatingBall } from '@/components/ui' // FloatingBall
 - [ ] `main.ts` 引入 `style.css`、`registerComponents`、`Toaster` 全局注册
 - [ ] 根组件已渲染 `<Toaster />`（若使用通知）
 - [ ] 后续对照 [`ui-style.md`](./ui-style.md) 校对 token 与组件用法
+
+---
+
+## 9. Content Script / Shadow DOM
+
+在 WXT 扩展的 Content Script 中使用本组件库时，须配合 Shadow DOM 并注入 Teleport 目标，否则 `AxTooltip`、`AxDropdown`（含 `AxSelect`）的浮层会逃逸到宿主页面。
+
+**完整接入步骤、配置项与注意事项见 [`content-script-shadow-dom.md`](./content-script-shadow-dom.md)。**
+
+最小必要代码：
+
+```ts
+// entrypoints/content/index.ts — 创建容器并传入根组件
+const teleportTarget = document.createElement('div')
+teleportTarget.id = 'teleport-root'
+uiContainer.appendChild(teleportTarget)
+const app = createApp(ContentApp, { teleportTarget })
+```
+
+```vue
+<!-- ContentApp.vue — 根组件注入一次即可 -->
+<script setup lang="ts">
+import { provideTeleportTarget } from '@/components/ui'
+const props = defineProps<{ teleportTarget: HTMLElement }>()
+provideTeleportTarget(props.teleportTarget)
+</script>
+```
+
+Popup / 普通 Vite 开发环境**无需**上述配置，Teleport 自动回退到 `body`。
 
 ---
 

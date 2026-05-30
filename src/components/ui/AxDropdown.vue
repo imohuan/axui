@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useFloating } from './hooks/useFloating'
+import { useTeleportTarget } from './hooks/useTeleportTarget'
 
 export type DropdownTrigger = 'click' | 'hover' | 'contextmenu'
 
@@ -41,6 +42,7 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean]
 }>()
 
+const teleportTarget = useTeleportTarget()
 const containerRef = ref<HTMLElement | null>(null)
 const triggerRef = ref<HTMLElement | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
@@ -127,7 +129,7 @@ onBeforeUnmount(() => {
       <slot name="trigger" :open="modelValue" :toggle="toggle" :close="close" />
     </div>
 
-    <Teleport to="body" :disabled="!teleport">
+    <Teleport :to="teleportTarget" :disabled="!teleport">
       <Transition
         enter-active-class="transition ease-out duration-100"
         enter-from-class="transform opacity-0 scale-95"

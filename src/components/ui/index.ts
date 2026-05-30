@@ -44,6 +44,7 @@ export {
 
 export { useNotify } from './hooks/useNotify'
 export { useFloating } from './hooks/useFloating'
+export { provideTeleportTarget, useTeleportTarget } from './hooks/useTeleportTarget'
 export type * from './types'
 
 export * from './functional'

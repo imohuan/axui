@@ -27,6 +27,7 @@ bun dev
 | `FloatingBall` | 浮动球组件                                                                      |
 | `useNotify`    | 封装 vue-sonner 通知                                                           |
 | `useFloating`  | Floating UI 定位 hook                                                        |
+| `useTeleportTarget` | Shadow DOM 环境下 Teleport 目标注入（Content Script）                      |
 
 
 ## 技能（Skill）

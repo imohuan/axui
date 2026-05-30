@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useFloating } from './hooks/useFloating'
+import { useTeleportTarget } from './hooks/useTeleportTarget'
 
 const props = withDefaults(
   defineProps<{
@@ -17,6 +18,7 @@ const props = withDefaults(
   },
 )
 
+const teleportTarget = useTeleportTarget()
 const triggerRef = ref<HTMLElement | null>(null)
 const tooltipRef = ref<HTMLElement | null>(null)
 const arrowRef = ref<HTMLElement | null>(null)
@@ -38,7 +40,7 @@ const { floatingStyles, isPositioned, middlewareData, placement } = useFloating(
 const tooltipStyle = computed(() =>
   isPositioned.value
     ? floatingStyles.value
-    : { position: 'fixed', left: '-9999px', top: '-9999px' },
+    : { position: 'fixed' as const, left: '-9999px', top: '-9999px' },
 )
 
 // 箭头定位：动态轴由 middlewareData.arrow 提供（x 或 y 之一）
@@ -90,7 +92,7 @@ const hide = () => {
   >
     <slot />
   </span>
-  <Teleport to="body">
+  <Teleport :to="teleportTarget">
     <Transition
       enter-active-class="transition duration-100 ease-out"
       enter-from-class="opacity-0 scale-95"

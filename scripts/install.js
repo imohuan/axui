@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const ROOT = resolve(__dirname, '..')              // web/（GitHub 仓库根目录）
-const SKILL_SOURCE = resolve(__dirname, 'SKILL.md')
+const SKILL_SOURCE = resolve(__dirname, 'SKILL_SOURCE.md')
 const UI_SOURCE = resolve(ROOT, 'src', 'components', 'ui')
 const OUTPUT_DIR = resolve(ROOT, 'skills', 'ax-ui-kit')
 const OUTPUT_SKILL = resolve(OUTPUT_DIR, 'SKILL.md')

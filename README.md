@@ -11,20 +11,22 @@ bun dev
 
 ## 组件
 
-| 组件 | 说明 |
-|------|------|
-| `AxButton` | variant: primary / outline / ghost / danger；size: sm / md / icon / icon-lg |
-| `AxInput` | size: sm / md / lg；支持 password、prefix / suffix slot |
-| `AxSelect` | 单选 / 多选 / 可搜索；基于 AxDropdown + useFloating |
-| `AxDropdown` | trigger: click / hover / contextmenu；浮层定位 |
-| `AxDialog` | 遮罩弹窗；焦点锁定；滚动锁定；#footer slot |
-| `AxAlert` | type: info / success / warning / error |
-| `AxSlider` | 范围滑块 |
-| `AxTooltip` | hover 文字提示 |
-| `AxPropPanel` | schema 驱动属性面板（switch / slider / select / input / textarea / segmented） |
-| `FloatingBall` | 浮动球组件 |
-| `useNotify` | 封装 vue-sonner 通知 |
-| `useFloating` | Floating UI 定位 hook |
+
+| 组件             | 说明                                                                         |
+| -------------- | -------------------------------------------------------------------------- |
+| `AxButton`     | variant: primary / outline / ghost / danger；size: sm / md / icon / icon-lg |
+| `AxInput`      | size: sm / md / lg；支持 password、prefix / suffix slot                        |
+| `AxSelect`     | 单选 / 多选 / 可搜索；基于 AxDropdown + useFloating                                  |
+| `AxDropdown`   | trigger: click / hover / contextmenu；浮层定位                                  |
+| `AxDialog`     | 遮罩弹窗；焦点锁定；滚动锁定；#footer slot                                                |
+| `AxAlert`      | type: info / success / warning / error                                     |
+| `AxSlider`     | 范围滑块                                                                       |
+| `AxTooltip`    | hover 文字提示                                                                 |
+| `AxPropPanel`  | schema 驱动属性面板（switch / slider / select / input / textarea / segmented）     |
+| `FloatingBall` | 浮动球组件                                                                      |
+| `useNotify`    | 封装 vue-sonner 通知                                                           |
+| `useFloating`  | Floating UI 定位 hook                                                        |
+
 
 ## 技能（Skill）
 
@@ -44,13 +46,13 @@ git commit
 #### 方式一：从 GitHub 安装（推荐）
 
 ```bash
-npx skills add imohuan/axui@ax-ui-kit -g -y
+npx skills add imohuan/axui@ax-ui-kit -y
 ```
 
 #### 方式二：本地安装
 
 ```bash
-npx skills add ./skills/ax-ui-kit -g -y
+npx skills add ./skills/ax-ui-kit -y
 ```
 
 ### 安装后接入目标项目
@@ -99,13 +101,16 @@ web/
 
 ## 技术栈
 
-| 依赖 | 用途 |
-|------|------|
-| Vue 3 + Vite + TypeScript | 框架 |
-| Tailwind CSS v4 | 样式引擎 |
-| @floating-ui/vue | 浮层定位（Dropdown / Select / Tooltip） |
-| @vueuse/core | 组合式工具（onClickOutside 等） |
-| vue-sonner | 通知队列（useNotify） |
-| material-symbols | Material Symbols 图标 |
-| @fontsource/geist | Geist UI 正文字体 |
-| @fontsource-variable/jetbrains-mono | JetBrains Mono 等宽字体 |
+
+| 依赖                                  | 用途                                |
+| ----------------------------------- | --------------------------------- |
+| Vue 3 + Vite + TypeScript           | 框架                                |
+| Tailwind CSS v4                     | 样式引擎                              |
+| @floating-ui/vue                    | 浮层定位（Dropdown / Select / Tooltip） |
+| @vueuse/core                        | 组合式工具（onClickOutside 等）           |
+| vue-sonner                          | 通知队列（useNotify）                   |
+| material-symbols                    | Material Symbols 图标               |
+| @fontsource/geist                   | Geist UI 正文字体                     |
+| @fontsource-variable/jetbrains-mono | JetBrains Mono 等宽字体               |
+
+

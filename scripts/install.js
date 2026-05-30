@@ -4,7 +4,7 @@
  * Axiom UI Kit — 技能构建脚本
  *
  * 功能：将 web/src/components/ui 组件库打包为 npx skills 可识别的技能结构。
- * 输出目录：.workbuddy/skills/ax-ui-kit/（npx skills 自动发现路径）
+ * 输出目录：skills/ax-ui-kit/（GitHub 仓库根目录下的 skills/ 目录）
  *
  * 用法：node scripts/install.js
  *
@@ -31,7 +31,7 @@ const OUTPUT_ASSETS = resolve(OUTPUT_DIR, 'assets')
 const OUTPUT_REFS = resolve(OUTPUT_DIR, 'references')
 
 // ─── npx skills 目标路径 ─────────────────────────────────────────
-const SKILLS_TARGET = '.workbuddy/skills/ax-ui-kit'
+const SKILLS_TARGET = 'skills/ax-ui-kit'
 
 // ─── 日志工具 ────────────────────────────────────────────────────
 const log = {
@@ -62,6 +62,7 @@ function prepareOutput() {
   }
   mkdirSync(OUTPUT_DIR, { recursive: true })
   mkdirSync(OUTPUT_ASSETS, { recursive: true })
+  mkdirSync(OUTPUT_REFS, { recursive: true })
   log.ok(`输出目录已就绪：${SKILLS_TARGET}`)
 }
 
@@ -77,7 +78,7 @@ function copySkill() {
 
 // ─── 复制组件目录 ────────────────────────────────────────────────
 function copyComponents() {
-  const entries = ['index.ts', 'types.ts', 'hooks', 'functional', 'docs', 'layout']
+  const entries = ['index.ts', 'types.ts', 'hooks', 'functional', 'layout']
   const vueFiles = [
     'AxButton.vue', 'AxInput.vue', 'AxSelect.vue', 'AxDropdown.vue',
     'AxDialog.vue', 'AxAlert.vue', 'AxSlider.vue', 'AxTooltip.vue', 'AxPropPanel.vue',
@@ -85,6 +86,7 @@ function copyComponents() {
 
   let count = 0
 
+  // 复制 Vue 组件到 assets/
   for (const file of vueFiles) {
     const src = resolve(UI_SOURCE, file)
     const dest = resolve(OUTPUT_ASSETS, file)
@@ -94,6 +96,7 @@ function copyComponents() {
     }
   }
 
+  // 复制 TS 入口、hooks、functional、layout 到 assets/
   for (const dir of entries) {
     const src = resolve(UI_SOURCE, dir)
     const dest = resolve(OUTPUT_ASSETS, dir)
@@ -103,7 +106,14 @@ function copyComponents() {
     }
   }
 
-  log.ok(`组件文件已复制：${count} 项 → ${SKILLS_TARGET}/assets/ui/`)
+  // 复制 docs 到 references/
+  const docsSrc = resolve(UI_SOURCE, 'docs')
+  if (existsSync(docsSrc)) {
+    cpSync(docsSrc, OUTPUT_REFS, { recursive: true })
+    count++
+  }
+
+  log.ok(`组件文件已复制：${count} 项 → ${SKILLS_TARGET}/assets/ + references/`)
 }
 
 // ─── 统计输出 ────────────────────────────────────────────────────
@@ -111,21 +121,23 @@ function summarize() {
   log.info(`技能目录结构：`)
   log.info(`  ${SKILLS_TARGET}/`)
   log.info(`  ├── SKILL.md`)
-  log.info(`  └── assets/ui/`)
-  log.info(`       ├── AxButton.vue`)
-  log.info(`       ├── AxInput.vue`)
-  log.info(`       ├── AxSelect.vue`)
-  log.info(`       ├── AxDropdown.vue`)
-  log.info(`       ├── AxDialog.vue`)
-  log.info(`       ├── AxAlert.vue`)
-  log.info(`       ├── AxSlider.vue`)
-  log.info(`       ├── AxTooltip.vue`)
-  log.info(`       ├── AxPropPanel.vue`)
-  log.info(`       ├── index.ts / types.ts`)
-  log.info(`       ├── hooks/ (useNotify, useFloating)`)
-  log.info(`       ├── functional/ (FloatingBall)`)
-  log.info(`       ├── docs/ (安装文档, 设计规范)`)
-  log.info(`       └── layout/ (示例界面)`)
+  log.info(`  ├── assets/`)
+  log.info(`  │   ├── AxButton.vue`)
+  log.info(`  │   ├── AxInput.vue`)
+  log.info(`  │   ├── AxSelect.vue`)
+  log.info(`  │   ├── AxDropdown.vue`)
+  log.info(`  │   ├── AxDialog.vue`)
+  log.info(`  │   ├── AxAlert.vue`)
+  log.info(`  │   ├── AxSlider.vue`)
+  log.info(`  │   ├── AxTooltip.vue`)
+  log.info(`  │   ├── AxPropPanel.vue`)
+  log.info(`  │   ├── index.ts / types.ts`)
+  log.info(`  │   ├── hooks/ (useNotify, useFloating)`)
+  log.info(`  │   ├── functional/ (FloatingBall)`)
+  log.info(`  │   └── layout/ (示例界面)`)
+  log.info(`  └── references/`)
+  log.info(`       ├── component-install.md`)
+  log.info(`       └── ui-style.md`)
 }
 
 // ─── 主流程 ──────────────────────────────────────────────────────
@@ -143,9 +155,9 @@ function main() {
   console.log('')
   log.ok('构建完成！')
   console.log('')
-  log.info(`技能已安装到 ${SKILLS_TARGET}/`)
-  log.info('  npx skills 会自动发现该技能，无需手动注册')
-  log.info(`  推送后其他人可通过 GitHub 安装：npx skills add <owner/repo>@ax-ui-kit -g -y`)
+  log.info(`技能已输出到 ${SKILLS_TARGET}/`)
+  log.info('  本地安装：npx skills add ./skills/ax-ui-kit -g -y')
+  log.info('  GitHub 安装：推送后 npx skills add <owner/repo>@ax-ui-kit -g -y')
   console.log('')
 }
 

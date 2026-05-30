@@ -94,7 +94,7 @@ node <skill-dir>/scripts/sync.js
 ```
 
 `sync.js` 自动执行两步：
-1. `npx skills update ax-ui-kit` — 拉取最新 skill
+1. `npx skills add <owner>/<repo>@ax-ui-kit --full-depth -y` — 重新拉取最新 skill（绕过 API 限流）
 2. 将 `assets/` 覆盖写入 `src/components/ui/`
 
 若目标路径不同，可传参指定：

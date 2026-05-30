@@ -10,14 +10,22 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const SKILL_DIR = resolve(__dirname, '..')
 const TARGET = process.argv[2] || 'src/components/ui'
 
+// 尝试从 gh CLI 获取 token 避免 API 限流
+let env = process.env
+try {
+  const token = execSync('gh auth token 2>nul', { encoding: 'utf-8' }).trim()
+  if (token) { env = { ...process.env, GITHUB_TOKEN: token } }
+} catch {}
+
 console.log('')
 console.log('ax-ui-kit sync...')
-console.log('  step 1: npx skills update ax-ui-kit')
 
+// 用 add --full-depth 重新拉取（绕过 GitHub API 限流）
+console.log('  step 1: npx skills add imohuan/axui@ax-ui-kit --full-depth -y')
 try {
-  execSync('npx skills update ax-ui-kit -y', { stdio: 'inherit' })
+  execSync('npx skills add imohuan/axui@ax-ui-kit --full-depth -y', { stdio: 'inherit', env })
 } catch {
-  console.log('  (更新跳过或已是最新)')
+  console.log('  (拉取失败，使用本地已有版本)')
 }
 
 console.log('  step 2: assets/ -> ' + TARGET)

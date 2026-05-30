@@ -4,7 +4,6 @@ import { useMagicKeys } from '@vueuse/core'
 import { Toaster } from 'vue-sonner'
 import { useNotify } from '../hooks/useNotify'
 import ComponentsView from './ComponentsView.vue'
-import SettingsView from './SettingsView.vue'
 import SettingsDialog from './SettingsDialog.vue'
 import DemoView from './DemoView.vue'
 import type { AppSettings } from './SettingsView.vue'
@@ -46,20 +45,6 @@ const navItems = ref<NavItem[]>([
       { id: 'dialog', name: 'Dialog 对话框', sectionId: 'section-dialog' },
       { id: 'notify', name: 'Notify 通知', sectionId: 'section-notify' },
       { id: 'floating-ball', name: 'FloatingBall 悬浮球', sectionId: 'section-floating-ball' },
-    ],
-  },
-  {
-    id: 'settings',
-    name: '设置界面',
-    icon: 'settings',
-    badge: null,
-    expanded: false,
-    subMenus: [
-      { id: 'general', name: 'General 通用设置', sectionId: 'section-general' },
-      { id: 'performance', name: 'Performance 性能与算力', sectionId: 'section-performance' },
-      { id: 'security', name: 'Security 安全与权限', sectionId: 'section-security' },
-      { id: 'notifications', name: 'Notifications 通知与告警', sectionId: 'section-notifications' },
-      { id: 'advanced', name: 'Advanced 高级配置', sectionId: 'section-advanced' },
     ],
   },
   {
@@ -361,29 +346,19 @@ onBeforeUnmount(() => {
             </div>
           </div>
         </nav>
-
-        <div class="space-y-ax-xs">
-          <p class="font-label-md text-[10px] text-secondary uppercase tracking-wider px-2 pb-1">物理资源</p>
-          <div class="px-2 space-y-ax-sm">
-            <div class="space-y-ax-xs">
-              <div class="flex justify-between font-label-md text-[10px] text-secondary">
-                <span>算力占用</span>
-                <span class="text-primary font-semibold">{{ cpuLimit }}%</span>
-              </div>
-              <div class="h-1 bg-surface-container rounded-full overflow-hidden">
-                <div :style="{ width: cpuLimit + '%' }" class="h-full bg-primary transition-all duration-300"></div>
-              </div>
-            </div>
-            <div class="flex items-center justify-between font-label-md text-[10px] text-secondary pt-1">
-              <span>防御级别</span>
-              <span class="text-primary font-semibold border border-outline-variant px-1 rounded bg-surface-container-low">{{ selectedClearanceKey }}</span>
-            </div>
-          </div>
-        </div>
       </div>
 
-      <div class="border-t border-outline-variant pt-ax-md flex items-center justify-between px-2">
-        <div class="flex items-center justify-between w-full">
+      <div class="space-y-ax-sm">
+        <button
+          class="flex items-center gap-ax-sm rounded-xl py-1.5 px-2 font-label-md text-label-md text-secondary hover:bg-surface-container-low transition-all duration-100 cursor-pointer w-full text-left"
+          @click="settingsDialogRef?.open()"
+        >
+          <span class="material-symbols-outlined text-[16px]">settings</span>
+          <span>设置界面</span>
+        </button>
+
+        <div class="border-t border-outline-variant pt-ax-md flex items-center justify-between px-2">
+          <div class="flex items-center justify-between w-full">
           <div class="flex items-center gap-ax-sm">
             <div class="h-8 w-8 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-primary font-semibold text-body-md font-label-md">
               AM
@@ -412,6 +387,7 @@ onBeforeUnmount(() => {
               </div>
             </template>
           </AxDropdown>
+          </div>
         </div>
       </div>
     </aside>
@@ -447,14 +423,6 @@ onBeforeUnmount(() => {
               >{{ activeNotificationCount }}</span>
             </button>
           </AxTooltip>
-          <AxTooltip content="对话框式设置中心" placement="bottom">
-            <button
-              class="w-8 h-8 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors border border-outline-variant shrink-0"
-              @click="settingsDialogRef?.open()"
-            >
-              <span class="material-symbols-outlined text-[18px]">display_settings</span>
-            </button>
-          </AxTooltip>
         </div>
       </header>
 
@@ -463,18 +431,6 @@ onBeforeUnmount(() => {
           v-if="activeTab === 'components'"
           @open-dialog="openDialog"
           @open-simple-dialog="showSimpleDialog = true"
-        />
-        <SettingsView
-          v-else-if="activeTab === 'settings'"
-          :settings="settings"
-          :cpu-limit="cpuLimit"
-          :selected-clearance="selectedClearance"
-          :clearance-options="clearanceOptions"
-          @update:cpu-limit="(v) => (cpuLimit = v)"
-          @update:selected-clearance="(v) => (selectedClearance = v)"
-          @reset="resetSettings"
-          @save="saveSettings"
-          @notify="(msg, type, title) => triggerNotify(msg, type as 'info' | 'success' | 'error' | 'secondary', title)"
         />
         <DemoView
           v-else-if="activeTab === 'demo'"
@@ -599,18 +555,6 @@ onBeforeUnmount(() => {
       @save="saveSettings"
       @cancel="resetSettings"
       @nav-click="(item) => triggerNotify(`「${item.label}」页面正在开发中`, 'info', '功能提示')"
-    >
-      <SettingsView
-        :settings="settings"
-        :cpu-limit="cpuLimit"
-        :selected-clearance="selectedClearance"
-        :clearance-options="clearanceOptions"
-        @update:cpu-limit="(v) => (cpuLimit = v)"
-        @update:selected-clearance="(v) => (selectedClearance = v)"
-        @reset="resetSettings"
-        @save="saveSettings"
-        @notify="(msg, type, title) => triggerNotify(msg, type as 'info' | 'success' | 'error' | 'secondary', title)"
-      />
-    </SettingsDialog>
+    />
   </div>
 </template>

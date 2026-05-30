@@ -88,7 +88,7 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             <p class="font-body-sm text-[13px] font-semibold text-primary">系统语言</p>
             <p class="font-body-sm text-[11px] text-secondary mt-0.5">控制台界面显示语言</p>
           </div>
-          <div class="w-40 shrink-0">
+          <div class="w-40 ml-auto">
             <AxSelect
               v-model="settings.language"
               :options="[
@@ -105,7 +105,7 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             <p class="font-body-sm text-[13px] font-semibold text-primary">时区设置</p>
             <p class="font-body-sm text-[11px] text-secondary mt-0.5">日志时间戳所使用的时区</p>
           </div>
-          <div class="w-48 shrink-0">
+          <div class="w-48 ml-auto">
             <AxSelect
               v-model="settings.timezone"
               :options="[
@@ -122,14 +122,14 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             <p class="font-body-sm text-[13px] font-semibold text-primary">控制台名称</p>
             <p class="font-body-sm text-[11px] text-secondary mt-0.5">显示在顶栏和浏览器标签页中的名称</p>
           </div>
-          <AxInput v-model="settings.consoleName" size="sm" placeholder="Axiom Console" class="w-44 shrink-0" />
+          <AxInput v-model="settings.consoleName" size="sm" placeholder="Axiom Console" class="!w-44 ml-auto" />
         </div>
         <div class="flex items-center gap-ax-md py-3">
           <div class="flex-1">
             <p class="font-body-sm text-[13px] font-semibold text-primary">外观主题</p>
             <p class="font-body-sm text-[11px] text-secondary mt-0.5">控制台整体配色方案</p>
           </div>
-          <div class="flex items-center bg-surface-container rounded-lg p-0.5 gap-0.5 shrink-0">
+          <div class="flex items-center bg-surface-container rounded-lg p-0.5 gap-0.5 ml-auto">
             <button
               v-for="t in [
                 { v: 'light', i: 'light_mode' },
@@ -195,7 +195,7 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             <p class="font-body-sm text-[13px] font-semibold text-primary">后台任务并发数</p>
             <p class="font-body-sm text-[11px] text-secondary mt-0.5">同时运行的最大后台工作线程数量</p>
           </div>
-          <div class="w-32 shrink-0">
+          <div class="w-32 ml-auto">
             <AxSelect
               v-model="settings.workerCount"
               :options="[
@@ -241,7 +241,7 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             <p class="font-body-sm text-[13px] font-semibold text-primary">防御等级</p>
             <p class="font-body-sm text-[11px] text-secondary mt-0.5">系统安全扫描与防御响应强度</p>
           </div>
-          <div class="w-52 shrink-0">
+          <div class="w-52 ml-auto">
             <AxSelect
               :model-value="selectedClearance"
               :options="clearanceOptions"

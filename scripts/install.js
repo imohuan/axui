@@ -9,7 +9,7 @@
  * 用法：node scripts/install.js
  */
 
-import { readFileSync, cpSync, rmSync, mkdirSync, existsSync } from 'node:fs'
+import { readFileSync, readdirSync, cpSync, rmSync, mkdirSync, existsSync } from 'node:fs'
 import { resolve, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -55,16 +55,25 @@ function copySkill() {
 }
 
 function copyComponents() {
-  const vueFiles = [
-    'AxButton.vue','AxInput.vue','AxSelect.vue','AxDropdown.vue',
-    'AxDialog.vue','AxAlert.vue','AxSlider.vue','AxTooltip.vue','AxPropPanel.vue',
-  ]
-  const dirs = ['index.ts','types.ts','hooks','functional','layout']
   let n = 0
-  for (const f of vueFiles) { const s = resolve(UI_SOURCE, f); if (existsSync(s)) { cpSync(s, resolve(OUTPUT_ASSETS, f)); n++ } }
-  for (const d of dirs) { const s = resolve(UI_SOURCE, d); if (existsSync(s)) { cpSync(s, resolve(OUTPUT_ASSETS, d), { recursive: true }); n++ } }
-  const docsSrc = resolve(UI_SOURCE, 'docs')
-  if (existsSync(docsSrc)) { cpSync(docsSrc, OUTPUT_REFS, { recursive: true }); n++ }
+  // 动态扫描所有 .vue 组件文件
+  const entries = readdirSync(UI_SOURCE, { withFileTypes: true })
+  const dirs = []
+  for (const e of entries) {
+    if (e.isFile() && e.name.endsWith('.vue')) {
+      cpSync(resolve(UI_SOURCE, e.name), resolve(OUTPUT_ASSETS, e.name)); n++
+    } else if (e.isDirectory() && !e.name.startsWith('.')) {
+      dirs.push(e.name)
+    }
+  }
+  for (const d of dirs) {
+    const s = resolve(UI_SOURCE, d)
+    if (d === 'docs') {
+      cpSync(s, OUTPUT_REFS, { recursive: true }); n++
+    } else {
+      cpSync(s, resolve(OUTPUT_ASSETS, d), { recursive: true }); n++
+    }
+  }
   log.ok(`组件文件已复制：${n} 项 -> ${SKILLS_TARGET}/assets/ + references/`)
 }
 
@@ -75,10 +84,15 @@ function copySync() {
 
 function summarize() {
   const t = SKILLS_TARGET
+  const vueCount = readdirSync(OUTPUT_ASSETS).filter(f => f.endsWith('.vue')).length
+  const dirNames = readdirSync(OUTPUT_ASSETS, { withFileTypes: true })
+    .filter(d => d.isDirectory())
+    .map(d => d.name)
+    .join(' + ')
   log.info('技能目录结构：')
   log.info(`  ${t}/`)
   log.info('  ├── SKILL.md')
-  log.info('  ├── assets/ (9 个 Vue 组件 + hooks + functional + layout)')
+  log.info(`  ├── assets/ (${vueCount} 个 Vue 组件 + ${dirNames})`)
   log.info('  ├── references/ (component-install.md + ui-style.md)')
   log.info('  └── scripts/sync.js (一键更新 + 同步)')
 }

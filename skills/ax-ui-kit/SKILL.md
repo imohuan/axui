@@ -84,6 +84,14 @@ import { AxButton, useNotify, useFloating } from '@/components/ui'
 import { FloatingBall } from '@/components/ui'
 ```
 
+## WXT 浏览器扩展（Shadow DOM）
+
+如果在 **[WXT](https://wxt.dev/) 浏览器扩展** 的 Content Script 中使用组件库，由于浮层组件（`AxTooltip`、`AxDropdown`、`AxSelect`）依赖 `<Teleport>`，必须配合 Shadow DOM + `provideTeleportTarget()` 确保浮层样式隔离。
+
+> **`references/content-script-shadow-dom.md`** — WXT Content Script 完整接入指南（Shadow DOM 搭建、Teleport 适配、WXT 配置要点、样式注意事项、自检清单）
+
+**一句话要点**：Content Script 入口创建 Shadow Root 和 `#teleport-root` 容器，根组件调用 `provideTeleportTarget(teleportTarget)`，其他无需改动。Popup / Options 等普通页面直接按常规方式接入即可。
+
 ## 更新同步
 
 组件库更新后，在目标项目中执行同步：
@@ -173,5 +181,6 @@ ax-ui-kit/
 │   └── layout/                    # 示例布局页面
 └── references/                    # 参考文档
     ├── component-install.md       # 详细安装文档（依赖、配置、main.ts、自检清单）
-    └── ui-style.md                # 设计规范（颜色 token、尺寸、间距、动效、弹窗）
+    ├── ui-style.md                # 设计规范（颜色 token、尺寸、间距、动效、弹窗）
+    └── content-script-shadow-dom.md  # WXT Content Script Shadow DOM 接入指南
 ```

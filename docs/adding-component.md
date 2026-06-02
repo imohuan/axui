@@ -74,7 +74,7 @@ const xxxSchema: PropPanelSchemaItem[] = [
       <!-- 动态预览 + 所有状态静态展示 -->
     </div>
     <!-- 右侧属性面板 -->
-    <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+    <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
       <AxPropPanel v-model="xxxProps" :schema="xxxSchema" title="属性" />
     </div>
   </div>

@@ -304,15 +304,8 @@ function handleBallSave(prefs: FloatingBallPrefs) {
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
           <div class="flex flex-wrap items-center gap-ax-sm">
             <AxButton :variant="btnProps.variant" :size="btnProps.size" :disabled="btnProps.disabled"
-              :icon="btnProps.showIcon ? 'bolt' : ''" :block="btnProps.block">
-              <span v-if="btnProps.loading" class="inline-flex items-center gap-ax-xs">
-                <svg class="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                </svg>
-                处理中...
-              </span>
-              <span v-else>{{ btnProps.label }}</span>
+              :icon="btnProps.showIcon ? 'bolt' : ''" :block="btnProps.block" :loading="btnProps.loading">
+              {{ btnProps.label }}
             </AxButton>
           </div>
           <div class="flex flex-wrap gap-ax-xs">
@@ -322,12 +315,11 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <AxButton variant="ghost" size="sm">Ghost</AxButton>
             <AxButton variant="danger" size="sm">Danger</AxButton>
             <AxButton variant="primary" size="sm" icon="bolt">带图标</AxButton>
-            <AxButton variant="primary" size="icon"><span class="material-symbols-outlined text-[16px]">settings</span>
-            </AxButton>
+            <AxButton variant="primary" size="icon" icon="settings" />
             <AxButton variant="outline" size="sm" disabled>禁用</AxButton>
           </div>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="btnProps" :schema="btnSchema" title="按钮属性" />
         </div>
       </div>
@@ -384,7 +376,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               autocomplete="current-password" />
           </form>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="inputProps" :schema="inputSchema" title="输入框属性" />
         </div>
       </div>
@@ -416,7 +408,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <AxSlider :model-value="40" :min="0" :max="100" />
           </div>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="sliderProps" :schema="sliderSchema" title="滑块属性" />
         </div>
       </div>
@@ -459,7 +451,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             </div>
           </div>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="switchProps" :schema="switchSchema" title="开关属性" />
         </div>
       </div>
@@ -485,7 +477,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <AxAlert type="error" title="错误" model-value :dismissible="false">核心服务连接已中断。</AxAlert>
           </div>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="alertProps" :schema="alertSchema" title="警示属性" />
         </div>
       </div>
@@ -513,7 +505,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <AxSelect model-value="opt2" :options="demoSelectOptions" searchable placeholder="选择框架..." />
           </div>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="selectProps" :schema="selectSchema" title="下拉选择属性" />
         </div>
       </div>
@@ -553,7 +545,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             </AxTooltip>
           </div>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="tooltipProps" :schema="tooltipSchema" title="气泡属性" />
         </div>
       </div>
@@ -621,7 +613,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             </AxDropdown>
           </div>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="dropdownProps" :schema="dropdownSchema" title="下拉菜单属性" />
         </div>
       </div>
@@ -771,7 +763,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             </AxDropdown>
           </div>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="popoverProps" :schema="popoverSchema" title="气泡卡片属性" />
         </div>
       </div>
@@ -792,7 +784,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
           </div>
           <p class="font-body-sm text-[11px] text-secondary">点击上方按钮打开对话框，可通过 ESC 键或点击遮罩关闭。</p>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto flex items-center">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto flex items-center">
           <p class="font-body-sm text-[11px] text-secondary leading-relaxed">
             Dialog 支持 <code class="bg-surface-container px-1 rounded text-primary">#header</code>、
             <code class="bg-surface-container px-1 rounded text-primary">#default</code>、
@@ -898,7 +890,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               class="bg-surface-container px-1 rounded text-primary">vue-sonner</code> 的 <code
               class="bg-surface-container px-1 rounded text-primary">toast.custom()</code> 渲染。</p>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="notifyProps" :schema="notifySchema" title="通知属性" />
         </div>
       </div>
@@ -997,7 +989,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
           <p class="font-body-sm text-[11px] text-secondary">点击上方按钮将悬浮球渲染到页面中（固定定位，可在右下角找到）。</p>
           <p class="font-body-sm text-[11px] text-secondary">支持拖拽、贴边吸附、悬停展开菜单、点击齿轮打开设置弹窗。</p>
         </div>
-        <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="ballPrefs" :schema="ballSchema" title="悬浮球属性" />
         </div>
       </div>

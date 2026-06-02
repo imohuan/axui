@@ -27,6 +27,7 @@ const props = withDefaults(
     iconSize?: string
     type?: 'button' | 'submit' | 'reset'
     block?: boolean
+    loading?: boolean
   }>(),
   {
     variant: 'primary',
@@ -36,6 +37,7 @@ const props = withDefaults(
     iconSize: '16px',
     type: 'button',
     block: false,
+    loading: false,
   },
 )
 
@@ -53,8 +55,13 @@ const emit = defineEmits<{
 let rippleId = 0
 const ripples: Ref<Ripple[]> = ref([])
 
+const isIconOnly = computed(() =>
+  (props.size === 'icon' || props.size === 'icon-lg') && (!!props.icon || props.loading),
+)
+
 const classes = computed(() => [
   'relative overflow-hidden inline-flex items-center justify-center gap-ax-xs font-label-md rounded-md transition-colors outline-none border-0 shrink-0',
+  isIconOnly.value ? 'leading-none' : '',
   VARIANT_CLASSES[props.variant],
   SIZE_CLASSES[props.size],
   props.block ? 'w-full' : '',
@@ -66,7 +73,7 @@ const rippleClass = computed(() =>
 )
 
 const onClick = (e: MouseEvent) => {
-  if (props.disabled) return
+  if (props.disabled || props.loading) return
 
   const btn = e.currentTarget as HTMLElement
   const rect = btn.getBoundingClientRect()
@@ -107,9 +114,15 @@ const onClick = (e: MouseEvent) => {
       }"
     />
 
-    <span v-if="icon" class="material-symbols-outlined" :style="{ fontSize: iconSize }">{{ icon }}</span>
+    <span v-if="loading" class="inline-flex items-center justify-center leading-none">
+      <svg class="animate-spin" :style="{ width: iconSize, height: iconSize }" viewBox="0 0 24 24" fill="none">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+      </svg>
+    </span>
+    <span v-else-if="icon" class="material-symbols-outlined leading-none" :style="{ fontSize: iconSize }">{{ icon }}</span>
     <slot name="prefix" />
-    <slot />
+    <slot v-if="!isIconOnly" />
     <slot name="suffix" />
   </button>
 </template>

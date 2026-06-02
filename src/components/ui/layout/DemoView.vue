@@ -172,7 +172,7 @@ const settingGroups = [
 
     <div class="grid grid-cols-1 md:grid-cols-5 gap-gutter">
       <div class="md:col-span-3 space-y-gutter">
-        <div id="section-settings-groups" class="scroll-mt-4">
+        <div id="section-settings-groups" class="scroll-mt-4 space-y-4">
         <div v-for="group in settingGroups" :key="group.title" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow">
           <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low">
             <span class="font-label-md text-[10px] text-secondary uppercase tracking-wider">{{ group.title }}</span>

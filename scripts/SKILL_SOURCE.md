@@ -1,67 +1,51 @@
----
-name: ax-ui-kit
-description: >
-  Axiom UI — 自研 Vue 3 组件库（Tailwind v4 + Floating UI + Material Symbols）。
-  This skill should be used when the project requires a design-system-driven Vue 3 component set
-  (buttons, inputs, selects, dialogs, dropdowns, tooltips, sliders, alerts, switches, property panels),
-  or when building tool-style admin/dashboard interfaces with consistent spacing, typography, and semantic color tokens.
-  Also used when AI editors (WorkBuddy, Cursor, Copilot) need to be instructed to prefer these components
-  during UI development.
-agent_created: true
----
-
 # Axiom UI 组件库
 
-自研 Vue 3 组件库，提供 10 个基础组件 + 功能模块 + 布局示例。基于 Tailwind v4、Floating UI、Material Symbols 图标、Geist / JetBrains Mono 字体。
+自研 Vue 3 组件库，基于 Tailwind v4、Floating UI、Material Symbols 图标、Geist / JetBrains Mono 字体。
 
-## 组件清单
+## 组件一览
 
-| 组件 | 文件 | 功能 |
-|------|------|------|
-| `AxButton` | `AxButton.vue` | variant: primary / outline / ghost / danger；size: sm / md / icon / icon-lg |
-| `AxInput` | `AxInput.vue` | size: sm / md / lg；支持 password、#prefix / #suffix slot |
-| `AxSelect` | `AxSelect.vue` | 单选 / 多选 / 可搜索；基于 AxDropdown + useFloating |
-| `AxDropdown` | `AxDropdown.vue` | trigger: click / hover / contextmenu；浮层定位 |
-| `AxDialog` | `AxDialog.vue` | 遮罩弹窗；焦点锁定；滚动锁定；#footer slot |
-| `AxAlert` | `AxAlert.vue` | type: info / success / warning / error |
-| `AxSlider` | `AxSlider.vue` | 范围滑块 |
-| `AxTooltip` | `AxTooltip.vue` | hover 文字提示 |
-| `AxPropPanel` | `AxPropPanel.vue` | schema 驱动属性面板（switch / slider / select / input / textarea / segmented） |
-| `AxSwitch` | `AxSwitch.vue` | 开关组件，支持 v-model、disabled、aria 可访问性 |
-| `FloatingBall` | `functional/floating-ball/` | 浮动球组件 |
-| `useNotify` | `hooks/useNotify.ts` | 封装 vue-sonner 通知 |
-| `useFloating` | `hooks/useFloating.ts` | Floating UI 定位 hook |
+| 组件 | 说明 |
+|---|---|
+| `AxButton` | variant: primary / outline / ghost / danger；size: xs~icon-lg |
+| `AxInput` | 单行/密码/多行文本；size: xs~lg；#prefix / #suffix |
+| `AxSelect` | 单选/多选/可搜索；基于 AxDropdown + useFloating |
+| `AxDropdown` | 浮层菜单；trigger: click / hover / contextmenu |
+| `AxDialog` | 模态弹窗；焦点锁定；滚动锁定；#footer slot |
+| `AxAlert` | type: info / success / warning / error |
+| `AxSlider` | 范围滑块 |
+| `AxTooltip` | hover 文字提示 |
+| `AxPropPanel` | schema 驱动属性面板（switch/slider/select/input/textarea/segmented） |
+| `AxSwitch` | 开关组件；role="switch" + aria-checked |
+| `useNotify` | 封装 vue-sonner 通知 |
+| `useFloating` | Floating UI 定位 hook |
+| `FloatingBall` | 可拖拽浮动球组件 |
 
-## 何时使用此技能
+## 文档导航
 
-当用户项目满足以下场景时触发：
+| 文档 | 内容 |
+|---|---|
+| [install.md](./docs/install.md) | 依赖安装、Vite 配置、全局样式、main.ts 注册、字体图标、Toaster 挂载 |
+| [design-tokens.md](./docs/design-tokens.md) | 颜色语义 token、字号阶梯、图标规范、间距/圆角/阴影数值 |
+| [components.md](./docs/components.md) | **每个组件的 Props / Slots / Events / 使用场景 / 代码示例** |
+| [ui-style.md](./docs/ui-style.md) | 设计原则、控件尺寸体系、布局模式、交互规范、动效、检查清单 |
+| [html-cdn.md](./docs/html-cdn.md) | HTML 单页（无构建）快速接入 Token |
+| [content-script-shadow-dom.md](./docs/content-script-shadow-dom.md) | WXT 浏览器扩展 Content Script Shadow DOM 接入 |
 
-- 需要安装并接入组件库
-- 需要搭建标准管理后台 / 配置面板 / 工具型界面
-- 需要为 AI 编辑器配置规则，强制使用此组件库进行 UI 开发
-- 需要参考组件使用示例（DemoView、SettingsView 等布局示例）
+## 快速开始
+
+```bash
+# 1. 复制组件到项目
+cp -r assets/* src/components/ui/
+
+# 2. 按 install.md 完成依赖安装和配置
+# 3. 按 components.md 使用组件
+```
 
 ## 安装与接入
 
-### 第一步：复制组件
+详见 **[install.md](./docs/install.md)**。完整流程包括：依赖安装 → Vite 配置 → 全局 CSS `@theme` → main.ts 注册组件 → Toaster 挂载 → 自检清单。
 
-将 `assets/` 目录完整复制到目标项目的 `src/components/ui/`：
-
-```bash
-cp -r <skill-path>/assets/* src/components/ui/
-```
-
-### 第二步：完整安装流程
-
-详细的依赖安装、Vite 配置、全局样式（`@theme` token、字体、图标）、`main.ts` 注册、通知 Toaster 挂载、自检清单，参见：
-
-> **`references/component-install.md`** — 完整安装文档（含所有命令与代码块）
-
-设计规范（颜色语义 token、控件尺寸体系、间距圆角、动效、弹窗交互）参见：
-
-> **`references/ui-style.md`** — 设计规范文档
-
-### 第三步：使用组件
+## 使用组件
 
 全局注册后直接使用标签：
 
@@ -84,25 +68,22 @@ import { AxButton, useNotify, useFloating } from '@/components/ui'
 import { FloatingBall } from '@/components/ui'
 ```
 
+**完整 API 参考（每个组件的所有 Props、Slots、Events、使用场景）见 [components.md](./docs/components.md)**。
+
 ## WXT 浏览器扩展（Shadow DOM）
 
-如果在 **[WXT](https://wxt.dev/) 浏览器扩展** 的 Content Script 中使用组件库，由于浮层组件（`AxTooltip`、`AxDropdown`、`AxSelect`）依赖 `<Teleport>`，必须配合 Shadow DOM + `provideTeleportTarget()` 确保浮层样式隔离。
-
-> **`references/content-script-shadow-dom.md`** — WXT Content Script 完整接入指南（Shadow DOM 搭建、Teleport 适配、WXT 配置要点、样式注意事项、自检清单）
-
-**一句话要点**：Content Script 入口创建 Shadow Root 和 `#teleport-root` 容器，根组件调用 `provideTeleportTarget(teleportTarget)`，其他无需改动。Popup / Options 等普通页面直接按常规方式接入即可。
+浮层组件（`AxTooltip`、`AxDropdown`、`AxSelect`）依赖 `<Teleport>`，Content Script 中须配合 Shadow DOM + `provideTeleportTarget()`。详见 **[content-script-shadow-dom.md](./docs/content-script-shadow-dom.md)**。
 
 ## 更新同步
 
 组件库更新后，在目标项目中执行同步：
 
 ```bash
-# 一条命令完成：更新 skill + 同步组件到项目
 node <skill-dir>/scripts/sync.js
 ```
 
 `sync.js` 自动执行两步：
-1. `npx skills add <owner>/<repo>@ax-ui-kit --full-depth -y` — 重新拉取最新 skill（绕过 API 限流）
+1. 重新拉取最新 skill
 2. 将 `assets/` 覆盖写入 `src/components/ui/`
 
 若目标路径不同，可传参指定：
@@ -161,7 +142,7 @@ Prefer Ax* Vue components from src/components/ui/:
 `assets/layout/` 中包含完整示例，可复制到目标项目 `src/views/` 参考：
 
 | 文件 | 说明 |
-|------|------|
+|---|---|
 | `ComponentsView.vue` | 组件展示页 — 每个 Ax* 组件带实时属性编辑面板 |
 | `SettingsView.vue` | 设置界面 — 分组配置卡（通用/性能/安全/通知/高级） |
 | `ConsoleLayout.vue` | 控制台布局壳 — 侧栏导航 + 主内容区 + 通知 + 弹窗调度 |
@@ -172,15 +153,20 @@ Prefer Ax* Vue components from src/components/ui/:
 ```
 ax-ui-kit/
 ├── SKILL.md                       # 本文件
+├── scripts/
+│   └── sync.js                    # 一键同步脚本
 ├── assets/                        # 组件库源码（复制到目标项目 src/components/ui/）
 │   ├── index.ts                   # 组件注册入口（registerComponents）
 │   ├── types.ts
 │   ├── AxButton.vue ...           # 10 个 Vue 组件
-│   ├── hooks/                     # useNotify / useFloating
+│   ├── hooks/                     # useNotify / useFloating / useTeleportTarget
 │   ├── functional/                # FloatingBall
 │   └── layout/                    # 示例布局页面
 └── references/                    # 参考文档
-    ├── component-install.md       # 详细安装文档（依赖、配置、main.ts、自检清单）
-    ├── ui-style.md                # 设计规范（颜色 token、尺寸、间距、动效、弹窗）
-    └── content-script-shadow-dom.md  # WXT Content Script Shadow DOM 接入指南
+    ├── install.md                 # 安装文档（依赖、配置、main.ts、检查清单）
+    ├── design-tokens.md           # 设计 token（颜色、字体、图标、间距、圆角）
+    ├── components.md              # 组件 API 参考（Props/Slots/Events/示例）
+    ├── ui-style.md                # 设计规范（原则、尺寸、布局、交互、动效）
+    ├── html-cdn.md                # HTML 单页快速接入
+    └── content-script-shadow-dom.md  # WXT Content Script 接入指南
 ```

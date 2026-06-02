@@ -1,24 +1,9 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
 import type { InputSize, RoundedSize } from './types'
+import { ROUNDED_CLASSES, CONTROL_SIZE_CLASSES } from './common'
 
-const ROUNDED_CLASSES: Record<RoundedSize, string> = {
-  none: 'rounded-ax-none',
-  xs: 'rounded-ax-xs',
-  sm: 'rounded-ax-sm',
-  md: 'rounded-ax-md',
-  lg: 'rounded-ax-lg',
-  xl: 'rounded-ax-xl',
-  full: 'rounded-ax-full',
-}
-
-const SIZE_CLASSES: Record<InputSize, string> = {
-  xs: 'h-[18px] px-1.5 py-px text-body-sm',
-  sm: 'h-5 px-2 py-0.5 text-body-sm',
-  md: 'h-6 px-2.5 py-1 text-label-md',
-  lg: 'h-7 px-3 py-1.5 text-label-md',
-  xl: 'h-8 px-3.5 py-2 text-label-md',
-}
+const SIZE_CLASSES = CONTROL_SIZE_CLASSES as Record<InputSize, string>
 
 const ICON_SIZE_CLASSES: Record<InputSize, string> = {
   xs: '!text-[12px]',

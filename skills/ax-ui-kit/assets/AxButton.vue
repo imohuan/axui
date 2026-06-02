@@ -1,16 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, type Ref } from 'vue'
-import type { ButtonSize, ButtonVariant, RoundedSize } from './types'
-
-const ROUNDED_CLASSES: Record<RoundedSize, string> = {
-  none: 'rounded-ax-none',
-  xs: 'rounded-ax-xs',
-  sm: 'rounded-ax-sm',
-  md: 'rounded-ax-md',
-  lg: 'rounded-ax-lg',
-  xl: 'rounded-ax-xl',
-  full: 'rounded-ax-full',
-}
+import type { ButtonSize, ButtonVariant } from './types'
+import { ROUNDED_CLASSES, CONTROL_SIZE_CLASSES } from './common'
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary: 'bg-primary text-on-primary hover:opacity-90',
@@ -20,11 +11,7 @@ const VARIANT_CLASSES: Record<ButtonVariant, string> = {
 }
 
 const SIZE_CLASSES: Record<ButtonSize, string> = {
-  xs: 'h-[18px] px-1.5 py-px text-body-sm',
-  sm: 'h-5 px-2 py-0.5 text-body-sm',
-  md: 'h-6 px-2.5 py-1 text-label-md',
-  lg: 'h-7 px-3 py-1.5 text-label-md',
-  xl: 'h-8 px-3.5 py-2 text-label-md',
+  ...CONTROL_SIZE_CLASSES,
   icon: 'w-6 h-6 p-0',
   'icon-lg': 'w-7 h-7 p-0',
 }

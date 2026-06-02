@@ -80,7 +80,7 @@ const demoSelectOptions = [
   { value: 'opt4', label: 'Svelte — 编译时框架' },
   { value: 'opt5', label: 'Solid.js — 细粒度响应' },
 ]
-const selectProps = ref({ value: 'opt1' as unknown, size: 'md' as string, searchable: false, multiple: false, placeholder: '请选择框架...', placement: 'bottom-start', dropdownWidth: 'match' as string, dropdownMaxWidth: '' as string, tagMaxWidth: '120px' as string, triggerWidth: '' as string, triggerMaxWidth: '' as string })
+const selectProps = ref({ value: 'opt1' as unknown, size: 'md' as string, searchable: false, multiple: false, placeholder: '请选择框架...', placement: 'bottom-start', dropdownWidth: 'auto' as string, dropdownMaxWidth: '' as string, tagMaxWidth: '120px' as string, triggerWidth: '' as string, triggerMaxWidth: '' as string })
 const selectSchema: PropPanelSchemaItem[] = [
   { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }] },
   { key: 'placeholder', label: '占位符', type: 'input', placeholder: '占位文本' },

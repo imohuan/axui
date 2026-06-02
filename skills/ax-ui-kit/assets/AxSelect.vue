@@ -10,6 +10,20 @@ const SIZE_CLASSES: Record<ControlSize, string> = {
   lg: 'h-7 px-3 py-1.5 text-label-md',
 }
 
+// 搜索打开态 — 无标签时固定高度（不撑开），有标签时 min-h 允许换行
+const SEARCH_SIZE_FIXED: Record<ControlSize, string> = {
+  xs: 'h-[18px] px-1.5 text-body-sm',
+  sm: 'h-5 px-2 text-body-sm',
+  md: 'h-6 px-2.5 text-label-md',
+  lg: 'h-7 px-3 text-label-md',
+}
+const SEARCH_SIZE_FLEX: Record<ControlSize, string> = {
+  xs: 'min-h-[18px] px-1.5 py-px text-body-sm',
+  sm: 'min-h-5 px-2 py-0.5 text-body-sm',
+  md: 'min-h-6 px-2.5 py-1 text-label-md',
+  lg: 'min-h-7 px-3 py-1.5 text-label-md',
+}
+
 const props = withDefaults(
   defineProps<{
     modelValue?: string | number | (string | number)[]
@@ -210,6 +224,16 @@ const dropdownMenuWidth = computed(() =>
 )
 const isMatchWidth = computed(() => props.dropdownWidth === 'match')
 
+// 搜索模式 trigger 尺寸：关闭态固定 h+py，打开态按标签区分布局
+const triggerSizeClass = computed(() => {
+  if (!open.value) return SIZE_CLASSES[props.size]
+  // 打开态：多选有标签 → min-h 可撑开，否则固定 h
+  if (props.multiple && selectedLabels.value.length > 0) {
+    return SEARCH_SIZE_FLEX[props.size]
+  }
+  return SEARCH_SIZE_FIXED[props.size]
+})
+
 // 打开/关闭时重置搜索和高亮
 watch(open, (val) => {
   if (!val) {
@@ -232,85 +256,73 @@ watch(open, (val) => {
     <!-- ============ Trigger area ============ -->
     <template #trigger="{ open: isOpen, toggle }">
       <div class="relative w-full" @click.stop>
-        <!-- 搜索模式：打开时显示搜索输入框 -->
+        <!-- 搜索模式：单元素 + 动态 class，避免 DOM 切换导致 inline-block 宽度跳动 -->
         <template v-if="searchable">
-          <!-- 关闭态：多选标签按钮 -->
-          <button
-            v-if="!isOpen"
-            type="button"
-            :class="['w-full flex flex-wrap items-center gap-1 bg-surface-container-low border border-outline-variant rounded-md hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left', SIZE_CLASSES[props.size]]"
-            :style="triggerStyle"
-            @click="openDropdown()"
-          >
-            <template v-if="multiple && selectedLabels.length > 0">
-              <span
-                v-for="opt in selectedLabels"
-                :key="opt.value"
-                class="inline-flex items-center gap-1 bg-surface-container-high pl-1.5 pr-1 py-px rounded text-[11px] font-medium text-primary shrink-0"
-              >
-                <span class="truncate" :style="tagLabelStyle">{{ opt.label }}</span>
-                <button
-                  class="inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-black/10 transition-colors"
-                  @click.stop="removeOption(opt.value)"
-                >
-                  <span class="material-symbols-outlined text-[12px]">close</span>
-                </button>
-              </span>
-            </template>
-            <span v-else class="text-left grow">
-              <span v-if="multiple" class="text-secondary">{{ placeholder }}</span>
-              <span v-else class="text-primary font-medium">{{ displayLabel }}</span>
-            </span>
-            <span
-              class="material-symbols-outlined text-secondary transition-transform duration-200 shrink-0 text-[16px] ml-auto"
-            >
-              expand_more
-            </span>
-          </button>
-
-          <!-- 打开态：搜索输入框（标签行 + 输入行分层布局） -->
           <div
-            v-else
-            :class="['w-full flex flex-col gap-1 bg-surface-container-low border border-outline-variant rounded-md ring-1 ring-primary border-primary text-left', SIZE_CLASSES[props.size]]"
+            :class="[
+              'w-full bg-surface-container-low rounded-md transition-colors text-left',
+              isOpen
+                ? 'flex flex-col gap-1 rounded-md ring-1 ring-primary border-primary'
+                : 'flex flex-wrap items-center gap-1 border border-outline-variant hover:bg-surface-container hover:border-outline cursor-pointer',
+              triggerSizeClass,
+            ]"
             :style="triggerStyle"
+            @click="!isOpen && openDropdown()"
           >
-            <!-- 标签行（仅多选） -->
-            <div v-if="multiple && selectedLabels.length > 0" class="w-full flex flex-wrap items-center gap-1">
-              <span
-                v-for="opt in selectedLabels"
-                :key="opt.value"
-                class="inline-flex items-center gap-1 bg-primary/10 pl-1.5 pr-1 py-px rounded text-[11px] font-medium text-primary shrink-0"
-              >
-                <span class="truncate" :style="tagLabelStyle">{{ opt.label }}</span>
-                <button
-                  class="inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-primary/20 transition-colors"
-                  @click.stop="removeOption(opt.value)"
+            <!-- 关闭态内容：标签 + placeholder + 箭头 -->
+            <template v-if="!isOpen">
+              <template v-if="multiple && selectedLabels.length > 0">
+                <span
+                  v-for="opt in selectedLabels"
+                  :key="opt.value"
+                  class="inline-flex items-center gap-1 bg-surface-container-high pl-1.5 pr-1 py-px rounded text-[11px] font-medium text-primary shrink-0"
                 >
-                  <span class="material-symbols-outlined text-[12px]">close</span>
-                </button>
+                  <span class="truncate" :style="tagLabelStyle">{{ opt.label }}</span>
+                  <button
+                    class="inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-black/10 transition-colors"
+                    @click.stop="removeOption(opt.value)"
+                  >
+                    <span class="material-symbols-outlined text-[12px]">close</span>
+                  </button>
+                </span>
+              </template>
+              <span v-else class="text-left grow">
+                <span v-if="multiple" class="text-secondary">{{ placeholder }}</span>
+                <span v-else class="text-primary font-medium">{{ displayLabel }}</span>
               </span>
-            </div>
+              <span class="material-symbols-outlined text-secondary shrink-0 text-[16px] ml-auto">expand_more</span>
+            </template>
 
-            <!-- 输入行 -->
-            <div class="w-full flex items-center gap-1">
-              <input
-                ref="searchInputRef"
-                v-model="searchQuery"
-                type="text"
-                :placeholder="selectedLabels.length === 0 ? searchPlaceholder : ''"
-                class="flex-1 min-w-0 bg-transparent border-none outline-none text-primary font-medium placeholder:text-secondary text-label-md font-label-md"
-                autocomplete="off"
-                @keydown="handleKeydown"
-                @click.stop
-              />
-              <button
-                v-if="hasValue"
-                class="inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-black/10 transition-colors shrink-0"
-                @click="handleClear"
-              >
-                <span class="material-symbols-outlined text-[14px] text-secondary">close</span>
-              </button>
-            </div>
+            <!-- 打开态内容：标签行 + input + 清除按钮 -->
+            <template v-else>
+              <div v-if="multiple && selectedLabels.length > 0" class="w-full flex flex-wrap items-center gap-1">
+                <span
+                  v-for="opt in selectedLabels"
+                  :key="opt.value"
+                  class="inline-flex items-center gap-1 bg-primary/10 pl-1.5 pr-1 py-px rounded text-[11px] font-medium text-primary shrink-0"
+                >
+                  <span class="truncate" :style="tagLabelStyle">{{ opt.label }}</span>
+                  <button
+                    class="inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-primary/20 transition-colors"
+                    @click.stop="removeOption(opt.value)"
+                  >
+                    <span class="material-symbols-outlined text-[12px]">close</span>
+                  </button>
+                </span>
+              </div>
+              <div class="w-full flex items-center gap-1 flex-1 min-h-0">
+                <input
+                  ref="searchInputRef"
+                  v-model="searchQuery"
+                  type="text"
+                  :placeholder="selectedLabels.length === 0 ? searchPlaceholder : ''"
+                  class="flex-1 min-w-0 bg-transparent border-none outline-none focus:outline-none focus:ring-0 p-0 m-0 h-full text-primary font-medium placeholder:text-secondary text-label-md font-label-md"
+                  autocomplete="off"
+                  @keydown="handleKeydown"
+                  @click.stop
+                />
+              </div>
+            </template>
           </div>
         </template>
 

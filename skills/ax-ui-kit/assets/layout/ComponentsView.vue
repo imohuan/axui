@@ -293,21 +293,18 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">展示所有组件的每一种状态变体。左侧预览区，右侧属性配置面板，实时联动。</p>
     </div>
 
-    <div id="section-btn" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-btn"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Button</span>
         <span class="font-body-sm text-[11px] text-secondary">按钮组件 — 支持 4 种变体、3 种尺寸、图标、加载态、禁用态</span>
       </div>
       <div class="flex divide-x divide-outline-variant min-h-[200px]">
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
           <div class="flex flex-wrap items-center gap-ax-sm">
-            <AxButton
-              :variant="btnProps.variant"
-              :size="btnProps.size"
-              :disabled="btnProps.disabled"
-              :icon="btnProps.showIcon ? 'bolt' : ''"
-              :block="btnProps.block"
-            >
+            <AxButton :variant="btnProps.variant" :size="btnProps.size" :disabled="btnProps.disabled"
+              :icon="btnProps.showIcon ? 'bolt' : ''" :block="btnProps.block">
               <span v-if="btnProps.loading" class="inline-flex items-center gap-ax-xs">
                 <svg class="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -325,7 +322,8 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <AxButton variant="ghost" size="sm">Ghost</AxButton>
             <AxButton variant="danger" size="sm">Danger</AxButton>
             <AxButton variant="primary" size="sm" icon="bolt">带图标</AxButton>
-            <AxButton variant="primary" size="icon"><span class="material-symbols-outlined text-[16px]">settings</span></AxButton>
+            <AxButton variant="primary" size="icon"><span class="material-symbols-outlined text-[16px]">settings</span>
+            </AxButton>
             <AxButton variant="outline" size="sm" disabled>禁用</AxButton>
           </div>
         </div>
@@ -335,36 +333,29 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div id="section-input" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-input"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Input</span>
         <span class="font-body-sm text-[11px] text-secondary">输入框 — 支持单行/多行切换、3 种尺寸、前缀图标、密码模式、禁用态</span>
       </div>
       <div class="flex divide-x divide-outline-variant min-h-[260px]">
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-md items-start justify-center">
           <form class="w-64 relative" autocomplete="off" @submit.prevent>
-            <input
-              v-if="inputProps.showPassword"
-              type="text"
-              name="username"
-              autocomplete="username"
-              tabindex="-1"
+            <input v-if="inputProps.showPassword" type="text" name="username" autocomplete="username" tabindex="-1"
               aria-hidden="true"
               class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 opacity-0 pointer-events-none"
-              value=""
-            >
-            <AxInput
-              v-model="inputProps.value"
-              :size="inputProps.size"
-              :placeholder="inputProps.placeholder"
-              :disabled="inputProps.disabled"
-              :password="inputProps.showPassword && !inputProps.showMultiline"
-              :multiline="inputProps.showMultiline"
-              :rows="inputProps.inputRows"
-              :resize="inputProps.resize"
-            >
-              <template v-if="inputProps.showPrefix && !inputProps.showMultiline && !inputProps.showPassword" #prefix><span class="material-symbols-outlined" :class="inputIconSize[inputProps.size]">search</span></template>
-              <template v-if="inputProps.showSuffix && !inputProps.showMultiline && !inputProps.showPassword" #suffix><span class="material-symbols-outlined" :class="inputIconSize[inputProps.size]">close</span></template>
+              value="">
+            <AxInput v-model="inputProps.value" :size="inputProps.size" :placeholder="inputProps.placeholder"
+              :disabled="inputProps.disabled" :password="inputProps.showPassword && !inputProps.showMultiline"
+              :multiline="inputProps.showMultiline" :rows="inputProps.inputRows" :resize="inputProps.resize">
+              <template v-if="inputProps.showPrefix && !inputProps.showMultiline && !inputProps.showPassword"
+                #prefix><span class="material-symbols-outlined"
+                  :class="inputIconSize[inputProps.size]">search</span></template>
+              <template v-if="inputProps.showSuffix && !inputProps.showMultiline && !inputProps.showPassword"
+                #suffix><span class="material-symbols-outlined"
+                  :class="inputIconSize[inputProps.size]">close</span></template>
             </AxInput>
           </form>
           <div class="flex flex-wrap gap-ax-sm">
@@ -383,23 +374,14 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             </AxInput>
             <AxInput size="md" placeholder="禁用状态" class="w-36" disabled />
           </div>
-          <form
-            class="relative flex flex-wrap gap-ax-sm items-center"
-            autocomplete="off"
-            @submit.prevent
-          >
-            <input
-              type="text"
-              name="username"
-              autocomplete="username"
-              tabindex="-1"
-              aria-hidden="true"
+          <form class="relative flex flex-wrap gap-ax-sm items-center" autocomplete="off" @submit.prevent>
+            <input type="text" name="username" autocomplete="username" tabindex="-1" aria-hidden="true"
               class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 opacity-0 pointer-events-none"
-              value=""
-            >
+              value="">
             <span class="font-label-md text-[10px] text-secondary self-center">密码模式：</span>
             <AxInput size="md" placeholder="请输入密码" class="w-44" password />
-            <AxInput size="md" placeholder="密码已输入" class="w-44" password model-value="Admin@2026" autocomplete="current-password" />
+            <AxInput size="md" placeholder="密码已输入" class="w-44" password model-value="Admin@2026"
+              autocomplete="current-password" />
           </form>
         </div>
         <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
@@ -408,31 +390,28 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div id="section-slider" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-slider"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Slider</span>
         <span class="font-body-sm text-[11px] text-secondary">滑块组件 — 支持自定义范围、标签、数值显示</span>
       </div>
       <div class="flex divide-x divide-outline-variant min-h-[180px]">
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
           <div class="w-72">
-            <AxSlider
-              v-model="sliderProps.value"
-              :min="sliderProps.min"
-              :max="sliderProps.max"
-              :show-labels="sliderProps.showLabels"
-              :show-value="sliderProps.showValue"
-              :label-position="sliderProps.labelPosition"
-              label-left="最小"
-              label-right="最大"
-              :value-label="sliderProps.value + '%'"
-            />
+            <AxSlider v-model="sliderProps.value" :min="sliderProps.min" :max="sliderProps.max"
+              :show-labels="sliderProps.showLabels" :show-value="sliderProps.showValue"
+              :label-position="sliderProps.labelPosition" label-left="最小" label-right="最大"
+              :value-label="sliderProps.value + '%'" />
           </div>
           <div class="w-full space-y-ax-sm max-w-sm">
             <span class="font-label-md text-[10px] text-secondary">带标签与数值：</span>
-            <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载" value-label="72%" />
+            <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载"
+              value-label="72%" />
             <span class="font-label-md text-[10px] text-secondary">标签右侧模式：</span>
-            <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载" value-label="72%" label-position="right" />
+            <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载"
+              value-label="72%" label-position="right" />
             <span class="font-label-md text-[10px] text-secondary">无标签简洁模式：</span>
             <AxSlider :model-value="40" :min="0" :max="100" />
           </div>
@@ -443,8 +422,10 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div id="section-switch" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-switch"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Switch</span>
         <span class="font-body-sm text-[11px] text-secondary">开关组件 — 支持 v-model、禁用态、aria 可访问性</span>
       </div>
@@ -452,12 +433,8 @@ function handleBallSave(prefs: FloatingBallPrefs) {
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
           <div class="flex items-center gap-ax-md">
             <span class="font-label-md text-[10px] text-secondary">动态预览：</span>
-            <AxSwitch
-              :model-value="switchProps.checked"
-              :disabled="switchProps.disabled"
-              :size="switchProps.size"
-              @update:model-value="switchProps.checked = $event"
-            />
+            <AxSwitch :model-value="switchProps.checked" :disabled="switchProps.disabled" :size="switchProps.size"
+              @update:model-value="switchProps.checked = $event" />
             <span class="font-body-sm text-[12px] text-primary ml-ax-sm">{{ switchProps.checked ? '开启' : '关闭' }}</span>
           </div>
           <div class="w-full space-y-ax-sm max-w-sm">
@@ -488,14 +465,18 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div id="section-alert" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-alert"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Alert</span>
         <span class="font-body-sm text-[11px] text-secondary">警示横幅 — 4 种语义、可关闭、带标题</span>
       </div>
       <div class="flex divide-x divide-outline-variant min-h-[180px]">
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-sm items-start justify-center">
-          <AxAlert :type="alertProps.type" :title="alertProps.title" :dismissible="alertProps.dismissible" model-value>{{ alertProps.message }}</AxAlert>
+          <AxAlert :type="alertProps.type" :title="alertProps.title" :dismissible="alertProps.dismissible" model-value>
+            {{
+              alertProps.message }}</AxAlert>
           <div class="w-full max-w-md space-y-ax-xs mt-2">
             <span class="font-label-md text-[10px] text-secondary">所有类型：</span>
             <AxAlert type="info" title="信息" model-value :dismissible="false">这是一条系统信息提示。</AxAlert>
@@ -510,19 +491,26 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div id="section-select" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-select"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Select</span>
         <span class="font-body-sm text-[11px] text-secondary">自定义下拉选择 — 支持搜索过滤</span>
       </div>
       <div class="flex divide-x divide-outline-variant min-h-[180px]">
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
           <div>
-            <AxSelect v-model="selectProps.value" :size="selectProps.size" :options="demoSelectOptions" :searchable="selectProps.searchable" :multiple="selectProps.multiple" :placeholder="selectProps.placeholder" :placement="selectProps.placement" :dropdown-width="selectProps.dropdownWidth" :dropdown-max-width="selectProps.dropdownMaxWidth" :tag-max-width="selectProps.tagMaxWidth" :trigger-width="selectProps.triggerWidth" :trigger-max-width="selectProps.triggerMaxWidth" />
+            <AxSelect v-model="selectProps.value" :size="selectProps.size" :options="demoSelectOptions"
+              :searchable="selectProps.searchable" :multiple="selectProps.multiple"
+              :placeholder="selectProps.placeholder" :placement="selectProps.placement"
+              :dropdown-width="selectProps.dropdownWidth" :dropdown-max-width="selectProps.dropdownMaxWidth"
+              :tag-max-width="selectProps.tagMaxWidth" :trigger-width="selectProps.triggerWidth"
+              :trigger-max-width="selectProps.triggerMaxWidth" />
           </div>
-          <div>
+          <div class="flex  items-center gap-2">
             <span class="font-label-md text-[10px] text-secondary">带搜索的选择器：</span>
-            <AxSelect model-value="opt2" :options="demoSelectOptions" searchable placeholder="选择框架..." class="mt-1" />
+            <AxSelect model-value="opt2" :options="demoSelectOptions" searchable placeholder="选择框架..." />
           </div>
         </div>
         <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
@@ -531,23 +519,38 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div id="section-tooltip" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-tooltip"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Tooltip</span>
         <span class="font-body-sm text-[11px] text-secondary">悬停提示气泡 — 8 个方向，Floating UI 精准定位</span>
       </div>
       <div class="flex divide-x divide-outline-variant min-h-[180px]">
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-center justify-center">
-          <AxTooltip :content="tooltipProps.content" :placement="tooltipProps.placement" :arrow="tooltipProps.arrow" :offset="tooltipProps.offset">
+          <AxTooltip :content="tooltipProps.content" :placement="tooltipProps.placement" :arrow="tooltipProps.arrow"
+            :offset="tooltipProps.offset">
             <AxButton variant="outline">悬停此处查看效果</AxButton>
           </AxTooltip>
           <div class="flex flex-wrap gap-ax-sm justify-center">
-            <AxTooltip content="top 提示" placement="top"><AxButton variant="ghost" size="sm">上方</AxButton></AxTooltip>
-            <AxTooltip content="bottom 提示" placement="bottom"><AxButton variant="ghost" size="sm">下方</AxButton></AxTooltip>
-            <AxTooltip content="left 提示" placement="left"><AxButton variant="ghost" size="sm">左侧</AxButton></AxTooltip>
-            <AxTooltip content="right 提示" placement="right"><AxButton variant="ghost" size="sm">右侧</AxButton></AxTooltip>
-            <AxTooltip content="top-start 提示" placement="top-start"><AxButton variant="ghost" size="sm">左上角</AxButton></AxTooltip>
-            <AxTooltip content="top-end 提示" placement="top-end"><AxButton variant="ghost" size="sm">右上角</AxButton></AxTooltip>
+            <AxTooltip content="top 提示" placement="top">
+              <AxButton variant="ghost" size="sm">上方</AxButton>
+            </AxTooltip>
+            <AxTooltip content="bottom 提示" placement="bottom">
+              <AxButton variant="ghost" size="sm">下方</AxButton>
+            </AxTooltip>
+            <AxTooltip content="left 提示" placement="left">
+              <AxButton variant="ghost" size="sm">左侧</AxButton>
+            </AxTooltip>
+            <AxTooltip content="right 提示" placement="right">
+              <AxButton variant="ghost" size="sm">右侧</AxButton>
+            </AxTooltip>
+            <AxTooltip content="top-start 提示" placement="top-start">
+              <AxButton variant="ghost" size="sm">左上角</AxButton>
+            </AxTooltip>
+            <AxTooltip content="top-end 提示" placement="top-end">
+              <AxButton variant="ghost" size="sm">右上角</AxButton>
+            </AxTooltip>
           </div>
         </div>
         <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
@@ -556,8 +559,10 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div id="section-dropdown" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-dropdown"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Dropdown</span>
         <span class="font-body-sm text-[11px] text-secondary">上下文菜单 — 任意 Slot 内容，Floating UI 定位</span>
       </div>
@@ -565,16 +570,31 @@ function handleBallSave(prefs: FloatingBallPrefs) {
         <div class="flex-1 p-ax-lg comp-preview flex items-center justify-center gap-ax-xl">
           <div class="flex flex-col items-center gap-ax-sm">
             <span class="font-label-md text-[10px] text-secondary">功能菜单</span>
-            <AxDropdown v-model="showDropdownDemo1" :trigger="dropdownProps.trigger" :placement="dropdownProps.placement" :offset="dropdownProps.offset" :match-width="dropdownProps.matchWidth" :menu-width="dropdownProps.menuWidth" :menu-max-width="dropdownProps.menuMaxWidth" :teleport="dropdownProps.teleport" :menu-class="dropdownProps.menuWidth || dropdownProps.matchWidth ? '' : 'w-44'">
+            <AxDropdown v-model="showDropdownDemo1" :trigger="dropdownProps.trigger"
+              :placement="dropdownProps.placement" :offset="dropdownProps.offset"
+              :match-width="dropdownProps.matchWidth" :menu-width="dropdownProps.menuWidth"
+              :menu-max-width="dropdownProps.menuMaxWidth" :teleport="dropdownProps.teleport"
+              :menu-class="dropdownProps.menuWidth || dropdownProps.matchWidth ? '' : 'w-44'">
               <template #trigger>
-                <AxButton>打开菜单<template #suffix><span class="material-symbols-outlined text-[16px]">expand_more</span></template></AxButton>
+                <AxButton>打开菜单<template #suffix><span
+                      class="material-symbols-outlined text-[16px]">expand_more</span></template>
+                </AxButton>
               </template>
               <template #default="{ close }">
                 <div class="py-1">
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[16px]">download</span><span>导出配置</span></button>
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[16px]">edit</span><span>编辑设置</span></button>
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()"><span
+                      class="material-symbols-outlined text-[16px]">download</span><span>导出配置</span></button>
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()"><span
+                      class="material-symbols-outlined text-[16px]">edit</span><span>编辑设置</span></button>
                   <div class="my-1 border-t border-outline-variant"></div>
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-error hover:bg-error-container hover:text-on-error-container rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[16px]">delete</span><span>删除</span></button>
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-error hover:bg-error-container hover:text-on-error-container rounded-lg transition-colors"
+                    @click="close()"><span
+                      class="material-symbols-outlined text-[16px]">delete</span><span>删除</span></button>
                 </div>
               </template>
             </AxDropdown>
@@ -583,12 +603,19 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <span class="font-label-md text-[10px] text-secondary">图标按钮触发</span>
             <AxDropdown v-model="showDropdownDemo2" placement="bottom-end" menu-class="w-40">
               <template #trigger>
-                <AxButton variant="outline" size="icon"><span class="material-symbols-outlined text-[16px]">more_vert</span></AxButton>
+                <AxButton variant="outline" size="icon"><span
+                    class="material-symbols-outlined text-[16px]">more_vert</span></AxButton>
               </template>
               <template #default="{ close }">
                 <div class="py-1">
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[16px]">info</span><span>查看详情</span></button>
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[16px]">share</span><span>分享链接</span></button>
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()"><span
+                      class="material-symbols-outlined text-[16px]">info</span><span>查看详情</span></button>
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()"><span
+                      class="material-symbols-outlined text-[16px]">share</span><span>分享链接</span></button>
                 </div>
               </template>
             </AxDropdown>
@@ -600,26 +627,23 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div id="section-popover" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-popover"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Popover</span>
-        <span class="font-body-sm text-[11px] text-secondary">通用浮层容器 — 支持 click/hover/contextmenu 三种触发，内容完全由 Slot 自定义</span>
+        <span class="font-body-sm text-[11px] text-secondary">通用浮层容器 — 支持 click/hover/contextmenu 三种触发，内容完全由 Slot
+          自定义</span>
       </div>
       <div class="flex divide-x divide-outline-variant min-h-[220px]">
         <div class="flex-1 p-ax-lg comp-preview flex items-center justify-center gap-ax-xl">
           <!-- 通知卡片 (click) -->
           <div class="flex flex-col items-center gap-ax-sm">
             <span class="font-label-md text-[10px] text-secondary">通知卡片</span>
-            <AxDropdown
-              v-model="showPopoverDemo1"
-              :trigger="popoverProps.trigger"
-              :placement="popoverProps.placement"
-              :offset="popoverProps.offset"
-              :teleport="popoverProps.teleport"
-              :menu-width="popoverProps.width || undefined"
-              :menu-max-width="popoverProps.maxWidth || undefined"
-              :panel-class="popoverProps.width ? 'p-0' : 'p-0 w-64'"
-            >
+            <AxDropdown v-model="showPopoverDemo1" :trigger="popoverProps.trigger" :placement="popoverProps.placement"
+              :offset="popoverProps.offset" :teleport="popoverProps.teleport"
+              :menu-width="popoverProps.width || undefined" :menu-max-width="popoverProps.maxWidth || undefined"
+              :panel-class="popoverProps.width ? 'p-0' : 'p-0 w-64'">
               <template #trigger>
                 <AxButton variant="outline">
                   <template #prefix><span class="material-symbols-outlined text-[16px]">notifications</span></template>
@@ -628,12 +652,16 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               </template>
               <template #default="{ close }">
                 <!-- 标题栏（纯 slot 实现） -->
-                <div class="flex items-center justify-between px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low">
+                <div
+                  class="flex items-center justify-between px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low">
                   <div class="flex items-center gap-ax-sm">
                     <span class="material-symbols-outlined text-[16px] text-primary">{{ popoverProps.icon }}</span>
-                    <span class="font-headline-sm text-[13px] font-semibold text-primary">{{ popoverProps.title }}</span>
+                    <span class="font-headline-sm text-[13px] font-semibold text-primary">{{ popoverProps.title
+                      }}</span>
                   </div>
-                  <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()"><span class="material-symbols-outlined text-[14px]">close</span></button>
+                  <button
+                    class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()"><span class="material-symbols-outlined text-[14px]">close</span></button>
                 </div>
                 <!-- 内容 -->
                 <div class="p-ax-md space-y-ax-sm">
@@ -651,7 +679,9 @@ function handleBallSave(prefs: FloatingBallPrefs) {
                       <p class="font-body-sm text-[11px] text-secondary leading-relaxed">数据库已于 02:00 自动备份至云端。</p>
                     </div>
                   </div>
-                  <button class="w-full border border-outline-variant text-primary rounded-md py-1.5 font-label-md text-label-md hover:bg-surface-container-low transition-colors" @click="close()">查看全部通知</button>
+                  <button
+                    class="w-full border border-outline-variant text-primary rounded-md py-1.5 font-label-md text-label-md hover:bg-surface-container-low transition-colors"
+                    @click="close()">查看全部通知</button>
                 </div>
               </template>
             </AxDropdown>
@@ -680,43 +710,59 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <span class="font-label-md text-[10px] text-secondary">右键菜单 (AxDropdown)</span>
             <AxDropdown v-model="showPopoverDemo3" trigger="contextmenu" placement="bottom-start" panel-class="p-0.5">
               <template #trigger>
-                <div class="px-4 py-2 border border-dashed border-outline-variant rounded-lg flex items-center gap-ax-sm text-secondary font-label-md text-[11px] cursor-context-menu select-none">
+                <div
+                  class="px-4 py-2 border border-dashed border-outline-variant rounded-lg flex items-center gap-ax-sm text-secondary font-label-md text-[11px] cursor-context-menu select-none">
                   <span class="material-symbols-outlined text-[16px]">mouse</span>
                   <span>在此区域右键点击</span>
                 </div>
               </template>
               <template #default="{ close }">
                 <div class="w-44 py-1">
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()">
                     <span class="material-symbols-outlined text-[16px]">arrow_back</span><span>向后</span>
                     <kbd class="ml-auto font-label-md text-[10px] text-outline">⌘[</kbd>
                   </button>
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors opacity-40 pointer-events-none">
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors opacity-40 pointer-events-none">
                     <span class="material-symbols-outlined text-[16px]">arrow_forward</span><span>向前</span>
                     <kbd class="ml-auto font-label-md text-[10px] text-outline">⌘]</kbd>
                   </button>
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()">
                     <span class="material-symbols-outlined text-[16px]">refresh</span><span>重新加载</span>
                     <kbd class="ml-auto font-label-md text-[10px] text-outline">⌘R</kbd>
                   </button>
                   <div class="my-1 border-t border-outline-variant"></div>
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()">
                     <span class="material-symbols-outlined text-[16px]">save_alt</span><span>另存为...</span>
                     <kbd class="ml-auto font-label-md text-[10px] text-outline">⌘S</kbd>
                   </button>
                   <div class="my-1 border-t border-outline-variant"></div>
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()">
                     <span class="material-symbols-outlined text-[16px]">print</span><span>打印...</span>
                     <kbd class="ml-auto font-label-md text-[10px] text-outline">⌘P</kbd>
                   </button>
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()">
                     <span class="material-symbols-outlined text-[16px]">cast</span><span>投射...</span>
                   </button>
                   <div class="my-1 border-t border-outline-variant"></div>
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-[12px] text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-[12px] text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()">
                     <span class="material-symbols-outlined text-[16px]">check</span><span>查找...</span>
                   </button>
-                  <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="close()">
+                  <button
+                    class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors"
+                    @click="close()">
                     <span class="w-4"></span><span>更多工具</span>
                     <span class="ml-auto material-symbols-outlined text-[16px] text-secondary">chevron_right</span>
                   </button>
@@ -731,8 +777,10 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       </div>
     </div>
 
-    <div id="section-dialog" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-dialog"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Dialog</span>
         <span class="font-body-sm text-[11px] text-secondary">模态弹窗 — 焦点陷阱、ESC 关闭、遮罩关闭</span>
       </div>
@@ -748,15 +796,18 @@ function handleBallSave(prefs: FloatingBallPrefs) {
           <p class="font-body-sm text-[11px] text-secondary leading-relaxed">
             Dialog 支持 <code class="bg-surface-container px-1 rounded text-primary">#header</code>、
             <code class="bg-surface-container px-1 rounded text-primary">#default</code>、
-            <code class="bg-surface-container px-1 rounded text-primary">#footer</code> 三个插槽。Footer 槽的 close 参数可直接关闭弹窗。焦点锁定通过 Tab 键循环限制在对话框内部。
+            <code class="bg-surface-container px-1 rounded text-primary">#footer</code> 三个插槽。Footer 槽的 close
+            参数可直接关闭弹窗。焦点锁定通过 Tab 键循环限制在对话框内部。
           </p>
         </div>
       </div>
     </div>
 
     <!-- Notify -->
-    <div id="section-notify" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-notify"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Notify</span>
         <span class="font-body-sm text-[11px] text-secondary">通知气泡 — 4 种语义、自动关闭、关闭按钮、日志记录</span>
       </div>
@@ -766,46 +817,54 @@ function handleBallSave(prefs: FloatingBallPrefs) {
           <div class="w-full space-y-ax-sm">
             <span class="font-label-md text-[10px] text-secondary">所有类型静态预览：</span>
             <!-- Info -->
-            <div class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
+            <div
+              class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
               <span class="material-symbols-outlined mt-0.5 text-primary text-[18px]">info</span>
               <div class="flex-1">
                 <h4 class="font-headline-sm text-body-md font-semibold text-primary mb-0.5">信息通知</h4>
                 <p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">系统服务已启动，运行状态正常。</p>
               </div>
-              <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
+              <button
+                class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
                 <span class="material-symbols-outlined text-[16px]">close</span>
               </button>
             </div>
             <!-- Success -->
-            <div class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
+            <div
+              class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
               <span class="material-symbols-outlined mt-0.5 text-primary text-[18px]">check_circle</span>
               <div class="flex-1">
                 <h4 class="font-headline-sm text-body-md font-semibold text-primary mb-0.5">操作成功</h4>
                 <p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">配置已成功保存至云端，将在下次启动时自动加载。</p>
               </div>
-              <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
+              <button
+                class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
                 <span class="material-symbols-outlined text-[16px]">close</span>
               </button>
             </div>
             <!-- Error -->
-            <div class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
+            <div
+              class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
               <span class="material-symbols-outlined mt-0.5 text-error text-[18px]">error</span>
               <div class="flex-1">
                 <h4 class="font-headline-sm text-body-md font-semibold text-primary mb-0.5">连接中断</h4>
                 <p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">核心服务连接已断开，请检查网络后重试。</p>
               </div>
-              <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
+              <button
+                class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
                 <span class="material-symbols-outlined text-[16px]">close</span>
               </button>
             </div>
             <!-- Secondary -->
-            <div class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
+            <div
+              class="flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow w-80 text-left">
               <span class="material-symbols-outlined mt-0.5 text-secondary text-[18px]">settings</span>
               <div class="flex-1">
                 <h4 class="font-headline-sm text-body-md font-semibold text-primary mb-0.5">系统设置</h4>
                 <p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">数据缓存清理完毕，释放空间 12.8 MB。</p>
               </div>
-              <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
+              <button
+                class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0">
                 <span class="material-symbols-outlined text-[16px]">close</span>
               </button>
             </div>
@@ -835,7 +894,9 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               清空日志
             </AxButton>
           </div>
-          <p class="font-body-sm text-[11px] text-secondary">通知 4 秒后自动关闭，也可点 × 手动关闭。基于 <code class="bg-surface-container px-1 rounded text-primary">vue-sonner</code> 的 <code class="bg-surface-container px-1 rounded text-primary">toast.custom()</code> 渲染。</p>
+          <p class="font-body-sm text-[11px] text-secondary">通知 4 秒后自动关闭，也可点 × 手动关闭。基于 <code
+              class="bg-surface-container px-1 rounded text-primary">vue-sonner</code> 的 <code
+              class="bg-surface-container px-1 rounded text-primary">toast.custom()</code> 渲染。</p>
         </div>
         <div class="w-72 p-ax-md bg-surface-container-lowest overflow-y-auto">
           <AxPropPanel v-model="notifyProps" :schema="notifySchema" title="通知属性" />
@@ -844,8 +905,10 @@ function handleBallSave(prefs: FloatingBallPrefs) {
     </div>
 
     <!-- FloatingBall -->
-    <div id="section-floating-ball" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+    <div id="section-floating-ball"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div
+        class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">FloatingBall</span>
         <span class="font-body-sm text-[11px] text-secondary">可拖拽悬浮球 — 支持贴边、展开菜单、亮暗主题、缩小模式</span>
       </div>
@@ -858,13 +921,13 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               <span class="font-label-md text-[10px] text-secondary">标准尺寸</span>
               <div
                 class="size-[36px] flex items-center justify-center rounded-full shadow-md border border-gray-100/90 bg-white shadow-black/10"
-                :class="ballPrefs.hidden ? 'opacity-30' : ''"
-              >
+                :class="ballPrefs.hidden ? 'opacity-30' : ''">
                 <span
                   class="relative flex items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-white shadow-sm shadow-ball/40"
-                  :style="{ width: '30px', height: '30px' }"
-                >
-                  <span class="text-[11px] font-extrabold italic leading-none tracking-tight text-white">{{ ballPrefs.label || 'FB' }}</span>
+                  :style="{ width: '30px', height: '30px' }">
+                  <span class="text-[11px] font-extrabold italic leading-none tracking-tight text-white">{{
+                    ballPrefs.label
+                    || 'FB' }}</span>
                 </span>
               </div>
             </div>
@@ -872,13 +935,13 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <div class="flex flex-col items-center gap-ax-sm">
               <span class="font-label-md text-[10px] text-secondary">缩小模式</span>
               <div
-                class="size-[30px] flex items-center justify-center rounded-full shadow-md border border-gray-100/90 bg-white shadow-black/10"
-              >
+                class="size-[30px] flex items-center justify-center rounded-full shadow-md border border-gray-100/90 bg-white shadow-black/10">
                 <span
                   class="relative flex items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-white shadow-sm shadow-ball/40"
-                  :style="{ width: '24px', height: '24px' }"
-                >
-                  <span class="text-[9px] font-extrabold italic leading-none tracking-tight text-white">{{ ballPrefs.label || 'FB' }}</span>
+                  :style="{ width: '24px', height: '24px' }">
+                  <span class="text-[9px] font-extrabold italic leading-none tracking-tight text-white">{{
+                    ballPrefs.label
+                    || 'FB' }}</span>
                 </span>
               </div>
             </div>
@@ -886,15 +949,17 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <div class="flex flex-col items-center gap-ax-sm">
               <span class="font-label-md text-[10px] text-secondary">展开态（带设置按钮）</span>
               <div class="relative flex flex-col items-center gap-ax-xs">
-                <div class="size-[36px] flex items-center justify-center rounded-full shadow-md border border-gray-100/90 bg-white shadow-black/10">
+                <div
+                  class="size-[36px] flex items-center justify-center rounded-full shadow-md border border-gray-100/90 bg-white shadow-black/10">
                   <span
                     class="relative flex items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-white shadow-sm shadow-ball/40"
-                    :style="{ width: '30px', height: '30px' }"
-                  >
-                    <span class="text-[11px] font-extrabold italic leading-none tracking-tight text-white">{{ ballPrefs.label || 'FB' }}</span>
+                    :style="{ width: '30px', height: '30px' }">
+                    <span class="text-[11px] font-extrabold italic leading-none tracking-tight text-white">{{
+                      ballPrefs.label || 'FB' }}</span>
                   </span>
                 </div>
-                <div class="size-[36px] flex items-center justify-center rounded-full shadow-sm border border-gray-100/80 bg-white text-gray-500">
+                <div
+                  class="size-[36px] flex items-center justify-center rounded-full shadow-sm border border-gray-100/80 bg-white text-gray-500">
                   <svg viewBox="0 0 24 24" fill="none" class="size-[18px] text-ball">
                     <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.5" />
                     <path d="M6 9h12M8 14h8M10 19h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -909,13 +974,13 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <div class="flex flex-col items-center gap-ax-sm">
               <span class="font-label-md text-[10px] text-secondary">暗色主题</span>
               <div
-                class="size-[36px] flex items-center justify-center rounded-full shadow-md border border-white/12 bg-zinc-800 shadow-black/40"
-              >
+                class="size-[36px] flex items-center justify-center rounded-full shadow-md border border-white/12 bg-zinc-800 shadow-black/40">
                 <span
                   class="relative flex items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-white shadow-sm shadow-ball/40"
-                  :style="{ width: '30px', height: '30px' }"
-                >
-                  <span class="text-[11px] font-extrabold italic leading-none tracking-tight text-white">{{ ballPrefs.label || 'FB' }}</span>
+                  :style="{ width: '30px', height: '30px' }">
+                  <span class="text-[11px] font-extrabold italic leading-none tracking-tight text-white">{{
+                    ballPrefs.label
+                    || 'FB' }}</span>
                 </span>
               </div>
             </div>
@@ -925,8 +990,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
           <div class="flex gap-ax-sm mt-ax-md">
             <button
               class="relative overflow-hidden inline-flex items-center justify-center gap-ax-xs font-label-md rounded-md transition-colors outline-none border-0 shrink-0 bg-primary text-on-primary hover:opacity-90 px-4 py-1.5 text-label-md cursor-pointer"
-              @click="showBall = !showBall"
-            >
+              @click="showBall = !showBall">
               {{ showBall ? '隐藏页面悬浮球' : '在页面上展示悬浮球' }}
             </button>
           </div>
@@ -941,11 +1005,6 @@ function handleBallSave(prefs: FloatingBallPrefs) {
   </div>
 
   <!-- FloatingBall (rendered to document body) -->
-  <FloatingBall
-    v-if="showBall"
-    :prefs="ballPrefs"
-    @save-prefs="handleBallSave"
-    @main-click="() => {}"
-    @open-settings="() => {}"
-  />
+  <FloatingBall v-if="showBall" :prefs="ballPrefs" @save-prefs="handleBallSave" @main-click="() => { }"
+    @open-settings="() => { }" />
 </template>

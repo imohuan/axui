@@ -122,7 +122,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="containerRef" class="relative inline-block text-left">
+  <div ref="containerRef" class="relative text-left">
     <div ref="triggerRef" v-bind="triggerEvents">
       <slot name="trigger" :open="modelValue" :toggle="toggle" :close="close" />
     </div>

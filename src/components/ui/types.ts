@@ -1,7 +1,7 @@
 export type ButtonVariant = 'primary' | 'outline' | 'ghost' | 'danger'
-export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'icon' | 'icon-lg'
-export type InputSize = 'xs' | 'sm' | 'md' | 'lg'
-export type ControlSize = 'xs' | 'sm' | 'md' | 'lg'
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'icon' | 'icon-lg'
+export type InputSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type ControlSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export type AlertType = 'info' | 'error' | 'success' | 'warning'
 
 export interface SelectOption {

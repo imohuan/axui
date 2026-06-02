@@ -7,6 +7,7 @@ const SIZE_CLASSES: Record<ControlSize, { track: string; thumb: string; translat
   sm: { track: 'h-5 w-[34px]', thumb: 'h-3.5 w-3.5', translate: 'translate-x-4' },
   md: { track: 'h-6 w-10', thumb: 'h-4 w-4', translate: 'translate-x-5' },
   lg: { track: 'h-7 w-11', thumb: 'h-5 w-5', translate: 'translate-x-5' },
+  xl: { track: 'h-8 w-12', thumb: 'h-6 w-6', translate: 'translate-x-5' },
 }
 
 const props = withDefaults(

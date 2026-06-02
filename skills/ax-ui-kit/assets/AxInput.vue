@@ -7,6 +7,7 @@ const SIZE_CLASSES: Record<InputSize, string> = {
   sm: 'h-5 px-2 py-0.5 text-body-sm',
   md: 'h-6 px-2.5 py-1 text-label-md',
   lg: 'h-7 px-3 py-1.5 text-label-md',
+  xl: 'h-8 px-3.5 py-2 text-label-md',
 }
 
 const ICON_SIZE_CLASSES: Record<InputSize, string> = {

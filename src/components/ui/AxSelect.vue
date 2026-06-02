@@ -8,6 +8,7 @@ const SIZE_CLASSES: Record<ControlSize, string> = {
   sm: 'h-5 px-2 py-0.5 text-body-sm',
   md: 'h-6 px-2.5 py-1 text-label-md',
   lg: 'h-7 px-3 py-1.5 text-label-md',
+  xl: 'h-8 px-3.5 py-2 text-label-md',
 }
 
 // 搜索打开态 — 无标签时固定高度（不撑开），有标签时 min-h 允许换行

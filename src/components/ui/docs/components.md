@@ -15,7 +15,7 @@
 | Prop | 类型 | 默认值 | 说明 |
 |---|---|---|---|
 | `variant` | `'primary' \| 'outline' \| 'ghost' \| 'danger'` | `'primary'` | 按钮风格 |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'icon' \| 'icon-lg'` | `'md'` | 尺寸。`icon`/`icon-lg` 为正方形图标按钮 |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'icon' \| 'icon-lg'` | `'md'` | 尺寸。`icon`/`icon-lg` 为正方形图标按钮 |
 | `disabled` | `boolean` | `false` | 禁用状态 |
 | `icon` | `string` | `''` | Material Symbols 图标名 |
 | `iconSize` | `string` | `'16px'` | 图标字号 |
@@ -48,8 +48,11 @@
 <!-- 危险按钮 -->
 <AxButton variant="danger" @click="remove">删除</AxButton>
 
-<!-- 纯图标按钮（close 图标，28px） -->
+<!-- 纯图标按钮（close 图标，24px） -->
 <AxButton variant="ghost" size="icon" icon="close" @click="dismiss" />
+
+<!-- 大号图标按钮（32px） -->
+<AxButton variant="outline" size="icon-lg" icon="settings" />
 
 <!-- 带图标的文字按钮 -->
 <AxButton icon="add" icon-size="18px">新建</AxButton>
@@ -74,7 +77,7 @@
 | `type` | `string` | `'text'` | HTML input type |
 | `placeholder` | `string` | `''` | 占位文字 |
 | `disabled` | `boolean` | `false` | 禁用 |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg'` | `'md'` | 尺寸 |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | 尺寸 |
 | `password` | `boolean` | `false` | 密码模式（带显示/隐藏切换） |
 | `autocomplete` | `string` | — | 自动填充提示 |
 | `multiline` | `boolean` | `false` | textarea 多行模式 |
@@ -147,7 +150,7 @@
 | `tagMaxWidth` | `string` | `'120px'` | 多选标签最大宽度 |
 | `triggerWidth` | `string` | `''` | 触发器最小宽度 |
 | `triggerMaxWidth` | `string` | `''` | 触发器最大宽度（推荐用此限宽，非硬编码 class） |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg'` | `'md'` | 触发器尺寸 |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | 触发器尺寸 |
 
 ### Events
 
@@ -360,7 +363,7 @@ const tags = ref(['zh'])
 | `modelValue` | `boolean` | `false` | 开关状态（必传，支持 v-model） |
 | `disabled` | `boolean` | `false` | 禁用 |
 | `id` | `string` | — | HTML id（配合 label 的 for） |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg'` | `'md'` | 开关尺寸 |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | 开关尺寸 |
 
 ### Events
 

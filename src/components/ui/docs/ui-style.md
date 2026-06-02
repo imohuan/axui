@@ -26,16 +26,36 @@
 
 ### 2.1 标准高度基准
 
-| 控件类型 | 内边距 | 近似高度 | 说明 |
-|---|---|---|---|
-| `AxButton` size=md | `px-4 py-1.5` | ~32px | 默认主/线框/幽灵按钮 |
-| `AxButton` size=sm | `px-2.5 py-1` | ~28px | 紧凑按钮 |
-| `AxButton` size=icon | `w-7 h-7` | 28px | 纯图标（如侧栏 more） |
-| `AxButton` size=icon-lg | `w-8 h-8` | 32px | 大号图标按钮 |
-| `AxSelect` 触发器 | `px-3 py-1.5` | ~32px | 与 md 按钮等高 |
-| `AxDropdown` 菜单项 | `px-3 py-1.5` | — | 由触发器 slot 决定高度 |
-| 侧栏导航项 | `py-1.5 px-2` | ~32px | 与按钮视觉对齐 |
-| 下拉菜单项 | `px-3 py-1.5` | — | 菜单内列表行 |
+所有交互控件（Button、Input、Select、Switch）同 size 下**高度严格一致**：
+
+
+| 控件类型         | size | 内边距           | 高度  | 说明       |
+| ------------ | ---- | ------------- | ----- | -------- |
+| `AxButton` | xs | `h-[18px] px-1.5 py-px` | 18px | 极小按钮 |
+| `AxButton` | sm | `h-5 px-2 py-0.5` | 20px | 紧凑按钮 |
+| `AxButton` | md | `h-6 px-2.5 py-1` | 24px | 默认主/线框/幽灵按钮 |
+| `AxButton` | lg | `h-7 px-3 py-1.5` | 28px | 大号按钮 |
+| `AxButton` | xl | `h-8 px-3.5 py-2` | 32px | 超大按钮 |
+| `AxButton` size=icon | — | `w-6 h-6` | 24px | 纯图标（如侧栏 more） |
+| `AxButton` size=icon-lg | — | `w-7 h-7` | 28px | 大号图标按钮 |
+| `AxInput` | xs | `h-[18px] px-1.5 py-px` | 18px | 极小输入框 |
+| `AxInput` | sm | `h-5 px-2 py-0.5` | 20px | 紧凑输入框 |
+| `AxInput` | md | `h-6 px-2.5 py-1` | 24px | 默认输入框 |
+| `AxInput` | lg | `h-7 px-3 py-1.5` | 28px | 大号输入框 |
+| `AxInput` | xl | `h-8 px-3.5 py-2` | 32px | 超大输入框 |
+| `AxSelect` 触发器 | xs | `h-[18px] px-1.5 py-px` | 18px | 与 xs 按钮等高 |
+| `AxSelect` 触发器 | sm | `h-5 px-2 py-0.5` | 20px | 与 sm 按钮等高 |
+| `AxSelect` 触发器 | md | `h-6 px-2.5 py-1` | 24px | 与 md 按钮等高 |
+| `AxSelect` 触发器 | lg | `h-7 px-3 py-1.5` | 28px | 与 lg 按钮等高 |
+| `AxSelect` 触发器 | xl | `h-8 px-3.5 py-2` | 32px | 与 xl 按钮等高 |
+| `AxSwitch` 轨道 | xs | `h-[18px] w-[30px]` (thumb `h-3 w-3`) | 18px | 与 xs 控件等高 |
+| `AxSwitch` 轨道 | sm | `h-5 w-[34px]` (thumb `h-3.5 w-3.5`) | 20px | 与 sm 控件等高 |
+| `AxSwitch` 轨道 | md | `h-6 w-10` (thumb `h-4 w-4`) | 24px | 与 md 控件等高 |
+| `AxSwitch` 轨道 | lg | `h-7 w-11` (thumb `h-5 w-5`) | 28px | 与 lg 控件等高 |
+| `AxSwitch` 轨道 | xl | `h-8 w-12` (thumb `h-6 w-6`) | 32px | 与 xl 控件等高 |
+| `AxDropdown` 菜单项 | — | `px-3 py-1.5` | — | 由触发器 slot 决定高度 |
+| 侧栏导航项        | — | `py-1.5 px-2` | ~32px | 与按钮视觉对齐  |
+| 下拉菜单项        | — | `px-3 py-1.5` | —     | 菜单内列表行   |
 
 ### 2.2 宽度约束
 
@@ -43,7 +63,7 @@
 |---|---|
 | `AxSelect` 触发器 | 默认 `w-full`；需限宽时传 `trigger-max-width`（如 `280px`），非强制写死 class |
 | `AxButton` | 默认自适应；`block` 时 `w-full` |
-| `AxInput` | 默认 `w-full`；size=`md` 为 `p-2.5`，`lg` 为 `p-3` |
+| `AxInput` | 默认 `w-full`；size=`md` 为 `h-6 px-2.5 py-1`，`lg` 为 `h-7 px-3 py-1.5` |
 
 ### 2.3 纯图标按钮
 

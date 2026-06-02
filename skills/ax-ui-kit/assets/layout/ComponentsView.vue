@@ -358,21 +358,21 @@ function handleBallSave(prefs: FloatingBallPrefs) {
           </div>
           <div class="flex flex-wrap gap-ax-sm">
             <span class="font-label-md text-[10px] text-secondary self-center">带图标：</span>
-            <AxInput size="md" placeholder="带前缀" class="w-40">
+            <AxInput size="lg" placeholder="带前缀" class="w-40">
               <template #prefix><span class="material-symbols-outlined !text-[16px]">person</span></template>
             </AxInput>
-            <AxInput size="md" placeholder="带后缀" class="w-40">
+            <AxInput size="lg" placeholder="带后缀" class="w-40">
               <template #suffix><span class="material-symbols-outlined !text-[16px]">close</span></template>
             </AxInput>
-            <AxInput size="md" placeholder="禁用状态" class="w-36" disabled />
+            <AxInput size="lg" placeholder="禁用状态" class="w-36" disabled />
           </div>
           <form class="relative flex flex-wrap gap-ax-sm items-center" autocomplete="off" @submit.prevent>
             <input type="text" name="username" autocomplete="username" tabindex="-1" aria-hidden="true"
               class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 opacity-0 pointer-events-none"
               value="">
             <span class="font-label-md text-[10px] text-secondary self-center">密码模式：</span>
-            <AxInput size="md" placeholder="请输入密码" class="w-44" password />
-            <AxInput size="md" placeholder="密码已输入" class="w-44" password model-value="Admin@2026"
+            <AxInput size="lg" placeholder="请输入密码" class="w-44" password />
+            <AxInput size="lg" placeholder="密码已输入" class="w-44" password model-value="Admin@2026"
               autocomplete="current-password" />
           </form>
         </div>

@@ -9,6 +9,28 @@ const SIZE_CLASSES: Record<InputSize, string> = {
   lg: 'h-7 px-3 py-1.5 text-label-md',
 }
 
+const ICON_SIZE_CLASSES: Record<InputSize, string> = {
+  xs: '!text-[12px]',
+  sm: '!text-[14px]',
+  md: '!text-[16px]',
+  lg: '!text-[18px]',
+}
+
+/** textarea 模式只用 padding + font，不定高 */
+const TEXTAREA_SIZE_CLASSES: Record<InputSize, string> = {
+  xs: 'px-1.5 py-px text-body-sm',
+  sm: 'px-2 py-0.5 text-body-sm',
+  md: 'px-2.5 py-1 text-label-md',
+  lg: 'px-3 py-1.5 text-label-md',
+}
+
+const RESIZE_CLASSES: Record<string, string> = {
+  none: 'resize-none',
+  vertical: 'resize-y',
+  horizontal: 'resize-x',
+  both: 'resize',
+}
+
 const props = withDefaults(
   defineProps<{
     modelValue?: string | number
@@ -19,6 +41,12 @@ const props = withDefaults(
     password?: boolean
     /** 密码框默认 new-password；登录场景可传 current-password */
     autocomplete?: string
+    /** 多行文本模式（textarea） */
+    multiline?: boolean
+    /** textarea 行数 */
+    rows?: number
+    /** textarea resize 行为：none | vertical | horizontal | both */
+    resize?: 'none' | 'vertical' | 'horizontal' | 'both'
   }>(),
   {
     modelValue: '',
@@ -28,6 +56,9 @@ const props = withDefaults(
     size: 'md',
     password: false,
     autocomplete: undefined,
+    multiline: false,
+    rows: 3,
+    resize: 'vertical',
   },
 )
 
@@ -39,6 +70,7 @@ const emit = defineEmits<{
 }>()
 
 const inputRef = ref<HTMLInputElement | null>(null)
+const textareaRef = ref<HTMLTextAreaElement | null>(null)
 const passwordVisible = ref(false)
 
 const resolvedType = computed(() => {
@@ -61,8 +93,21 @@ const inputClasses = computed(() => [
   SIZE_CLASSES[props.size],
 ])
 
+const textareaClasses = computed(() => [
+  'w-full font-label-md bg-surface-container-low border border-outline-variant rounded-md',
+  'focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-outline',
+  'transition-all',
+  'disabled:opacity-50 disabled:cursor-not-allowed',
+  TEXTAREA_SIZE_CLASSES[props.size],
+  RESIZE_CLASSES[props.resize],
+])
+
 const onInput = (e: Event) => {
   emit('update:modelValue', (e.target as HTMLInputElement).value)
+}
+
+const onTextareaInput = (e: Event) => {
+  emit('update:modelValue', (e.target as HTMLTextAreaElement).value)
 }
 
 const togglePassword = () => {
@@ -79,13 +124,35 @@ const togglePassword = () => {
   })
 }
 
-const focus = () => inputRef.value?.focus()
+const focus = () => {
+  if (props.multiline) {
+    textareaRef.value?.focus()
+  } else {
+    inputRef.value?.focus()
+  }
+}
 
-defineExpose({ focus, inputRef })
+defineExpose({ focus, inputRef, textareaRef })
 </script>
 
 <template>
-  <div class="relative flex items-center w-full">
+  <!-- textarea 多行模式 -->
+  <textarea
+    v-if="multiline"
+    ref="textareaRef"
+    :value="modelValue"
+    :placeholder="placeholder"
+    :disabled="disabled"
+    :rows="rows"
+    :class="textareaClasses"
+    @input="onTextareaInput"
+    @keydown="emit('keydown', $event)"
+    @blur="emit('blur', $event)"
+    @focus="emit('focus', $event)"
+  />
+
+  <!-- 单行 input 模式 -->
+  <div v-else class="relative flex items-center w-full">
     <div
       v-if="$slots.prefix"
       class="absolute left-2.5 flex items-center text-secondary pointer-events-none z-10"
@@ -121,7 +188,7 @@ defineExpose({ focus, inputRef })
       tabindex="-1"
       @click="togglePassword"
     >
-      <span class="material-symbols-outlined text-[18px]">
+      <span class="material-symbols-outlined" :class="ICON_SIZE_CLASSES[size]">
         {{ passwordVisible ? 'visibility' : 'visibility_off' }}
       </span>
     </button>

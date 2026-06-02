@@ -29,12 +29,17 @@ const btnSchema: PropPanelSchemaItem[] = [
   { key: 'block', label: '块级', description: '宽度撑满父容器', type: 'switch' },
 ]
 
-const inputProps = ref({ value: '', size: 'md' as const, disabled: false, showPrefix: false, showPassword: false, placeholder: '请输入内容...' })
+const inputProps = ref({ value: '', size: 'md' as const, disabled: false, showPrefix: false, showSuffix: false, showPassword: false, placeholder: '请输入内容...', showMultiline: false, inputRows: 3, resize: 'vertical' as 'none' | 'vertical' | 'horizontal' | 'both' })
+const inputIconSize: Record<string, string> = { xs: '!text-[12px]', sm: '!text-[14px]', md: '!text-[16px]', lg: '!text-[18px]' }
 const inputSchema: PropPanelSchemaItem[] = [
   { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }] },
+  { key: 'showMultiline', label: '多行模式', description: '切换为 textarea 多行文本输入', type: 'switch' },
   { key: 'placeholder', label: '占位符', type: 'input', placeholder: '占位文本' },
-  { key: 'showPassword', label: '密码模式', description: '显示密码显隐切换小眼睛', type: 'switch' },
-  { key: 'showPrefix', label: '前缀图标', description: '在输入框左侧显示搜索图标', type: 'switch' },
+  { key: 'inputRows', label: '行数', description: 'textarea 显示行数', type: 'slider', min: 1, max: 10 },
+  { key: 'resize', label: 'Resize', description: 'textarea 拖拽缩放方向', type: 'segmented', options: [{ value: 'vertical', label: '纵向' }, { value: 'horizontal', label: '横向' }, { value: 'both', label: '双向' }, { value: 'none', label: '禁用' }] },
+  { key: 'showPassword', label: '密码模式', description: '显示密码显隐切换小眼睛（仅单行）', type: 'switch' },
+  { key: 'showPrefix', label: '前缀图标', description: '在输入框左侧显示图标（仅单行）', type: 'switch' },
+  { key: 'showSuffix', label: '后置图标', description: '在输入框右侧显示图标（仅单行）', type: 'switch' },
   { key: 'disabled', label: '禁用', description: '不可输入状态', type: 'switch' },
 ]
 
@@ -333,9 +338,9 @@ function handleBallSave(prefs: FloatingBallPrefs) {
     <div id="section-input" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
       <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
         <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Input</span>
-        <span class="font-body-sm text-[11px] text-secondary">单行输入框 — 3 种尺寸、前缀图标、密码模式、禁用态</span>
+        <span class="font-body-sm text-[11px] text-secondary">输入框 — 支持单行/多行切换、3 种尺寸、前缀图标、密码模式、禁用态</span>
       </div>
-      <div class="flex divide-x divide-outline-variant min-h-[220px]">
+      <div class="flex divide-x divide-outline-variant min-h-[260px]">
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-md items-start justify-center">
           <form class="w-64 relative" autocomplete="off" @submit.prevent>
             <input
@@ -353,9 +358,13 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               :size="inputProps.size"
               :placeholder="inputProps.placeholder"
               :disabled="inputProps.disabled"
-              :password="inputProps.showPassword"
+              :password="inputProps.showPassword && !inputProps.showMultiline"
+              :multiline="inputProps.showMultiline"
+              :rows="inputProps.inputRows"
+              :resize="inputProps.resize"
             >
-              <template v-if="inputProps.showPrefix && !inputProps.showPassword" #prefix><span class="material-symbols-outlined text-[16px]">search</span></template>
+              <template v-if="inputProps.showPrefix && !inputProps.showMultiline && !inputProps.showPassword" #prefix><span class="material-symbols-outlined" :class="inputIconSize[inputProps.size]">search</span></template>
+              <template v-if="inputProps.showSuffix && !inputProps.showMultiline && !inputProps.showPassword" #suffix><span class="material-symbols-outlined" :class="inputIconSize[inputProps.size]">close</span></template>
             </AxInput>
           </form>
           <div class="flex flex-wrap gap-ax-sm">
@@ -367,7 +376,10 @@ function handleBallSave(prefs: FloatingBallPrefs) {
           <div class="flex flex-wrap gap-ax-sm">
             <span class="font-label-md text-[10px] text-secondary self-center">带图标：</span>
             <AxInput size="md" placeholder="带前缀" class="w-40">
-              <template #prefix><span class="material-symbols-outlined text-[16px]">person</span></template>
+              <template #prefix><span class="material-symbols-outlined !text-[16px]">person</span></template>
+            </AxInput>
+            <AxInput size="md" placeholder="带后缀" class="w-40">
+              <template #suffix><span class="material-symbols-outlined !text-[16px]">close</span></template>
             </AxInput>
             <AxInput size="md" placeholder="禁用状态" class="w-36" disabled />
           </div>

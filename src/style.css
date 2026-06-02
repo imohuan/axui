@@ -33,6 +33,14 @@
   --radius-xl: 0.5rem;
   --radius-full: 1rem;
 
+  --radius-ax-none: 0;
+  --radius-ax-xs: 0.125rem;
+  --radius-ax-sm: 0.25rem;
+  --radius-ax-md: 0.375rem;
+  --radius-ax-lg: 0.5rem;
+  --radius-ax-xl: 1rem;
+  --radius-ax-full: 9999px;
+
   --spacing-ax-xs: 0.25rem;
   --spacing-ax-sm: 0.5rem;
   --spacing-ax-md: 1rem;

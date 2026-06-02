@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { computed, ref, type Ref } from 'vue'
-import type { ButtonSize, ButtonVariant } from './types'
+import type { ButtonSize, ButtonVariant, RoundedSize } from './types'
+
+const ROUNDED_CLASSES: Record<RoundedSize, string> = {
+  none: 'rounded-ax-none',
+  xs: 'rounded-ax-xs',
+  sm: 'rounded-ax-sm',
+  md: 'rounded-ax-md',
+  lg: 'rounded-ax-lg',
+  xl: 'rounded-ax-xl',
+  full: 'rounded-ax-full',
+}
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary: 'bg-primary text-on-primary hover:opacity-90',
@@ -23,6 +33,7 @@ const props = withDefaults(
   defineProps<{
     variant?: ButtonVariant
     size?: ButtonSize
+    rounded?: RoundedSize
     disabled?: boolean
     icon?: string
     iconSize?: string
@@ -33,6 +44,7 @@ const props = withDefaults(
   {
     variant: 'primary',
     size: 'md',
+    rounded: 'md',
     disabled: false,
     icon: '',
     iconSize: '16px',
@@ -61,7 +73,9 @@ const isIconOnly = computed(() =>
 )
 
 const classes = computed(() => [
-  'relative overflow-hidden inline-flex items-center justify-center gap-ax-xs font-label-md rounded-md transition-colors outline-none border-0 shrink-0',
+  'relative overflow-hidden inline-flex items-center justify-center gap-ax-xs font-label-md transition-colors outline-none border-0 shrink-0',
+  ROUNDED_CLASSES[props.rounded],
+  isIconOnly.value ? 'leading-none' : '',
   isIconOnly.value ? 'leading-none' : '',
   VARIANT_CLASSES[props.variant],
   SIZE_CLASSES[props.size],

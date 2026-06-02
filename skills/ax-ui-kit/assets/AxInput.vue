@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
-import type { InputSize } from './types'
+import type { InputSize, RoundedSize } from './types'
+
+const ROUNDED_CLASSES: Record<RoundedSize, string> = {
+  none: 'rounded-ax-none',
+  xs: 'rounded-ax-xs',
+  sm: 'rounded-ax-sm',
+  md: 'rounded-ax-md',
+  lg: 'rounded-ax-lg',
+  xl: 'rounded-ax-xl',
+  full: 'rounded-ax-full',
+}
 
 const SIZE_CLASSES: Record<InputSize, string> = {
   xs: 'h-[18px] px-1.5 py-px text-body-sm',
@@ -39,6 +49,7 @@ const props = withDefaults(
     placeholder?: string
     disabled?: boolean
     size?: InputSize
+    rounded?: RoundedSize
     password?: boolean
     /** 密码框默认 new-password；登录场景可传 current-password */
     autocomplete?: string
@@ -55,6 +66,7 @@ const props = withDefaults(
     placeholder: '',
     disabled: false,
     size: 'md',
+    rounded: 'md',
     password: false,
     autocomplete: undefined,
     multiline: false,
@@ -87,7 +99,8 @@ const resolvedAutocomplete = computed(() => {
 })
 
 const inputClasses = computed(() => [
-  'w-full font-label-md bg-surface-container-low border border-outline-variant rounded-md',
+  'w-full font-label-md bg-surface-container-low border border-outline-variant',
+  ROUNDED_CLASSES[props.rounded],
   'focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-outline',
   'transition-all',
   'disabled:opacity-50 disabled:cursor-not-allowed',
@@ -95,7 +108,8 @@ const inputClasses = computed(() => [
 ])
 
 const textareaClasses = computed(() => [
-  'w-full font-label-md bg-surface-container-low border border-outline-variant rounded-md',
+  'w-full font-label-md bg-surface-container-low border border-outline-variant',
+  ROUNDED_CLASSES[props.rounded],
   'focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-outline',
   'transition-all',
   'disabled:opacity-50 disabled:cursor-not-allowed',

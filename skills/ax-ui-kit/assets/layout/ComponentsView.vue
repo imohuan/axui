@@ -13,6 +13,7 @@ const emit = defineEmits<{
 const btnProps = ref({
   variant: 'primary' as const,
   size: 'md' as const,
+  rounded: 'md',
   disabled: false,
   showIcon: false,
   loading: false,
@@ -22,6 +23,7 @@ const btnProps = ref({
 const btnSchema: PropPanelSchemaItem[] = [
   { key: 'variant', label: '变体', type: 'segmented', options: [{ value: 'primary', label: 'Primary' }, { value: 'outline', label: 'Outline' }, { value: 'ghost', label: 'Ghost' }, { value: 'danger', label: 'Danger' }] },
   { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }, { value: 'icon', label: 'Icon' }, { value: 'icon-lg', label: 'Icon-lg' }] },
+  { key: 'rounded', label: '圆角', type: 'segmented', options: [{ value: 'none', label: 'None' }, { value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }, { value: 'full', label: 'Full' }] },
   { key: 'label', label: '文案', type: 'input', placeholder: '按钮文字' },
   { key: 'showIcon', label: '显示图标', description: '在按钮左侧显示 bolt 图标', type: 'switch' },
   { key: 'loading', label: '加载状态', description: '展示旋转加载动画', type: 'switch' },
@@ -29,10 +31,11 @@ const btnSchema: PropPanelSchemaItem[] = [
   { key: 'block', label: '块级', description: '宽度撑满父容器', type: 'switch' },
 ]
 
-const inputProps = ref({ value: '', size: 'md' as const, disabled: false, showPrefix: false, showSuffix: false, showPassword: false, placeholder: '请输入内容...', showMultiline: false, inputRows: 3, resize: 'vertical' as 'none' | 'vertical' | 'horizontal' | 'both' })
+const inputProps = ref({ value: '', size: 'md' as const, rounded: 'md', disabled: false, showPrefix: false, showSuffix: false, showPassword: false, placeholder: '请输入内容...', showMultiline: false, inputRows: 3, resize: 'vertical' as 'none' | 'vertical' | 'horizontal' | 'both' })
 const inputIconSize: Record<string, string> = { xs: '!text-[12px]', sm: '!text-[14px]', md: '!text-[16px]', lg: '!text-[18px]' }
 const inputSchema: PropPanelSchemaItem[] = [
   { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }] },
+  { key: 'rounded', label: '圆角', type: 'segmented', options: [{ value: 'none', label: 'None' }, { value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }, { value: 'full', label: 'Full' }] },
   { key: 'showMultiline', label: '多行模式', description: '切换为 textarea 多行文本输入', type: 'switch' },
   { key: 'placeholder', label: '占位符', type: 'input', placeholder: '占位文本' },
   { key: 'inputRows', label: '行数', description: 'textarea 显示行数', type: 'slider', min: 1, max: 10 },
@@ -80,9 +83,10 @@ const demoSelectOptions = [
   { value: 'opt4', label: 'Svelte — 编译时框架' },
   { value: 'opt5', label: 'Solid.js — 细粒度响应' },
 ]
-const selectProps = ref({ value: 'opt1' as unknown, size: 'md' as string, searchable: false, multiple: false, placeholder: '请选择框架...', placement: 'bottom-start', dropdownWidth: 'auto' as string, dropdownMaxWidth: '' as string, tagMaxWidth: '120px' as string, triggerWidth: '' as string, triggerMaxWidth: '' as string })
+const selectProps = ref({ value: 'opt1' as unknown, size: 'md' as string, rounded: 'md', searchable: false, multiple: false, placeholder: '请选择框架...', placement: 'bottom-start', dropdownWidth: 'auto' as string, dropdownMaxWidth: '' as string, tagMaxWidth: '120px' as string, triggerWidth: '' as string, triggerMaxWidth: '' as string })
 const selectSchema: PropPanelSchemaItem[] = [
   { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }] },
+  { key: 'rounded', label: '圆角', type: 'segmented', options: [{ value: 'none', label: 'None' }, { value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }, { value: 'full', label: 'Full' }] },
   { key: 'placeholder', label: '占位符', type: 'input', placeholder: '占位文本' },
   { key: 'searchable', label: '可搜索', description: '点击下拉后按钮变为搜索输入框', type: 'switch' },
   { key: 'multiple', label: '多选', description: '支持勾选多项，已选项以标签展示', type: 'switch' },
@@ -303,7 +307,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       <div class="flex divide-x divide-outline-variant min-h-[200px]">
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
           <div class="flex flex-wrap items-center gap-ax-sm">
-            <AxButton :variant="btnProps.variant" :size="btnProps.size" :disabled="btnProps.disabled"
+            <AxButton :variant="btnProps.variant" :size="btnProps.size" :rounded="btnProps.rounded" :disabled="btnProps.disabled"
               :icon="btnProps.showIcon ? 'bolt' : ''" :block="btnProps.block" :loading="btnProps.loading">
               {{ btnProps.label }}
             </AxButton>
@@ -339,7 +343,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               aria-hidden="true"
               class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 opacity-0 pointer-events-none"
               value="">
-            <AxInput v-model="inputProps.value" :size="inputProps.size" :placeholder="inputProps.placeholder"
+            <AxInput v-model="inputProps.value" :size="inputProps.size" :rounded="inputProps.rounded" :placeholder="inputProps.placeholder"
               :disabled="inputProps.disabled" :password="inputProps.showPassword && !inputProps.showMultiline"
               :multiline="inputProps.showMultiline" :rows="inputProps.inputRows" :resize="inputProps.resize">
               <template v-if="inputProps.showPrefix && !inputProps.showMultiline && !inputProps.showPassword"
@@ -493,7 +497,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
       <div class="flex divide-x divide-outline-variant min-h-[180px]">
         <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-start justify-center">
           <div>
-            <AxSelect v-model="selectProps.value" :size="selectProps.size" :options="demoSelectOptions"
+            <AxSelect v-model="selectProps.value" :size="selectProps.size" :rounded="selectProps.rounded" :options="demoSelectOptions"
               :searchable="selectProps.searchable" :multiple="selectProps.multiple"
               :placeholder="selectProps.placeholder" :placement="selectProps.placement"
               :dropdown-width="selectProps.dropdownWidth" :dropdown-max-width="selectProps.dropdownMaxWidth"

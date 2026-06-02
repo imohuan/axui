@@ -3,6 +3,7 @@ export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'icon' | 'icon-lg'
 export type InputSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export type ControlSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export type AlertType = 'info' | 'error' | 'success' | 'warning'
+export type RoundedSize = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
 export interface SelectOption {
   value: string | number

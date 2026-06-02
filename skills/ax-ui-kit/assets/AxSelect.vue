@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 import AxDropdown from './AxDropdown.vue'
-import type { ControlSize, SelectOption } from './types'
+import type { ControlSize, SelectOption, RoundedSize } from './types'
+
+const ROUNDED_CLASSES: Record<RoundedSize, string> = {
+  none: 'rounded-ax-none',
+  xs: 'rounded-ax-xs',
+  sm: 'rounded-ax-sm',
+  md: 'rounded-ax-md',
+  lg: 'rounded-ax-lg',
+  xl: 'rounded-ax-xl',
+  full: 'rounded-ax-full',
+}
 
 const SIZE_CLASSES: Record<ControlSize, string> = {
   xs: 'h-[18px] px-1.5 py-px text-body-sm',
@@ -40,6 +50,7 @@ const props = withDefaults(
     triggerWidth?: string
     triggerMaxWidth?: string
     size?: ControlSize
+    rounded?: RoundedSize
   }>(),
   {
     modelValue: '',
@@ -55,6 +66,7 @@ const props = withDefaults(
     triggerWidth: '',
     triggerMaxWidth: '',
     size: 'md',
+    rounded: 'md',
   },
 )
 
@@ -177,6 +189,8 @@ const triggerStyle = computed(() => {
   return s
 })
 
+const roundedClass = computed(() => ROUNDED_CLASSES[props.rounded])
+
 // ---- Keyboard ----
 
 const scrollToHighlight = () => {
@@ -261,9 +275,10 @@ watch(open, (val) => {
         <template v-if="searchable">
           <div
             :class="[
-              'w-full bg-surface-container-low rounded-md transition-colors text-left',
+              'w-full bg-surface-container-low transition-colors text-left',
+              roundedClass,
               isOpen
-                ? 'flex flex-col gap-1 rounded-md ring-1 ring-primary border-primary'
+                ? 'flex flex-col gap-1 ring-1 ring-primary border-primary'
                 : 'flex flex-wrap items-center gap-1 border border-outline-variant hover:bg-surface-container hover:border-outline cursor-pointer',
               triggerSizeClass,
             ]"
@@ -333,7 +348,7 @@ watch(open, (val) => {
           <button
             v-if="multiple"
             type="button"
-            :class="['w-full flex flex-wrap items-center gap-1 bg-surface-container-low border border-outline-variant rounded-md hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left', SIZE_CLASSES[props.size]]"
+            :class="['w-full flex flex-wrap items-center gap-1 bg-surface-container-low border border-outline-variant hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left', roundedClass, SIZE_CLASSES[props.size]]"
             :style="triggerStyle"
             @click="isOpen ? closeDropdown() : openDropdown()"
           >
@@ -375,7 +390,7 @@ watch(open, (val) => {
           <button
             v-else
             type="button"
-            :class="['w-full flex items-center justify-between bg-surface-container-low border border-outline-variant rounded-md hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left', SIZE_CLASSES[props.size]]"
+            :class="['w-full flex items-center justify-between bg-surface-container-low border border-outline-variant hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left', roundedClass, SIZE_CLASSES[props.size]]"
             :style="triggerStyle"
             @click="isOpen ? closeDropdown() : openDropdown()"
           >

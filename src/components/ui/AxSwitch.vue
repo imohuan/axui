@@ -2,10 +2,11 @@
 import { computed } from 'vue'
 import type { ControlSize } from './types'
 
-const SIZE_CLASSES: Record<ControlSize, { track: string; thumb: string }> = {
-  sm: { track: 'h-5 w-9', thumb: 'h-4 w-4' },
-  md: { track: 'h-6 w-10', thumb: 'h-5 w-5' },
-  lg: { track: 'h-7 w-11', thumb: 'h-6 w-6' },
+const SIZE_CLASSES: Record<ControlSize, { track: string; thumb: string; translate: string }> = {
+  xs: { track: 'h-[18px] w-[30px]', thumb: 'h-3 w-3', translate: 'translate-x-3.5' },
+  sm: { track: 'h-5 w-[34px]', thumb: 'h-3.5 w-3.5', translate: 'translate-x-4' },
+  md: { track: 'h-6 w-10', thumb: 'h-4 w-4', translate: 'translate-x-5' },
+  lg: { track: 'h-7 w-11', thumb: 'h-5 w-5', translate: 'translate-x-5' },
 }
 
 const props = withDefaults(
@@ -40,7 +41,7 @@ const thumbClasses = computed(() => {
   return [
     'pointer-events-none inline-block transform rounded-full bg-white shadow transition duration-200 ease-in-out',
     s.thumb,
-    props.modelValue ? 'translate-x-4' : 'translate-x-0',
+    props.modelValue ? s.translate : 'translate-x-0',
   ]
 })
 </script>

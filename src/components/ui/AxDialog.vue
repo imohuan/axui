@@ -8,6 +8,7 @@ const props = withDefaults(
     icon?: string
     maxWidth?: string
     closeOnOverlay?: boolean
+    bodyClass?: string
   }>(),
   {
     modelValue: false,
@@ -15,6 +16,7 @@ const props = withDefaults(
     icon: '',
     maxWidth: 'max-w-xl',
     closeOnOverlay: true,
+    bodyClass: '',
   },
 )
 
@@ -167,7 +169,7 @@ defineExpose({ open, close, setFocusableRef, dialogRef })
             </button>
           </div>
 
-          <div class="p-ax-lg overflow-y-auto space-y-ax-lg scrollbar-hide flex-1">
+          <div :class="['p-ax-lg overflow-y-auto space-y-ax-lg scrollbar-hide flex-1', bodyClass]">
             <slot :close="close" :set-focusable-ref="setFocusableRef" />
           </div>
 

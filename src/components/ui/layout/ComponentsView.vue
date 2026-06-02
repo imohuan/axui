@@ -21,7 +21,7 @@ const btnProps = ref({
 })
 const btnSchema: PropPanelSchemaItem[] = [
   { key: 'variant', label: '变体', type: 'segmented', options: [{ value: 'primary', label: 'Primary' }, { value: 'outline', label: 'Outline' }, { value: 'ghost', label: 'Ghost' }, { value: 'danger', label: 'Danger' }] },
-  { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'icon', label: 'Icon' }, { value: 'icon-lg', label: 'Icon-lg' }] },
+  { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'icon', label: 'Icon' }, { value: 'icon-lg', label: 'Icon-lg' }] },
   { key: 'label', label: '文案', type: 'input', placeholder: '按钮文字' },
   { key: 'showIcon', label: '显示图标', description: '在按钮左侧显示 bolt 图标', type: 'switch' },
   { key: 'loading', label: '加载状态', description: '展示旋转加载动画', type: 'switch' },
@@ -31,25 +31,26 @@ const btnSchema: PropPanelSchemaItem[] = [
 
 const inputProps = ref({ value: '', size: 'md' as const, disabled: false, showPrefix: false, showPassword: false, placeholder: '请输入内容...' })
 const inputSchema: PropPanelSchemaItem[] = [
-  { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }] },
+  { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }] },
   { key: 'placeholder', label: '占位符', type: 'input', placeholder: '占位文本' },
   { key: 'showPassword', label: '密码模式', description: '显示密码显隐切换小眼睛', type: 'switch' },
   { key: 'showPrefix', label: '前缀图标', description: '在输入框左侧显示搜索图标', type: 'switch' },
   { key: 'disabled', label: '禁用', description: '不可输入状态', type: 'switch' },
 ]
 
-const sliderProps = ref({ value: 50, min: 0, max: 100, showLabels: true, showValue: true })
+const sliderProps = ref({ value: 50, min: 0, max: 100, showLabels: true, showValue: true, labelPosition: 'top' as 'top' | 'right' })
 const sliderSchema: PropPanelSchemaItem[] = [
   { key: 'value', label: '当前值', type: 'slider', min: 0, max: 100 },
   { key: 'min', label: '最小值', type: 'slider', min: 0, max: 50 },
   { key: 'max', label: '最大值', type: 'slider', min: 50, max: 200 },
+  { key: 'labelPosition', label: '标签位置', type: 'segmented', options: [{ value: 'top', label: '上方' }, { value: 'right', label: '右侧' }] },
   { key: 'showLabels', label: '显示标签', description: '左右端点标签文字', type: 'switch' },
   { key: 'showValue', label: '显示数值', description: '滑块上方数值气泡', type: 'switch' },
 ]
 
 const switchProps = ref({ checked: true, disabled: false, size: 'md' as string })
 const switchSchema: PropPanelSchemaItem[] = [
-  { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }] },
+  { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }] },
   { key: 'checked', label: '开关', description: '开关状态，支持 v-model', type: 'switch' },
   { key: 'disabled', label: '禁用', description: '不可交互状态，半透明显示', type: 'switch' },
 ]
@@ -76,7 +77,7 @@ const demoSelectOptions = [
 ]
 const selectProps = ref({ value: 'opt1' as unknown, size: 'md' as string, searchable: false, multiple: false, placeholder: '请选择框架...', placement: 'bottom-start', dropdownWidth: 'match' as string, dropdownMaxWidth: '' as string, tagMaxWidth: '120px' as string, triggerWidth: '' as string, triggerMaxWidth: '' as string })
 const selectSchema: PropPanelSchemaItem[] = [
-  { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }] },
+  { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }] },
   { key: 'placeholder', label: '占位符', type: 'input', placeholder: '占位文本' },
   { key: 'searchable', label: '可搜索', description: '点击下拉后按钮变为搜索输入框', type: 'switch' },
   { key: 'multiple', label: '多选', description: '支持勾选多项，已选项以标签展示', type: 'switch' },
@@ -409,6 +410,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               :max="sliderProps.max"
               :show-labels="sliderProps.showLabels"
               :show-value="sliderProps.showValue"
+              :label-position="sliderProps.labelPosition"
               label-left="最小"
               label-right="最大"
               :value-label="sliderProps.value + '%'"
@@ -417,6 +419,8 @@ function handleBallSave(prefs: FloatingBallPrefs) {
           <div class="w-full space-y-ax-sm max-w-sm">
             <span class="font-label-md text-[10px] text-secondary">带标签与数值：</span>
             <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载" value-label="72%" />
+            <span class="font-label-md text-[10px] text-secondary">标签右侧模式：</span>
+            <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载" value-label="72%" label-position="right" />
             <span class="font-label-md text-[10px] text-secondary">无标签简洁模式：</span>
             <AxSlider :model-value="40" :min="0" :max="100" />
           </div>

@@ -11,6 +11,7 @@ const props = withDefaults(
     labelRight?: string
     showValue?: boolean
     valueLabel?: string
+    labelPosition?: 'top' | 'right'
   }>(),
   {
     min: 0,
@@ -20,6 +21,7 @@ const props = withDefaults(
     labelRight: '',
     showValue: false,
     valueLabel: '',
+    labelPosition: 'top',
   },
 )
 
@@ -69,7 +71,40 @@ const onChange = async () => {
 </script>
 
 <template>
-  <div class="relative w-full">
+  <!-- right 布局：轨道在左，标签在右 -->
+  <div v-if="labelPosition === 'right' && (showLabels || showValue)" class="flex items-center gap-ax-sm w-full">
+    <div class="relative flex-1 flex items-center group py-1">
+      <div
+        class="absolute h-1.5 w-full bg-surface-container rounded-full pointer-events-none inset-y-0 my-auto"
+      />
+      <div
+        :style="{ width: percent + '%' }"
+        class="absolute h-1.5 bg-primary rounded-full pointer-events-none inset-y-0 my-auto"
+      />
+      <input
+        type="range"
+        :value="internalValue"
+        :min="min"
+        :max="max"
+        class="w-full h-1.5 appearance-none bg-transparent cursor-pointer outline-none focus:outline-none relative z-10"
+        @input="onInput"
+        @change="onChange"
+      />
+    </div>
+    <div class="flex items-center gap-ax-xs shrink-0">
+      <span v-if="showLabels" class="text-[11px] font-label-md text-secondary">{{ labelLeft }}</span>
+      <span
+        v-if="showValue"
+        class="text-[11px] font-label-md text-primary font-bold px-1 bg-surface-container border border-outline-variant rounded tabular-nums"
+      >
+        {{ displayValue }}
+      </span>
+      <span v-if="showLabels" class="text-[11px] font-label-md text-secondary">{{ labelRight }}</span>
+    </div>
+  </div>
+
+  <!-- top 布局：标签在上，轨道在下 -->
+  <div v-else class="relative w-full">
     <div
       v-if="showLabels || showValue"
       :class="[

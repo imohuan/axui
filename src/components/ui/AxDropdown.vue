@@ -18,9 +18,8 @@ const props = withDefaults(
     hoverCloseDelay?: number
     menuWidth?: string
     menuMaxWidth?: string
-    menuClass?: string
-    /** 外层容器 class，可覆盖默认 p-1 */
-    panelClass?: string
+    /** 内容区扩展样式，替换默认 p-1 */
+    bodyClass?: string
     teleport?: boolean
   }>(),
   {
@@ -32,8 +31,7 @@ const props = withDefaults(
     hoverCloseDelay: 150,
     menuWidth: '',
     menuMaxWidth: '',
-    menuClass: '',
-    panelClass: '',
+    bodyClass: 'p-1',
     teleport: true,
   },
 )
@@ -145,8 +143,7 @@ onBeforeUnmount(() => {
           v-bind="panelEvents"
           :class="[
             'z-50 rounded-xl bg-surface-container-lowest border border-outline-variant shadow-lg ring-1 ring-black ring-opacity-5 pro-shadow',
-            panelClass || 'p-1',
-            menuClass,
+            bodyClass,
           ]"
           role="menu"
         >

@@ -3,9 +3,10 @@ import { computed, nextTick, ref } from 'vue'
 import type { InputSize } from './types'
 
 const SIZE_CLASSES: Record<InputSize, string> = {
-  sm: 'px-2.5 py-1 text-body-sm',
-  md: 'px-3 py-1.5 text-label-md',
-  lg: 'px-4 py-2.5 text-label-md',
+  xs: 'h-[18px] px-1.5 py-px text-body-sm',
+  sm: 'h-5 px-2 py-0.5 text-body-sm',
+  md: 'h-6 px-2.5 py-1 text-label-md',
+  lg: 'h-7 px-3 py-1.5 text-label-md',
 }
 
 const props = withDefaults(

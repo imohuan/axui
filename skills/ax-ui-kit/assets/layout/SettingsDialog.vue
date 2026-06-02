@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
-import type { SelectOption } from '../types'
+import { reactive } from 'vue'
 
 // ── 侧边栏导航项 ──
 interface NavSection {
@@ -25,11 +24,6 @@ const emit = defineEmits<{
 
 const activeTab = defineModel<string>('activeTab', { default: 'general' })
 const isOpen = defineModel<boolean>({ default: false })
-
-const activeTitle = computed(() => {
-  const found = props.navItems.find((n) => n.id === activeTab.value)
-  return found ? found.label : '设置'
-})
 
 function open() { isOpen.value = true }
 function close() { isOpen.value = false; emit('close') }
@@ -67,11 +61,11 @@ const config = reactive({
 </script>
 
 <template>
-  <AxDialog v-model="isOpen" :title="title ?? '系统设置中心'" icon="settings" max-width="max-w-[820px]" @close="close">
-    <div class="flex h-[520px] -mx-margin -mt-2 overflow-hidden">
+  <AxDialog v-model="isOpen" :title="title ?? '系统设置中心'" icon="settings" max-width="max-w-[820px]" body-class="!p-0" @close="close">
+    <div class="flex h-[520px] overflow-hidden">
       <!-- ══════ 左侧导航栏 ══════ -->
       <aside
-        class="w-48 shrink-0 border-r border-outline-variant bg-surface-container-lowest flex flex-col py-ax-md px-ax-sm select-none">
+        class="w-48 shrink-0 border-r border-outline-variant bg-surface-container-lowest flex flex-col py-ax-sm px-ax-sm select-none">
         <div class="mb-ax-md px-2">
           <h2 class="font-headline-sm text-headline-sm text-primary font-bold">
             {{ title ?? 'Configuration' }}
@@ -108,14 +102,6 @@ const config = reactive({
 
       <!-- ══════ 右侧主内容区 ══════ -->
       <div class="flex-1 flex flex-col min-w-0">
-        <!-- 顶部标题栏 -->
-        <header class="flex items-center justify-between px-margin h-11 border-b border-outline-variant shrink-0">
-          <span class="font-headline-sm text-headline-sm font-semibold text-primary">{{ activeTitle }}</span>
-          <button class="text-secondary hover:bg-surface-container-low p-1 rounded transition-colors" @click="close">
-            <span class="material-symbols-outlined text-[18px]">close</span>
-          </button>
-        </header>
-
         <!-- ══════ 内容区（按 tab 切换） ══════ -->
         <div class="flex-1 overflow-y-auto p-margin space-y-ax-md scrollbar-hide">
 
@@ -462,14 +448,12 @@ const config = reactive({
           </template>
 
         </div>
-
-        <!-- 底部操作栏 -->
-        <footer
-          class="flex items-center justify-end gap-ax-sm px-margin py-ax-sm border-t border-outline-variant bg-surface-container-lowest shrink-0">
-          <AxButton variant="outline" @click="handleCancel">取消</AxButton>
-          <AxButton icon="save" @click="handleSave">保存更改</AxButton>
-        </footer>
       </div>
     </div>
+
+    <template #footer>
+      <AxButton variant="outline" @click="handleCancel">取消</AxButton>
+      <AxButton icon="save" @click="handleSave">保存更改</AxButton>
+    </template>
   </AxDialog>
 </template>

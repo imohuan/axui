@@ -38,11 +38,12 @@ const inputSchema: PropPanelSchemaItem[] = [
   { key: 'disabled', label: '禁用', description: '不可输入状态', type: 'switch' },
 ]
 
-const sliderProps = ref({ value: 50, min: 0, max: 100, showLabels: true, showValue: true })
+const sliderProps = ref({ value: 50, min: 0, max: 100, showLabels: true, showValue: true, labelPosition: 'top' as 'top' | 'right' })
 const sliderSchema: PropPanelSchemaItem[] = [
   { key: 'value', label: '当前值', type: 'slider', min: 0, max: 100 },
   { key: 'min', label: '最小值', type: 'slider', min: 0, max: 50 },
   { key: 'max', label: '最大值', type: 'slider', min: 50, max: 200 },
+  { key: 'labelPosition', label: '标签位置', type: 'segmented', options: [{ value: 'top', label: '上方' }, { value: 'right', label: '右侧' }] },
   { key: 'showLabels', label: '显示标签', description: '左右端点标签文字', type: 'switch' },
   { key: 'showValue', label: '显示数值', description: '滑块上方数值气泡', type: 'switch' },
 ]
@@ -409,6 +410,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               :max="sliderProps.max"
               :show-labels="sliderProps.showLabels"
               :show-value="sliderProps.showValue"
+              :label-position="sliderProps.labelPosition"
               label-left="最小"
               label-right="最大"
               :value-label="sliderProps.value + '%'"
@@ -417,6 +419,8 @@ function handleBallSave(prefs: FloatingBallPrefs) {
           <div class="w-full space-y-ax-sm max-w-sm">
             <span class="font-label-md text-[10px] text-secondary">带标签与数值：</span>
             <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载" value-label="72%" />
+            <span class="font-label-md text-[10px] text-secondary">标签右侧模式：</span>
+            <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载" value-label="72%" label-position="right" />
             <span class="font-label-md text-[10px] text-secondary">无标签简洁模式：</span>
             <AxSlider :model-value="40" :min="0" :max="100" />
           </div>

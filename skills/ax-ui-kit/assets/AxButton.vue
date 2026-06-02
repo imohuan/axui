@@ -10,11 +10,12 @@ const VARIANT_CLASSES: Record<ButtonVariant, string> = {
 }
 
 const SIZE_CLASSES: Record<ButtonSize, string> = {
-  sm: 'px-2.5 py-1 text-body-sm',
-  md: 'px-4 py-1.5 text-label-md',
-  lg: 'px-5 py-2.5 text-label-md',
-  icon: 'w-7 h-7 p-0',
-  'icon-lg': 'w-8 h-8 p-0',
+  xs: 'h-[18px] px-1.5 py-px text-body-sm',
+  sm: 'h-5 px-2 py-0.5 text-body-sm',
+  md: 'h-6 px-2.5 py-1 text-label-md',
+  lg: 'h-7 px-3 py-1.5 text-label-md',
+  icon: 'w-6 h-6 p-0',
+  'icon-lg': 'w-7 h-7 p-0',
 }
 
 const props = withDefaults(

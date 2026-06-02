@@ -10,6 +10,7 @@ const ICON_SIZE_CLASSES: Record<InputSize, string> = {
   sm: '!text-[14px]',
   md: '!text-[16px]',
   lg: '!text-[18px]',
+  xl: '!text-[20px]',
 }
 
 /** textarea 模式只用 padding + font，不定高 */
@@ -18,6 +19,7 @@ const TEXTAREA_SIZE_CLASSES: Record<InputSize, string> = {
   sm: 'px-2 py-0.5 text-body-sm',
   md: 'px-2.5 py-1 text-label-md',
   lg: 'px-3 py-1.5 text-label-md',
+  xl: 'px-3.5 py-2 text-label-md',
 }
 
 const RESIZE_CLASSES: Record<string, string> = {

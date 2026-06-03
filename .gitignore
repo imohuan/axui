@@ -22,4 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-dist-cdn
+
+dist-cdn/*
+# !dist-cdn/axiom-ui.umd.js
+# !dist-cdn/axiom-ui.es.js

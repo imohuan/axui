@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useFloating } from './hooks/useFloating'
 import { useTeleportTarget } from './hooks/useTeleportTarget'
@@ -46,6 +46,10 @@ const triggerRef = ref<HTMLElement | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
 const closeTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 
+// 内部状态：支持无 v-model 用法（uncontrolled 模式）
+const isOpen = ref(props.modelValue)
+watch(() => props.modelValue, (v) => { isOpen.value = v })
+
 const { floatingStyles, isPositioned } = useFloating(triggerRef, menuRef, {
   placement: computed(() => props.placement),
   offset: computed(() => props.offset),
@@ -65,13 +69,18 @@ const menuStyle = computed(() => {
 
 const open = () => {
   clearCloseTimer()
+  isOpen.value = true
   emit('update:modelValue', true)
 }
 const close = () => {
   clearCloseTimer()
+  isOpen.value = false
   emit('update:modelValue', false)
 }
-const toggle = () => emit('update:modelValue', !props.modelValue)
+const toggle = () => {
+  isOpen.value = !isOpen.value
+  emit('update:modelValue', isOpen.value)
+}
 
 const clearCloseTimer = () => {
   if (closeTimer.value) {
@@ -107,11 +116,11 @@ const panelEvents = computed(() => {
 
 onClickOutside(containerRef, (e) => {
   if (menuRef.value?.contains(e.target as Node)) return
-  if (props.modelValue) close()
+  if (isOpen.value) close()
 })
 
 const onKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'Escape' && props.modelValue) close()
+  if (e.key === 'Escape' && isOpen.value) close()
 }
 
 onMounted(() => document.addEventListener('keydown', onKeydown))
@@ -124,7 +133,7 @@ onBeforeUnmount(() => {
 <template>
   <div ref="containerRef" class="relative text-left">
     <div ref="triggerRef" v-bind="triggerEvents">
-      <slot name="trigger" :open="modelValue" :toggle="toggle" :close="close" />
+      <slot name="trigger" :open="isOpen" :toggle="toggle" :close="close" />
     </div>
 
     <Teleport :to="teleportTarget" :disabled="!teleport">
@@ -137,7 +146,7 @@ onBeforeUnmount(() => {
         leave-to-class="transform opacity-0 scale-95"
       >
         <div
-          v-if="modelValue"
+          v-if="isOpen"
           ref="menuRef"
           :style="menuStyle"
           v-bind="panelEvents"

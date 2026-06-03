@@ -6,172 +6,203 @@
   <title>Axiom UI CDN 测试页</title>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <script src="./axiom-ui.umd.js"></script>
-  <style>
-    body { margin: 0; font-family: sans-serif; }
-    .test-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 24px;
-      padding: 24px;
-    }
-    .test-card {
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 20px;
-      background: #fff;
-    }
-    .test-card h3 {
-      margin: 0 0 12px 0;
-      font-size: 14px;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .test-card .demo-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .test-card .demo-row:last-child { margin-bottom: 0; }
-  </style>
 </head>
-<body class="h-full" style="background:#f9fafb;">
+<body class="h-full bg-background">
   <div id="app">
-    <div style="padding:32px; max-width:1200px; margin:0 auto;">
-      <h1 style="font-size:24px; font-weight:700; margin-bottom:8px;">
-        &#9889; Axiom UI CDN 加载测试
-      </h1>
-      <p style="color:#6b7280; margin-bottom:32px;">
-        验证所有组件、字体、图标均正常加载
-      </p>
+    <div class="p-ax-lg max-w-[1200px] mx-auto">
 
-      <div class="test-grid">
+      <h1 class="text-[22px] font-bold mb-ax-lg">Axiom UI CDN 测试</h1>
 
-        <!-- AxButton -->
-        <div class="test-card">
-          <h3>AxButton 按钮</h3>
-          <div class="demo-row">
-            <ax-button variant="primary">主要按钮</ax-button>
-            <ax-button variant="outline">边框按钮</ax-button>
-            <ax-button variant="ghost">幻影按钮</ax-button>
-            <ax-button variant="danger">危险</ax-button>
-          </div>
-          <div class="demo-row">
-            <ax-button variant="primary" loading>加载中</ax-button>
-            <ax-button variant="primary" size="icon" icon="settings"></ax-button>
-            <ax-button variant="outline" rounded="full">全圆角</ax-button>
-          </div>
+      <!-- ======= AxButton ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxButton</h2>
+        <div class="flex flex-wrap items-center gap-ax-md">
+          <ax-button variant="primary">Primary</ax-button>
+          <ax-button variant="outline">Outline</ax-button>
+          <ax-button variant="ghost">Ghost</ax-button>
+          <ax-button variant="danger">Danger</ax-button>
+          <ax-button variant="primary" loading>Loading</ax-button>
+          <ax-button variant="primary" size="icon" icon="settings"></ax-button>
+          <ax-button variant="outline" rounded="full">Rounded Full</ax-button>
+          <ax-button variant="outline" disabled>Disabled</ax-button>
+          <ax-button variant="primary" size="xl">XL Size</ax-button>
+          <ax-button variant="primary" size="xs">XS Size</ax-button>
         </div>
+      </section>
 
-        <!-- AxInput -->
-        <div class="test-card">
-          <h3>AxInput 输入框</h3>
-          <div class="demo-row">
-            <ax-input placeholder="请输入文本..." style="flex:1;"></ax-input>
-          </div>
-          <div class="demo-row">
-            <ax-input type="password" placeholder="密码输入" style="flex:1;"></ax-input>
-          </div>
+      <!-- ======= AxInput ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxInput</h2>
+        <div class="flex flex-wrap gap-ax-md">
+          <ax-input placeholder="普通输入框" class="flex-1 min-w-[200px]"></ax-input>
+          <ax-input type="password" placeholder="密码输入" class="flex-1 min-w-[200px]"></ax-input>
+          <ax-input type="textarea" placeholder="多行文本..." class="flex-1 min-w-[200px]"></ax-input>
+          <ax-input placeholder="带后缀" class="flex-1 min-w-[200px]">
+            <template #suffix><ax-button variant="ghost" size="xs">发送</ax-button></template>
+          </ax-input>
         </div>
+      </section>
 
-        <!-- AxSwitch -->
-        <div class="test-card">
-          <h3>AxSwitch 开关</h3>
-          <div class="demo-row">
-            <ax-switch :model-value="true"></ax-switch>
-            <ax-switch :model-value="false"></ax-switch>
-            <ax-switch size="xs" :model-value="true"></ax-switch>
-          </div>
+      <!-- ======= AxSwitch ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxSwitch</h2>
+        <div class="flex flex-wrap items-center gap-ax-lg">
+          <div class="flex items-center gap-ax-xs"><ax-switch :model-value="true"></ax-switch><span class="text-[13px]">开启</span></div>
+          <div class="flex items-center gap-ax-xs"><ax-switch :model-value="false"></ax-switch><span class="text-[13px]">关闭</span></div>
+          <div class="flex items-center gap-ax-xs"><ax-switch size="xs" :model-value="true"></ax-switch><span class="text-[13px]">XS</span></div>
+          <div class="flex items-center gap-ax-xs"><ax-switch size="lg" :model-value="false"></ax-switch><span class="text-[13px]">LG</span></div>
         </div>
+      </section>
 
-        <!-- AxSlider -->
-        <div class="test-card">
-          <h3>AxSlider 滑块</h3>
-          <div class="demo-row" style="flex:1;">
-            <ax-slider :model-value="50" :min="0" :max="100" style="flex:1;"></ax-slider>
-          </div>
+      <!-- ======= AxSlider ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxSlider</h2>
+        <div class="flex flex-wrap gap-ax-lg">
+          <ax-slider :model-value="40" :min="0" :max="100" class="flex-1 min-w-[200px]" label="音量"></ax-slider>
+          <ax-slider :model-value="70" :min="0" :max="100" class="flex-1 min-w-[200px]"></ax-slider>
         </div>
+      </section>
 
-        <!-- AxSelect -->
-        <div class="test-card">
-          <h3>AxSelect 选择器</h3>
-          <ax-select
-            v-model="selectedOption"
-            :options="options"
-            placeholder="请选择..."
-            style="width:100%;">
-          </ax-select>
-          <p style="margin:8px 0 0 0; font-size:12px; color:#9ca3af;">
-            当前选中：{{ selectedOption?.label || '未选择' }}
-          </p>
+      <!-- ======= AxSelect ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxSelect</h2>
+        <div class="flex flex-wrap gap-ax-md">
+          <ax-select v-model="select1" :options="selectOptions" placeholder="单选..." class="min-w-[200px]"></ax-select>
+          <ax-select v-model="select2" :options="selectOptions" multiple placeholder="多选..." class="min-w-[200px]"></ax-select>
+          <span class="text-[13px] self-center text-secondary">
+            单选: {{ select1?.label || '-' }} | 多选: {{ select2?.map(s => s.label).join(', ') || '-' }}
+          </span>
         </div>
+      </section>
 
-        <!-- AxAlert -->
-        <div class="test-card">
-          <h3>AxAlert 提示</h3>
-          <div class="demo-row" style="flex-direction:column;align-items:stretch;">
-            <ax-alert type="info">这是一条信息提示</ax-alert>
-            <ax-alert type="success">操作成功</ax-alert>
-            <ax-alert type="warning">请注意此操作</ax-alert>
-            <ax-alert type="error">操作失败</ax-alert>
-          </div>
+      <!-- ======= AxAlert ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxAlert</h2>
+        <div class="flex flex-col gap-ax-xs">
+          <ax-alert type="info">这是信息提示</ax-alert>
+          <ax-alert type="success">操作成功</ax-alert>
+          <ax-alert type="warning">请注意此操作</ax-alert>
+          <ax-alert type="error">操作失败，请重试</ax-alert>
         </div>
+      </section>
 
-        <!-- AxTooltip -->
-        <div class="test-card">
-          <h3>AxTooltip 工具提示</h3>
-          <div class="demo-row">
-            <ax-tooltip content="这是工具提示">
-              <ax-button variant="outline">悬停我</ax-button>
-            </ax-tooltip>
-          </div>
+      <!-- ======= AxTooltip ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxTooltip</h2>
+        <div class="flex flex-wrap gap-ax-md">
+          <ax-tooltip content="这是顶部提示" placement="top"><ax-button variant="outline">上</ax-button></ax-tooltip>
+          <ax-tooltip content="右侧提示" placement="right"><ax-button variant="outline">右</ax-button></ax-tooltip>
+          <ax-tooltip content="底部提示" placement="bottom"><ax-button variant="outline">下</ax-button></ax-tooltip>
+          <ax-tooltip content="左侧提示" placement="left"><ax-button variant="outline">左</ax-button></ax-tooltip>
         </div>
+      </section>
 
-        <!-- AxDialog -->
-        <div class="test-card">
-          <h3>AxDialog 弹窗</h3>
-          <div class="demo-row">
-            <ax-button variant="outline" @click="dialogVisible = true">打开弹窗</ax-button>
-            <ax-dialog v-model="dialogVisible" title="测试弹窗">
-              <template #default>
-                <p>这是弹窗内容。请确认你的操作。</p>
+      <!-- ======= AxDialog ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxDialog</h2>
+        <ax-button variant="outline" @click="dialogVisible = true">打开弹窗</ax-button>
+        <ax-dialog v-model="dialogVisible" title="确认操作">
+          <template #default><p>确认执行此操作？此操作不可撤销。</p></template>
+          <template #footer>
+            <ax-button variant="ghost" @click="dialogVisible = false">取消</ax-button>
+            <ax-button variant="primary" @click="handleConfirm">确认</ax-button>
+          </template>
+        </ax-dialog>
+      </section>
+
+      <!-- ======= AxDropdown ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxDropdown</h2>
+        <div class="flex flex-wrap gap-ax-lg items-start">
+          <!-- click -->
+          <div class="flex flex-col items-center gap-ax-xs">
+            <span class="text-[10px] text-secondary">click 触发</span>
+            <ax-dropdown v-model="drop1" menu-width="150px">
+              <template #trigger>
+                <ax-button>打开菜单<template #suffix><span class="material-symbols-outlined text-[16px]">expand_more</span></template></ax-button>
               </template>
-              <template #footer>
-                <ax-button variant="ghost" @click="dialogVisible = false">取消</ax-button>
-                <ax-button variant="primary" @click="dialogVisible = false">确认</ax-button>
+              <template #default="{ close }">
+                <div class="py-ax-xs">
+                  <button @click="close()" class="flex w-full items-center gap-ax-sm px-ax-sm py-1.5 text-left text-[13px] rounded-lg hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">download</span><span>导出配置</span>
+                  </button>
+                  <button @click="close()" class="flex w-full items-center gap-ax-sm px-ax-sm py-1.5 text-left text-[13px] rounded-lg hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">edit</span><span>编辑设置</span>
+                  </button>
+                  <div class="my-ax-xs border-t border-outline-variant"></div>
+                  <button @click="close()" class="flex w-full items-center gap-ax-sm px-ax-sm py-1.5 text-left text-[13px] rounded-lg text-error hover:bg-error-container hover:text-on-error-container transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">delete</span><span>删除</span>
+                  </button>
+                </div>
               </template>
-            </ax-dialog>
+            </ax-dropdown>
+          </div>
+
+          <!-- hover -->
+          <div class="flex flex-col items-center gap-ax-xs">
+            <span class="text-[10px] text-secondary">hover 触发</span>
+            <ax-dropdown v-model="drop2" trigger="hover" menu-width="150px">
+              <template #trigger>
+                <ax-button variant="outline"><span class="material-symbols-outlined text-[16px]">mouse</span> 悬停打开</ax-button>
+              </template>
+              <template #default="{ close }">
+                <div class="py-ax-xs">
+                  <button @click="close()" class="flex w-full items-center gap-ax-sm px-ax-sm py-1.5 text-left text-[13px] rounded-lg hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">dns</span><span>集群管理</span>
+                  </button>
+                  <button @click="close()" class="flex w-full items-center gap-ax-sm px-ax-sm py-1.5 text-left text-[13px] rounded-lg hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">monitoring</span><span>监控面板</span>
+                  </button>
+                </div>
+              </template>
+            </ax-dropdown>
+          </div>
+
+          <!-- contextmenu -->
+          <div class="flex flex-col items-center gap-ax-xs">
+            <span class="text-[10px] text-secondary">右键触发</span>
+            <ax-dropdown v-model="drop3" trigger="contextmenu" menu-width="150px">
+              <template #trigger>
+                <div class="px-ax-lg py-ax-md border-2 border-dashed border-outline-variant rounded-lg text-secondary text-[13px] cursor-context-menu select-none">在此区域右键</div>
+              </template>
+              <template #default="{ close }">
+                <div class="py-ax-xs">
+                  <button @click="close()" class="flex w-full items-center gap-ax-sm px-ax-sm py-1.5 text-left text-[13px] rounded-lg hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">content_copy</span><span>复制</span>
+                  </button>
+                  <button @click="close()" class="flex w-full items-center gap-ax-sm px-ax-sm py-1.5 text-left text-[13px] rounded-lg hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">content_paste</span><span>粘贴</span>
+                  </button>
+                  <div class="my-ax-xs border-t border-outline-variant"></div>
+                  <button @click="close()" class="flex w-full items-center gap-ax-sm px-ax-sm py-1.5 text-left text-[13px] rounded-lg hover:bg-surface-container-low transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">restart_alt</span><span>刷新</span>
+                  </button>
+                </div>
+              </template>
+            </ax-dropdown>
           </div>
         </div>
+      </section>
 
-        <!-- AxDropdown -->
-        <div class="test-card">
-          <h3>AxDropdown 下拉菜单</h3>
-          <ax-dropdown>
-            <template #trigger>
-              <ax-button variant="outline">下拉菜单</ax-button>
-            </template>
-            <div style="padding:12px 16px; min-width:160px;">
-              <p style="margin:0 0 8px 0; padding:4px 0; cursor:pointer;">选项一</p>
-              <p style="margin:0 0 8px 0; padding:4px 0; cursor:pointer;">选项二</p>
-              <p style="margin:0; padding:4px 0; cursor:pointer;">选项三</p>
-            </div>
-          </ax-dropdown>
+      <!-- ======= AxPropPanel ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxPropPanel</h2>
+        <div class="max-w-[400px]">
+          <ax-prop-panel :schema="demoSchema" v-model="demoProps"></ax-prop-panel>
+          <p class="text-[13px] text-tertiary mt-ax-xs">值: {{ JSON.stringify(demoProps) }}</p>
         </div>
+      </section>
 
-        <!-- AxPropPanel -->
-        <div class="test-card">
-          <h3>AxPropPanel 属性面板</h3>
-          <ax-prop-panel
-            :schema="demoSchema"
-            v-model="demoProps"
-            @update:model-value="onPropChange">
-          </ax-prop-panel>
+      <!-- ======= Notify ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">Notify 通知</h2>
+        <div class="flex flex-wrap gap-ax-md">
+          <ax-button variant="outline" @click="notify('info', '这是一条消息')">Info</ax-button>
+          <ax-button variant="outline" @click="notify('success', '操作成功')">Success</ax-button>
+          <ax-button variant="outline" @click="notify('warning', '注意！')">Warning</ax-button>
+          <ax-button variant="outline" @click="notify('error', '操作失败')">Error</ax-button>
         </div>
-
-      </div>
+      </section>
 
       <toaster position="bottom-right" />
     </div>
@@ -182,42 +213,31 @@
 
     const app = createApp({
       setup() {
-        const selectedOption = ref(null)
         const dialogVisible = ref(false)
+        const select1 = ref(null)
+        const select2 = ref([])
+        const drop1 = ref(false)
+        const drop2 = ref(false)
+        const drop3 = ref(false)
 
-        const options = [
+        const selectOptions = [
           { value: '1', label: '选项一' },
           { value: '2', label: '选项二' },
           { value: '3', label: '选项三' },
         ]
 
-        const demoProps = ref({
-          enabled: true,
-          threshold: 75,
-          mode: 'auto',
-        })
-
-        const demoSchema = computed(function() { return [
+        const demoProps = ref({ enabled: true, threshold: 75, mode: 'auto' })
+        const demoSchema = [
           { key: 'enabled', label: '启用功能', type: 'switch' },
           { key: 'threshold', label: '阈值', type: 'slider', min: 0, max: 100 },
-          { key: 'mode', label: '模式', type: 'select', options: [
-            { value: 'auto', label: '自动' },
-            { value: 'manual', label: '手动' },
-          ]},
-        ]})
+          { key: 'mode', label: '模式', type: 'select', options: [{ value: 'auto', label: '自动' }, { value: 'manual', label: '手动' }] },
+        ]
 
-        function onPropChange(val) {
-          console.log('AxPropPanel changed:', val)
-        }
+        const { triggerNotify } = AxiomUI.useNotify()
+        function notify(type, title) { triggerNotify(title, type, title) }
+        function handleConfirm() { dialogVisible.value = false; triggerNotify('操作已确认', 'success', '操作成功') }
 
-        return {
-          selectedOption,
-          dialogVisible,
-          options,
-          demoProps,
-          demoSchema,
-          onPropChange,
-        }
+        return { dialogVisible, select1, select2, drop1, drop2, drop3, selectOptions, demoProps, demoSchema, notify, handleConfirm }
       }
     })
 

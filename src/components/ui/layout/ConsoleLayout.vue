@@ -357,13 +357,13 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="space-y-ax-sm">
-        <button
-          class="flex items-center gap-ax-sm rounded-xl py-1.5 px-2 font-label-md text-label-md text-secondary hover:bg-surface-container-low transition-all duration-100 cursor-pointer w-full text-left"
+        <AxButton
+          variant="ghost"
+          block
+          icon="settings"
+          icon-size="16px"
           @click="settingsDialogRef?.open()"
-        >
-          <span class="material-symbols-outlined text-[16px]">settings</span>
-          <span>设置界面</span>
-        </button>
+        >设置界面</AxButton>
 
         <div class="border-t border-outline-variant pt-ax-md flex items-center justify-between px-2">
           <div class="flex items-center justify-between w-full">
@@ -414,22 +414,26 @@ onBeforeUnmount(() => {
             <span class="material-symbols-outlined text-[14px]">schedule</span>
             <span>{{ liveTime }}</span>
           </div>
-          <div class="relative w-44">
-            <AxInput ref="globalSearchInput" v-model="searchQuery" size="sm" placeholder="快速搜索..." class="w-44" @keydown.esc="searchQuery = ''">
+          <div class="relative">
+            <AxInput ref="globalSearchInput" v-model="searchQuery" size="lg" placeholder="快速搜索..." class="w-44" @keydown.esc="searchQuery = ''">
               <template #prefix><span class="material-symbols-outlined text-[14px]">search</span></template>
             </AxInput>
           </div>
           <AxTooltip content="系统通知日志" placement="bottom">
-            <button
-              class="relative w-8 h-8 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors border border-outline-variant shrink-0"
+            <AxButton
+              variant="ghost"
+              size="icon-lg"
+              icon="notifications"
+              class="border border-outline-variant"
               @click="showNotificationsPanel = !showNotificationsPanel"
             >
-              <span class="material-symbols-outlined">notifications</span>
-              <span
-                v-if="activeNotificationCount > 0"
-                class="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-primary text-[9px] text-on-primary font-bold flex items-center justify-center"
-              >{{ activeNotificationCount }}</span>
-            </button>
+              <template #suffix>
+                <span
+                  v-if="activeNotificationCount > 0"
+                  class="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-primary text-[9px] text-on-primary font-bold flex items-center justify-center"
+                >{{ activeNotificationCount }}</span>
+              </template>
+            </AxButton>
           </AxTooltip>
         </div>
       </header>
@@ -468,9 +472,7 @@ onBeforeUnmount(() => {
           <div>
             <div class="flex items-center justify-between border-b border-outline-variant pb-ax-sm mb-ax-md">
               <h3 class="font-headline-sm text-body-md font-semibold text-primary">系统通知历史队列</h3>
-              <button class="w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0" @click="showNotificationsPanel = false">
-                <span class="material-symbols-outlined text-[16px]">close</span>
-              </button>
+              <AxButton variant="ghost" size="icon" icon="close" icon-size="16px" @click="showNotificationsPanel = false" />
             </div>
             <div class="space-y-ax-sm overflow-y-auto max-h-[70vh] pr-1">
               <div v-for="log in notificationHistory" :key="log.id" class="border border-outline-variant rounded-lg p-ax-sm bg-surface-container-low">
@@ -492,13 +494,13 @@ onBeforeUnmount(() => {
               <div v-if="notificationHistory.length === 0" class="py-12 text-center text-secondary font-body-sm text-body-sm">当前尚无系统交互历史记录</div>
             </div>
           </div>
-          <button
-            class="w-full border border-outline-variant text-primary rounded-md py-1.5 font-label-md text-label-md hover:bg-surface-container-low transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-ax-xs"
+          <AxButton
+            variant="outline"
+            block
+            icon="delete_sweep"
             :disabled="notificationHistory.length === 0"
             @click="clearLogs"
-          >
-            <span class="material-symbols-outlined text-[16px]">delete_sweep</span><span>清空所有日志</span>
-          </button>
+          >清空所有日志</AxButton>
         </div>
       </Transition>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, type Ref } from 'vue'
-import type { ButtonSize, ButtonVariant } from './types'
+import type { ButtonSize, ButtonVariant, RoundedSize } from './types'
 import { ROUNDED_CLASSES, CONTROL_SIZE_CLASSES } from './common'
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {

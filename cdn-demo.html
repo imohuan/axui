@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Axiom UI CDN 测试页</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="./dist-cdn/axiom-ui.umd.js"></script>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      padding: 24px;
+    }
+    .test-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      background: #fff;
+    }
+    .test-card h3 {
+      margin: 0 0 12px 0;
+      font-size: 14px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .test-card .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .test-card .demo-row:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body class="h-full" style="background:#f9fafb;">
+  <div id="app">
+    <div style="padding:32px; max-width:1200px; margin:0 auto;">
+      <h1 style="font-size:24px; font-weight:700; margin-bottom:8px;">
+        &#9889; Axiom UI CDN 加载测试
+      </h1>
+      <p style="color:#6b7280; margin-bottom:32px;">
+        验证所有组件、字体、图标均正常加载
+      </p>
+
+      <div class="test-grid">
+
+        <!-- AxButton -->
+        <div class="test-card">
+          <h3>AxButton 按钮</h3>
+          <div class="demo-row">
+            <ax-button variant="primary">主要按钮</ax-button>
+            <ax-button variant="outline">边框按钮</ax-button>
+            <ax-button variant="ghost">幻影按钮</ax-button>
+            <ax-button variant="danger">危险</ax-button>
+          </div>
+          <div class="demo-row">
+            <ax-button variant="primary" loading>加载中</ax-button>
+            <ax-button variant="primary" size="icon" icon="settings"></ax-button>
+            <ax-button variant="outline" rounded="full">全圆角</ax-button>
+          </div>
+        </div>
+
+        <!-- AxInput -->
+        <div class="test-card">
+          <h3>AxInput 输入框</h3>
+          <div class="demo-row">
+            <ax-input placeholder="请输入文本..." style="flex:1;"></ax-input>
+          </div>
+          <div class="demo-row">
+            <ax-input type="password" placeholder="密码输入" style="flex:1;"></ax-input>
+          </div>
+        </div>
+
+        <!-- AxSwitch -->
+        <div class="test-card">
+          <h3>AxSwitch 开关</h3>
+          <div class="demo-row">
+            <ax-switch :model-value="true"></ax-switch>
+            <ax-switch :model-value="false"></ax-switch>
+            <ax-switch size="xs" :model-value="true"></ax-switch>
+          </div>
+        </div>
+
+        <!-- AxSlider -->
+        <div class="test-card">
+          <h3>AxSlider 滑块</h3>
+          <div class="demo-row" style="flex:1;">
+            <ax-slider :model-value="50" :min="0" :max="100" style="flex:1;"></ax-slider>
+          </div>
+        </div>
+
+        <!-- AxSelect -->
+        <div class="test-card">
+          <h3>AxSelect 选择器</h3>
+          <ax-select
+            v-model="selectedOption"
+            :options="options"
+            placeholder="请选择..."
+            style="width:100%;">
+          </ax-select>
+          <p style="margin:8px 0 0 0; font-size:12px; color:#9ca3af;">
+            当前选中：{{ selectedOption?.label || '未选择' }}
+          </p>
+        </div>
+
+        <!-- AxAlert -->
+        <div class="test-card">
+          <h3>AxAlert 提示</h3>
+          <div class="demo-row" style="flex-direction:column;align-items:stretch;">
+            <ax-alert type="info">这是一条信息提示</ax-alert>
+            <ax-alert type="success">操作成功</ax-alert>
+            <ax-alert type="warning">请注意此操作</ax-alert>
+            <ax-alert type="error">操作失败</ax-alert>
+          </div>
+        </div>
+
+        <!-- AxTooltip -->
+        <div class="test-card">
+          <h3>AxTooltip 工具提示</h3>
+          <div class="demo-row">
+            <ax-tooltip content="这是工具提示">
+              <ax-button variant="outline">悬停我</ax-button>
+            </ax-tooltip>
+          </div>
+        </div>
+
+        <!-- AxDialog -->
+        <div class="test-card">
+          <h3>AxDialog 弹窗</h3>
+          <div class="demo-row">
+            <ax-button variant="outline" @click="dialogVisible = true">打开弹窗</ax-button>
+            <ax-dialog v-model="dialogVisible" title="测试弹窗">
+              <template #default>
+                <p>这是弹窗内容。请确认你的操作。</p>
+              </template>
+              <template #footer>
+                <ax-button variant="ghost" @click="dialogVisible = false">取消</ax-button>
+                <ax-button variant="primary" @click="dialogVisible = false">确认</ax-button>
+              </template>
+            </ax-dialog>
+          </div>
+        </div>
+
+        <!-- AxDropdown -->
+        <div class="test-card">
+          <h3>AxDropdown 下拉菜单</h3>
+          <ax-dropdown>
+            <template #trigger>
+              <ax-button variant="outline">下拉菜单</ax-button>
+            </template>
+            <div style="padding:12px 16px; min-width:160px;">
+              <p style="margin:0 0 8px 0; padding:4px 0; cursor:pointer;">选项一</p>
+              <p style="margin:0 0 8px 0; padding:4px 0; cursor:pointer;">选项二</p>
+              <p style="margin:0; padding:4px 0; cursor:pointer;">选项三</p>
+            </div>
+          </ax-dropdown>
+        </div>
+
+        <!-- AxPropPanel -->
+        <div class="test-card">
+          <h3>AxPropPanel 属性面板</h3>
+          <ax-prop-panel
+            :schema="demoSchema"
+            v-model="demoProps"
+            @update:model-value="onPropChange">
+          </ax-prop-panel>
+        </div>
+
+      </div>
+
+      <toaster position="bottom-right" />
+    </div>
+  </div>
+
+  <script>
+    const { createApp, ref, computed } = Vue
+
+    const app = createApp({
+      setup() {
+        const selectedOption = ref(null)
+        const dialogVisible = ref(false)
+
+        const options = [
+          { value: '1', label: '选项一' },
+          { value: '2', label: '选项二' },
+          { value: '3', label: '选项三' },
+        ]
+
+        const demoProps = ref({
+          enabled: true,
+          threshold: 75,
+          mode: 'auto',
+        })
+
+        const demoSchema = computed(function() { return [
+          { key: 'enabled', label: '启用功能', type: 'switch' },
+          { key: 'threshold', label: '阈值', type: 'slider', min: 0, max: 100 },
+          { key: 'mode', label: '模式', type: 'select', options: [
+            { value: 'auto', label: '自动' },
+            { value: 'manual', label: '手动' },
+          ]},
+        ]})
+
+        function onPropChange(val) {
+          console.log('AxPropPanel changed:', val)
+        }
+
+        return {
+          selectedOption,
+          dialogVisible,
+          options,
+          demoProps,
+          demoSchema,
+          onPropChange,
+        }
+      }
+    })
+
+    app.use(AxiomUI)
+    app.mount('#app')
+  </script>
+</body>
+</html>

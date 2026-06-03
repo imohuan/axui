@@ -42,6 +42,8 @@ export {
   AxSwitch,
 }
 
+export { default as AxiomUI } from './plugin'
+
 export { useNotify } from './hooks/useNotify'
 export { useFloating } from './hooks/useFloating'
 export { provideTeleportTarget, useTeleportTarget } from './hooks/useTeleportTarget'

@@ -40,7 +40,7 @@ const set = (key: string, value: unknown) => {
       :key="item.key"
       class="flex items-start justify-between gap-ax-md py-2 px-1 rounded-lg"
     >
-      <div class="flex-1 pt-0.5" style="min-width: 48px">
+      <div class="flex-1 pt-0.5" style="min-width: 48px;">
         <p class="font-body-sm text-[12px] font-semibold text-primary leading-tight break-words">
           {{ item.label }}
         </p>
@@ -105,11 +105,9 @@ const set = (key: string, value: unknown) => {
 
         <template v-else-if="item.type === 'input'">
           <AxInput
-            multiline
             resize="none"
             :model-value="modelValue[item.key] as string"
             :placeholder="item.placeholder || ''"
-            :rows="item.rows || 3"
             size="sm"
             class="w-48"
             @update:model-value="set(item.key, $event)"
@@ -119,9 +117,9 @@ const set = (key: string, value: unknown) => {
         <template v-else-if="item.type === 'textarea'">
           <AxInput
             multiline
-            resize="none"
             :model-value="modelValue[item.key] as string"
             :placeholder="item.placeholder || ''"
+            resize="vertical"
             :rows="item.rows || 3"
             size="sm"
             class="w-56"

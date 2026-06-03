@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { PropPanelSchemaItem } from '../types'
 import { FloatingBall } from '../functional'
 import type { FloatingBallPrefs } from '../functional'
@@ -24,7 +24,7 @@ const btnSchema: PropPanelSchemaItem[] = [
   { key: 'variant', label: '变体', type: 'segmented', options: [{ value: 'primary', label: 'Primary' }, { value: 'outline', label: 'Outline' }, { value: 'ghost', label: 'Ghost' }, { value: 'danger', label: 'Danger' }] },
   { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }, { value: 'icon', label: 'Icon' }, { value: 'icon-lg', label: 'Icon-lg' }] },
   { key: 'rounded', label: '圆角', type: 'segmented', options: [{ value: 'none', label: 'None' }, { value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }, { value: 'full', label: 'Full' }] },
-  { key: 'label', label: '文案', type: 'input', placeholder: '按钮文字' },
+  { key: 'label', label: '文案', type: 'textarea', placeholder: '按钮文字' },
   { key: 'showIcon', label: '显示图标', description: '在按钮左侧显示 bolt 图标', type: 'switch' },
   { key: 'loading', label: '加载状态', description: '展示旋转加载动画', type: 'switch' },
   { key: 'disabled', label: '禁用', description: '点击无响应，透明度降低', type: 'switch' },
@@ -32,12 +32,13 @@ const btnSchema: PropPanelSchemaItem[] = [
 ]
 
 const inputProps = ref({ value: '', size: 'md' as const, rounded: 'md', disabled: false, showPrefix: false, showSuffix: false, showPassword: false, placeholder: '请输入内容...', showMultiline: false, inputRows: 3, resize: 'vertical' as 'none' | 'vertical' | 'horizontal' | 'both' })
+watch(inputProps, (v) => { console.log('[INPUTPROPS] resize =', JSON.stringify(v.resize), '| showMultiline =', v.showMultiline) }, { immediate: true, deep: true })
 const inputIconSize: Record<string, string> = { xs: '!text-[12px]', sm: '!text-[14px]', md: '!text-[16px]', lg: '!text-[18px]' }
 const inputSchema: PropPanelSchemaItem[] = [
   { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }] },
   { key: 'rounded', label: '圆角', type: 'segmented', options: [{ value: 'none', label: 'None' }, { value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }, { value: 'full', label: 'Full' }] },
   { key: 'showMultiline', label: '多行模式', description: '切换为 textarea 多行文本输入', type: 'switch' },
-  { key: 'placeholder', label: '占位符', type: 'input', placeholder: '占位文本' },
+  { key: 'placeholder', label: '占位符', type: 'textarea', placeholder: '占位文本' },
   { key: 'inputRows', label: '行数', description: 'textarea 显示行数', type: 'slider', min: 1, max: 10 },
   { key: 'resize', label: 'Resize', description: 'textarea 拖拽缩放方向', type: 'segmented', options: [{ value: 'vertical', label: '纵向' }, { value: 'horizontal', label: '横向' }, { value: 'both', label: '双向' }, { value: 'none', label: '禁用' }] },
   { key: 'showPassword', label: '密码模式', description: '显示密码显隐切换小眼睛（仅单行）', type: 'switch' },
@@ -72,7 +73,7 @@ const alertProps = ref({
 const alertSchema: PropPanelSchemaItem[] = [
   { key: 'type', label: '类型', type: 'segmented', options: [{ value: 'info', label: 'Info' }, { value: 'success', label: 'Success' }, { value: 'warning', label: 'Warning' }, { value: 'error', label: 'Error' }] },
   { key: 'title', label: '标题', type: 'input', placeholder: '警示标题' },
-  { key: 'message', label: '内容', type: 'textarea', placeholder: '警示内容', rows: 2 },
+  { key: 'message', label: '内容', type: 'textarea', placeholder: '警示内容', rows: 5 },
   { key: 'dismissible', label: '可关闭', description: '显示右上角关闭按钮', type: 'switch' },
 ]
 
@@ -87,7 +88,7 @@ const selectProps = ref({ value: 'opt1' as unknown, size: 'md' as string, rounde
 const selectSchema: PropPanelSchemaItem[] = [
   { key: 'size', label: '尺寸', type: 'segmented', options: [{ value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }] },
   { key: 'rounded', label: '圆角', type: 'segmented', options: [{ value: 'none', label: 'None' }, { value: 'xs', label: 'XS' }, { value: 'sm', label: 'SM' }, { value: 'md', label: 'MD' }, { value: 'lg', label: 'LG' }, { value: 'xl', label: 'XL' }, { value: 'full', label: 'Full' }] },
-  { key: 'placeholder', label: '占位符', type: 'input', placeholder: '占位文本' },
+  { key: 'placeholder', label: '占位符', type: 'textarea', placeholder: '占位文本' },
   { key: 'searchable', label: '可搜索', description: '点击下拉后按钮变为搜索输入框', type: 'switch' },
   { key: 'multiple', label: '多选', description: '支持勾选多项，已选项以标签展示', type: 'switch' },
   {
@@ -130,7 +131,7 @@ const selectSchema: PropPanelSchemaItem[] = [
 
 const tooltipProps = ref({ content: '这是一条 Tooltip 提示文字', placement: 'top' as const, arrow: true, offset: 8 })
 const tooltipSchema: PropPanelSchemaItem[] = [
-  { key: 'content', label: '提示文字', type: 'input', placeholder: 'Tooltip 内容' },
+  { key: 'content', label: '提示文字', type: 'textarea', placeholder: 'Tooltip 内容' },
   {
     key: 'placement',
     label: '方向',
@@ -277,7 +278,7 @@ const notifyProps = ref({ type: 'info' as 'info' | 'success' | 'error' | 'second
 const notifySchema: PropPanelSchemaItem[] = [
   { key: 'type', label: '类型', type: 'segmented', options: [{ value: 'info', label: 'Info' }, { value: 'success', label: 'Success' }, { value: 'error', label: 'Error' }, { value: 'secondary', label: 'Secondary' }] },
   { key: 'title', label: '标题', type: 'input', placeholder: '通知标题' },
-  { key: 'message', label: '消息内容', type: 'textarea', placeholder: '通知内容', rows: 2 },
+  { key: 'message', label: '消息内容', type: 'textarea', placeholder: '通知内容', rows: 3 },
   { key: 'showActions', label: '显示操作区', description: '展示角标数量和日志统计', type: 'switch' },
 ]
 

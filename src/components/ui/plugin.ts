@@ -19,10 +19,14 @@ import AxDialog from './AxDialog.vue'
 import AxPropPanel from './AxPropPanel.vue'
 import AxSwitch from './AxSwitch.vue'
 import { FloatingBall } from './functional'
+import { useNotify } from './hooks/useNotify'
+import { useFloating } from './hooks/useFloating'
+import { provideTeleportTarget, useTeleportTarget } from './hooks/useTeleportTarget'
+
+const _hooks = { useNotify, useFloating, provideTeleportTarget, useTeleportTarget }
 
 const AxiomUI = {
   install(app: App) {
-    // 注册所有基础组件
     app.component('AxButton', AxButton)
     app.component('AxInput', AxInput)
     app.component('AxSlider', AxSlider)
@@ -34,30 +38,11 @@ const AxiomUI = {
     app.component('AxPropPanel', AxPropPanel)
     app.component('AxSwitch', AxSwitch)
     app.component('AxFloatingBall', FloatingBall)
-
-    // 注册 Toaster 通知容器（可选，用户可以不使用）
     app.component('Toaster', Toaster)
   },
+
+  // hooks 挂在 AxiomUI 上，CDN 场景通过 AxiomUI.useNotify() 访问
+  ..._hooks,
 }
 
 export default AxiomUI
-
-// 同时导出单个组件供按需使用
-export {
-  AxButton,
-  AxInput,
-  AxSlider,
-  AxTooltip,
-  AxAlert,
-  AxDropdown,
-  AxSelect,
-  AxDialog,
-  AxPropPanel,
-  AxSwitch,
-  FloatingBall,
-  Toaster,
-}
-
-export { useNotify } from './hooks/useNotify'
-export { useFloating } from './hooks/useFloating'
-export { provideTeleportTarget, useTeleportTarget } from './hooks/useTeleportTarget'

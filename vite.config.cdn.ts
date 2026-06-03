@@ -13,7 +13,6 @@ function cssInjectPlugin(): Plugin {
     enforce: 'post',
     generateBundle(_, bundle) {
       const cssFiles = Object.keys(bundle).filter(k => k.endsWith('.css') && !k.endsWith('.map'))
-      if (cssFiles.length === 0) return
 
       // 合并所有 CSS
       let css = ''
@@ -30,14 +29,20 @@ function cssInjectPlugin(): Plugin {
       for (const file of jsFiles) {
         const chunk = bundle[file]
         if (chunk && chunk.type === 'chunk') {
-          const injectCode = [
+          // CSS 注入
+          const cssInject = [
             '(function(){',
             'var s=document.createElement("style");',
             `s.textContent=${JSON.stringify(css)};`,
             'document.head.appendChild(s);',
             '})();',
           ].join('')
-          chunk.code = injectCode + chunk.code
+
+          // UMD 模式下，bundle 内依赖（如 @floating-ui/vue）
+          // 直接调用 require("vue")，浏览器环境需 shim
+          const requireShim = 'var require=function(m){return m==="vue"?window.Vue||Vue:undefined};'
+
+          chunk.code = cssInject + requireShim + chunk.code
         }
       }
     },

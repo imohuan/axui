@@ -1,6 +1,7 @@
 import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
+import { copyFileSync } from 'fs'
 
 /**
  * 自定义插件：将 CSS 注入到 JS 中，输出单个 JS 文件。
@@ -39,6 +40,13 @@ function cssInjectPlugin(): Plugin {
           chunk.code = injectCode + chunk.code
         }
       }
+    },
+
+    // 构建完复制测试页到 dist-cdn/
+    writeBundle() {
+      try {
+        copyFileSync('cdn-demo.html', 'dist-cdn/index.html')
+      } catch {}
     },
   }
 }

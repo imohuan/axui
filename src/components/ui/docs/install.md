@@ -10,9 +10,78 @@
 
 ---
 
+## 0. 项目初始化（从零开始）
+
+如果还没有项目，从零搭建一个 **Vue 3 + Vite + TypeScript + Tailwind CSS v4** 工程。
+
+### 0.1 创建 Vite 项目
+
+```bash
+bun create vite my-vue-app --template vue-ts
+cd my-vue-app
+```
+
+### 0.2 安装 Tailwind CSS
+
+Tailwind v4 通过 Vite 插件集成，无需 `postcss.config.js` 或 `tailwind.config.js`：
+
+```bash
+bun add tailwindcss @tailwindcss/vite
+```
+
+### 0.3 配置 Vite 插件
+
+`vite.config.ts`：
+
+```ts
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [vue(), tailwindcss()],
+})
+```
+
+### 0.4 导入 Tailwind CSS
+
+在入口 CSS 文件（如 `src/style.css`）顶部添加：
+
+```css
+@import "tailwindcss";
+```
+
+并在 `src/main.ts` 中引入：
+
+```ts
+import './style.css'
+```
+
+### 0.5 启动开发服务器
+
+```bash
+bun run dev
+```
+
+### 0.6 验证 Tailwind 生效
+
+在 `src/App.vue` 中测试：
+
+```vue
+<template>
+  <h1 class="text-3xl font-bold underline">Hello world!</h1>
+</template>
+```
+
+浏览器打开后看到带下划线的粗体大标题即表示 Tailwind 已生效。
+
+> 以上步骤完成后，继续下面的章节接入 `components/ui` 组件库。
+
+---
+
 ## 前置条件
 
-- **Vue 3** + **Vite** + **TypeScript**
+- **Vue 3** + **Vite** + **TypeScript**（§0 已覆盖）
 - 将本目录整夹复制到目标项目的 `src/components/ui`（路径可改，下文 import 路径需一并调整）
 
 ---

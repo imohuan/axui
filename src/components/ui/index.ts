@@ -9,6 +9,9 @@ import AxSelect from './AxSelect.vue'
 import AxDialog from './AxDialog.vue'
 import AxPropPanel from './AxPropPanel.vue'
 import AxSwitch from './AxSwitch.vue'
+import AxImage from './AxImage.vue'
+import AxJsonViewer from './AxJsonViewer.vue'
+import AxImageViewer from './AxImageViewer.vue'
 
 const components = {
   AxButton,
@@ -21,6 +24,9 @@ const components = {
   AxDialog,
   AxPropPanel,
   AxSwitch,
+  AxImage,
+  AxJsonViewer,
+  AxImageViewer,
 }
 
 export function registerComponents(app: App) {
@@ -40,6 +46,9 @@ export {
   AxDialog,
   AxPropPanel,
   AxSwitch,
+  AxImage,
+  AxJsonViewer,
+  AxImageViewer,
 }
 
 export { default as AxiomUI } from './plugin'

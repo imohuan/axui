@@ -5,7 +5,7 @@
  * 支持：loading / loaded / error 三态，点击放大预览，
  * hover 放大图标，自适应宽高比。
  */
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 const props = withDefaults(defineProps<{
   /** 图片 URL */
@@ -25,6 +25,11 @@ const props = withDefaults(defineProps<{
   objectFit: 'cover',
 });
 
+/** blob URL 不能用 loading="lazy" — 浏览器在延迟加载窗口中可能已回收 blob */
+const imgLoading = computed<'lazy' | 'eager'>(() =>
+  props.src.startsWith('blob:') ? 'eager' : 'lazy',
+);
+
 const emit = defineEmits<{
   load: [event: Event];
   error: [event: Event];
@@ -35,18 +40,42 @@ const emit = defineEmits<{
 const loadState = ref<'loading' | 'loaded' | 'error'>('loading');
 const retryKey = ref(0);
 
+// 调试：追踪 src 变化和加载状态
+watch(() => props.src, (newSrc, oldSrc) => {
+  console.log(`[LazyImage] src changed:`, { oldSrc, newSrc, isBlob: newSrc?.startsWith('blob:') });
+  loadState.value = 'loading';
+  retryKey.value = 0;
+});
+
 const imageSrc = computed(() => {
+  // blob URL 不支持 query 参数，只在 HTTP URL 上加 retry 缓存穿透
+  if (props.src.startsWith('blob:')) return props.src;
   if (retryKey.value <= 0) return props.src;
   const sep = props.src.includes('?') ? '&' : '?';
   return `${props.src}${sep}_retry=${retryKey.value}`;
 });
 
+/** blob URL retry 需要强制重新创建 img 元素 */
+const imgKey = computed(() => {
+  if (!props.src.startsWith('blob:')) return props.src;
+  return `${props.src}#${retryKey.value}`;
+});
+
 function handleLoad(e: Event): void {
+  console.log(`[LazyImage] load success:`, { src: props.src, isBlob: props.src?.startsWith('blob:') });
   loadState.value = 'loaded';
   emit('load', e);
 }
 
 function handleError(e: Event): void {
+  const img = e.target as HTMLImageElement;
+  console.warn(`[LazyImage] load error:`, {
+    src: props.src,
+    isBlob: props.src?.startsWith('blob:'),
+    complete: img?.complete,
+    naturalWidth: img?.naturalWidth,
+    naturalHeight: img?.naturalHeight,
+  });
   loadState.value = 'error';
   emit('error', e);
 }
@@ -85,6 +114,7 @@ function handleClick(): void {
     </div>
 
     <img
+      :key="imgKey"
       :src="imageSrc"
       :alt="alt"
       class="w-full transition-all duration-300"
@@ -93,7 +123,7 @@ function handleClick(): void {
         objectFit === 'cover' ? 'object-cover' : 'object-contain',
         loadState === 'loaded' ? 'opacity-100' : 'opacity-0',
       ]"
-      loading="lazy"
+      :loading="imgLoading"
       @load="handleLoad"
       @error="handleError"
     />

@@ -272,6 +272,72 @@ const ballSchema: PropPanelSchemaItem[] = [
   { key: 'hidden', label: '隐藏', description: '完全隐藏悬浮球', type: 'switch' },
 ]
 
+// ---- AxImage ----
+const imageProps = ref({
+  src: 'https://picsum.photos/seed/ax-demo/600/400',
+  alt: '示例图片',
+  objectFit: 'cover' as 'cover' | 'contain',
+  adaptiveAspect: false,
+})
+const imageSchema: PropPanelSchemaItem[] = [
+  { key: 'src', label: '图片 URL', type: 'input', placeholder: 'https://...' },
+  { key: 'alt', label: '替代文字', type: 'input', placeholder: '图片描述' },
+  { key: 'objectFit', label: '填充模式', type: 'segmented', options: [{ value: 'cover', label: 'Cover' }, { value: 'contain', label: 'Contain' }] },
+  { key: 'adaptiveAspect', label: '自适应宽高比', description: '加载前正方形占位', type: 'switch' },
+]
+
+// ---- AxJsonViewer ----
+const jsonViewerProps = ref({
+  expandLevel: 0,
+  wrapEnabled: true,
+})
+const sampleJson = {
+  name: 'WorkBuddy',
+  version: '2.4.0',
+  description: 'WorkBuddy 是一款强大的 AI 编程助手，支持代码生成、智能问答、项目分析、自动化任务、多模态内容理解等多种功能。它能够深入理解复杂的项目结构，提供精准的代码建议和问题解决方案，是开发者的全能工作伙伴。',
+  modules: ['core', 'ui', 'connector', 'plugin-system', 'task-scheduler'],
+  dependencies: {
+    production: { vue: '^3.5.0', typescript: '^5.7.0', tailwindcss: '^4.1.0', vite: '^6.3.0', 'vue-router': '^4.5.0', pinia: '^3.0.0', '@vueuse/core': '^12.0.0', axios: '^1.7.0', zod: '^3.24.0' },
+    dev: { vitest: '^2.1.0', playwright: '^1.50.0', eslint: '^9.0.0', prettier: '^3.5.0' },
+  },
+  settings: {
+    theme: 'auto',
+    language: 'zh-CN',
+    apiEndpoint: 'https://api.workbuddy.internal.example.com/v2/graphql/pipeline/execute?timeout=30000&retry=3&region=ap-guangzhou',
+    features: { ai: true, automation: true, search: false, collaboration: true, versionControl: true, realtimeSync: false, darkMode: 'auto' },
+  },
+  changelog: 'v2.4.0 版本新增了多模态图片理解能力，支持在对话中直接上传截图并进行分析。同时优化了 TypeScript 和 Vue 3 项目中的代码生成准确率，修复了若干影响稳定性的关键问题，性能提升了约 35%。',
+  releaseNotes: `## 新增功能
+- 支持多模态图片理解与 OCR 识别
+- 新增自动化任务调度引擎
+- 优化大文件代码索引速度
+
+## 问题修复
+- 修复组件递归渲染时的内存泄漏
+- 修复长文本截断显示异常
+
+## 性能优化
+- 构建速度提升约 40%
+- 首屏加载体积减少 25%`,
+  stats: { users: 12800, uptime: 99.98, active: true, avgResponseMs: 120, peakQps: 3800 },
+  config: null,
+  tags: ['vue', 'typescript', 'tailwind', 'ai', 'productivity', 'developer-tools'],
+}
+const jsonViewerSchema: PropPanelSchemaItem[] = [
+  { key: 'expandLevel', label: '展开级别', description: '-1=全部折叠  0=全部展开  1=第一层  2/3=更深层级', type: 'slider', min: -1, max: 3, step: 1 },
+  { key: 'wrapEnabled', label: '自动换行', description: '长文本自动换行而非截断', type: 'switch' },
+]
+
+// ---- AxImageViewer ----
+const showImageViewer = ref(false)
+const demoImages = [
+  'https://picsum.photos/seed/viewer1/1200/800',
+  'https://picsum.photos/seed/viewer2/1200/800',
+  'https://picsum.photos/seed/viewer3/1200/800',
+  'https://picsum.photos/seed/viewer4/1200/800',
+  'https://picsum.photos/seed/viewer5/1200/800',
+]
+
 // ---- Notify ----
 const notify = useNotify()
 const notifyProps = ref({ type: 'info' as 'info' | 'success' | 'error' | 'secondary', title: '通知气泡', message: '核心集群控制链已就绪，当前各项数据运行处于标准健康状态。', showActions: false })
@@ -999,6 +1065,127 @@ function handleBallSave(prefs: FloatingBallPrefs) {
         </div>
       </div>
     </div>
+
+    <!-- AxImage -->
+    <div id="section-image"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">Image</span>
+        <span class="font-body-sm text-[11px] text-secondary">懒加载图片 — 加载/成功/失败三态、点击放大预览、hover 图标、自适应宽高比</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[340px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-md items-start justify-center">
+          <div class="flex flex-wrap items-start gap-ax-xl">
+            <div class="flex flex-col items-center gap-ax-sm">
+              <span class="font-label-md text-[10px] text-secondary">动态预览</span>
+              <div class="w-56 h-40 rounded-lg overflow-hidden border border-outline-variant">
+                <AxImage :src="imageProps.src" :alt="imageProps.alt" :object-fit="imageProps.objectFit"
+                  :adaptive-aspect="imageProps.adaptiveAspect" />
+              </div>
+            </div>
+            <div class="flex flex-col gap-ax-sm">
+              <span class="font-label-md text-[10px] text-secondary">各种状态：</span>
+              <div class="flex gap-ax-sm flex-wrap">
+                <div class="flex flex-col items-center gap-ax-xs">
+                  <div class="w-28 h-20 rounded-lg overflow-hidden border border-outline-variant">
+                    <AxImage src="https://picsum.photos/seed/normal/320/240" alt="正常" />
+                  </div>
+                  <span class="font-body-sm text-[10px] text-outline">正常加载</span>
+                </div>
+                <div class="flex flex-col items-center gap-ax-xs">
+                  <div class="w-28 h-20 rounded-lg overflow-hidden border border-outline-variant">
+                    <AxImage src="https://invalid.example/404.jpg" alt="失败" />
+                  </div>
+                  <span class="font-body-sm text-[10px] text-outline">加载失败（可重试）</span>
+                </div>
+                <div class="flex flex-col items-center gap-ax-xs">
+                  <div class="w-28 h-20 rounded-lg overflow-hidden border border-outline-variant">
+                    <AxImage src="https://picsum.photos/seed/contain/320/240" alt="Contain" object-fit="contain" />
+                  </div>
+                  <span class="font-body-sm text-[10px] text-outline">Contain 模式</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="font-body-sm text-[11px] text-secondary">点击已加载图片触发 <code class="bg-surface-container px-1 rounded text-primary">preview</code> 事件（可接入 ImageViewer 放大浏览）。</p>
+        </div>
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="imageProps" :schema="imageSchema" title="图片属性" />
+        </div>
+      </div>
+    </div>
+
+    <!-- AxJsonViewer -->
+    <div id="section-json-viewer"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">JsonViewer</span>
+        <span class="font-body-sm text-[11px] text-secondary">可折叠 JSON 树查看器 — 递归展开/折叠、Ctrl+点击深层切换、语法高亮</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[360px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-sm items-start justify-center">
+          <div class="w-full max-w-lg bg-surface-container-low rounded-lg border border-outline-variant p-ax-md">
+            <AxJsonViewer :data="sampleJson" :expand-level="jsonViewerProps.expandLevel"
+              :wrap-enabled="jsonViewerProps.wrapEnabled" is-root />
+          </div>
+          <p class="font-body-sm text-[11px] text-secondary">点击箭头展开/折叠节点，<kbd class="font-label-md text-[10px] bg-surface-container border border-outline-variant px-1 rounded">Ctrl</kbd> + 点击递归展开/折叠所有子节点。</p>
+        </div>
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto">
+          <AxPropPanel v-model="jsonViewerProps" :schema="jsonViewerSchema" title="JSON属性" />
+        </div>
+      </div>
+    </div>
+
+    <!-- AxImageViewer -->
+    <div id="section-image-viewer"
+      class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
+      <div class="px-ax-md py-ax-sm border-b border-outline-variant flex items-center gap-ax-sm bg-surface-container-low">
+        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">ImageViewer</span>
+        <span class="font-body-sm text-[11px] text-secondary">全屏图片查看器 — 缩放/旋转/翻转/键盘快捷键/下载</span>
+      </div>
+      <div class="flex divide-x divide-outline-variant min-h-[260px]">
+        <div class="flex-1 p-ax-lg comp-preview flex flex-col gap-ax-lg items-center justify-center">
+          <div class="flex flex-wrap items-center gap-ax-lg">
+            <div class="flex flex-col items-center gap-ax-sm">
+              <span class="font-label-md text-[10px] text-secondary">点击打开查看器</span>
+              <AxButton variant="primary" icon="open_in_full" @click="showImageViewer = true">
+                浏览 {{ demoImages.length }} 张图片
+              </AxButton>
+            </div>
+            <div class="flex -space-x-2">
+              <img v-for="(img, i) in demoImages.slice(0, 4)" :key="i" :src="img"
+                class="w-14 h-10 rounded-md border-2 border-surface-container-lowest object-cover shadow-sm"
+                :style="{ zIndex: demoImages.length - i }" />
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-ax-sm text-center">
+            <span class="font-label-md text-[10px] text-secondary">键盘快捷键：</span>
+            <kbd class="font-label-md text-[10px] bg-surface-container border border-outline-variant px-1.5 py-0.5 rounded text-primary">← →</kbd><span class="font-body-sm text-[10px] text-outline">切换</span>
+            <kbd class="font-label-md text-[10px] bg-surface-container border border-outline-variant px-1.5 py-0.5 rounded text-primary">+ -</kbd><span class="font-body-sm text-[10px] text-outline">缩放</span>
+            <kbd class="font-label-md text-[10px] bg-surface-container border border-outline-variant px-1.5 py-0.5 rounded text-primary">R</kbd><span class="font-body-sm text-[10px] text-outline">旋转</span>
+            <kbd class="font-label-md text-[10px] bg-surface-container border border-outline-variant px-1.5 py-0.5 rounded text-primary">F</kbd><span class="font-body-sm text-[10px] text-outline">翻转</span>
+            <kbd class="font-label-md text-[10px] bg-surface-container border border-outline-variant px-1.5 py-0.5 rounded text-primary">Esc</kbd><span class="font-body-sm text-[10px] text-outline">关闭</span>
+          </div>
+        </div>
+        <div class="w-84 p-ax-md bg-surface-container-lowest overflow-y-auto flex items-start">
+          <div class="space-y-ax-sm w-full">
+            <p class="font-body-sm text-[11px] text-secondary leading-relaxed">
+              ImageViewer 基于 <code class="bg-surface-container px-1 rounded text-primary">Teleport to body</code> 全屏覆盖渲染。
+              支持鼠标滚轮缩放、拖拽平移、工具栏旋转/翻转，自动下载（fallback 新窗口打开）。
+            </p>
+            <div class="flex gap-ax-xs">
+              <span v-for="(img, i) in demoImages" :key="i"
+                class="w-10 h-8 rounded bg-surface-container border border-outline-variant overflow-hidden">
+                <img :src="img" class="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity" />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AxImageViewer instance -->
+    <AxImageViewer :images="demoImages" :initial-index="0" v-model:visible="showImageViewer" />
   </div>
 
   <!-- FloatingBall (rendered to document body) -->

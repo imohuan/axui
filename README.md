@@ -1,6 +1,6 @@
 # Axiom UI
 
-自研 Vue 3 组件库，10 个基础组件 + 功能模块 + 布局示例。基于 Tailwind v4 + Floating UI + Material Symbols。
+自研 Vue 3 组件库，13 个基础组件 + 功能模块 + 布局示例。基于 Tailwind v4 + Floating UI + Material Symbols。
 
 ## 快速开始
 
@@ -24,6 +24,9 @@ bun dev
 | `AxTooltip`    | hover 文字提示                                                                 |
 | `AxPropPanel`  | schema 驱动属性面板（switch / slider / select / input / textarea / segmented）     |
 | `AxSwitch`     | 开关组件，支持 v-model、disabled、aria 可访问性                                        |
+| `AxImage`      | 懒加载图片，三态（loading/error/loaded），点击预览、hover 放大图标、自适应宽高比                       |
+| `AxJsonViewer` | 可折叠 JSON 树查看器，层级展开控制（-1/0/N）、Ctrl+点击递归折叠、长文本横向滚动                          |
+| `AxImageViewer` | 全屏图片查看器，缩放/旋转/翻转/键盘快捷键/下载                                                |
 | `FloatingBall` | 浮动球组件                                                                      |
 | `useNotify`    | 封装 vue-sonner 通知                                                           |
 | `useFloating`  | Floating UI 定位 hook                                                        |
@@ -97,7 +100,7 @@ node scripts/install.js
 ```
 web/
 ├── src/components/ui/       # 组件源码
-│   ├── AxButton.vue ...     # 10 个 Vue 组件
+│   ├── AxButton.vue ...     # 13 个 Vue 组件
 │   ├── index.ts             # registerComponents
 │   ├── types.ts
 │   ├── hooks/               # useNotify / useFloating

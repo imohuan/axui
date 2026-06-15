@@ -30,7 +30,7 @@ const navItems = ref<NavItem[]>([
     id: 'components',
     name: 'UI 组件列表',
     icon: 'widgets',
-    badge: '12 个组件',
+    badge: '15 个组件',
     expanded: true,
     subMenus: [
       { id: 'btn', name: 'Button 按钮', sectionId: 'section-btn' },
@@ -45,6 +45,9 @@ const navItems = ref<NavItem[]>([
       { id: 'dialog', name: 'Dialog 对话框', sectionId: 'section-dialog' },
       { id: 'notify', name: 'Notify 通知', sectionId: 'section-notify' },
       { id: 'floating-ball', name: 'FloatingBall 悬浮球', sectionId: 'section-floating-ball' },
+      { id: 'image', name: 'Image 图片', sectionId: 'section-image' },
+      { id: 'json-viewer', name: 'JsonViewer JSON树', sectionId: 'section-json-viewer' },
+      { id: 'image-viewer', name: 'ImageViewer 图片查看器', sectionId: 'section-image-viewer' },
     ],
   },
   {

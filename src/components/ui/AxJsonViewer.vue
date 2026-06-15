@@ -21,6 +21,17 @@ const props = withDefaults(
     deepExpandTrigger?: number;
     /** 是否启用自动换行 */
     wrapEnabled?: boolean;
+    /** 默认全部展开（覆盖 isExpanded 初始值） */
+    defaultExpandAll?: boolean;
+    /** 当前节点深度（根节点为 0），用于层级展开控制 */
+    depth?: number;
+    /**
+     * 展开级别：
+     *   -1 = 全部折叠（仅根节点可见）
+     *    0 = 全部展开（无限层级）
+     *   N = 只展开前 N 层（depth < N 的节点可见）
+     */
+    expandLevel?: number;
   }>(),
   {
     nodeKey: null,
@@ -29,16 +40,65 @@ const props = withDefaults(
     expandTrigger: 0,
     deepExpandTrigger: 0,
     wrapEnabled: true,
+    defaultExpandAll: false,
+    depth: 0,
+    expandLevel: 0,
   },
 );
 
-const isExpanded = ref(props.isRoot || props.expandTrigger > 0);
+const isExpanded = ref(props.isRoot || props.expandTrigger > 0 || props.defaultExpandAll);
 // 向下传递的递归触发器：Ctrl+点击时生成，逐层透传
 const childDeepTrigger = ref(0);
+
+/** 是否应基于展开级别显示 */
+const expandedByLevel = computed(() => {
+  if (props.expandLevel === -1) return false;
+  if (props.expandLevel === 0) return true;
+  return (props.depth ?? 0) < props.expandLevel;
+});
+
+// 初始化时应用 expandLevel
+if (expandedByLevel.value) {
+  isExpanded.value = true;
+} else if (props.expandLevel >= 0 && !expandedByLevel.value && !props.isRoot && !props.defaultExpandAll) {
+  isExpanded.value = false;
+}
 
 function toggle() {
   isExpanded.value = !isExpanded.value;
 }
+
+/** 根节点响应 defaultExpandAll 变化 → 递归传播到所有子节点 */
+watch(
+  () => props.defaultExpandAll,
+  (val) => {
+    if (!props.isRoot) return;
+    if (!isComplex.value || isEmpty.value) return;
+
+    const newState = !!val;
+    isExpanded.value = newState;
+    childDeepTrigger.value = newState
+      ? Math.abs(childDeepTrigger.value) + 1
+      : -(Math.abs(childDeepTrigger.value) + 1);
+  },
+);
+
+/** 响应 expandLevel 变化：每个节点根据自身 depth 重新计算展开/折叠状态 */
+watch(
+  () => [props.expandLevel, props.depth] as const,
+  () => {
+    const shouldExpand = props.isRoot || props.defaultExpandAll || expandedByLevel.value;
+    if (isExpanded.value !== shouldExpand) {
+      isExpanded.value = shouldExpand;
+    }
+    // 透传给子节点（子节点也会各自根据 depth 重新计算）
+    if (isComplex.value && !isEmpty.value) {
+      childDeepTrigger.value = shouldExpand
+        ? Math.abs(childDeepTrigger.value) + 1
+        : -(Math.abs(childDeepTrigger.value) + 1);
+    }
+  },
+);
 
 /** 响应父级传来的递归展开/折叠：自身先执行，然后原值透传给子级 */
 watch(
@@ -138,17 +198,17 @@ watch(
 </script>
 
 <template>
-  <div class="json-viewer select-text font-mono text-xs leading-normal">
+  <div class="json-viewer select-text font-mono text-xs leading-normal" :class="{ 'overflow-x-auto': !props.wrapEnabled && props.isRoot }">
     <!-- 简单值（非对象/数组） -->
     <div v-if="!isComplex" class="group flex items-start rounded-sm transition-colors hover:bg-surface-container-low/50">
       <div class="w-4 shrink-0" />
-      <div class="flex-1 min-w-0">
-        <span v-if="nodeKey !== null" class="mr-ax-xs cursor-text text-primary">
+      <div class="flex-1" :class="props.wrapEnabled ? 'min-w-0' : 'min-w-max'">
+        <span v-if="nodeKey !== null" class="mr-ax-xs cursor-text text-primary shrink-0">
           <span class="text-outline">'</span>{{ nodeKey }}<span class="text-outline">'</span
           ><span class="text-outline">:</span>
         </span>
-        <span :class="['select-all', valueColorClass, props.wrapEnabled ? 'whitespace-pre-wrap break-all' : 'whitespace-nowrap overflow-x-auto']" v-html="linkify(formatValue(data))" />
-        <span v-if="!isLast" class="text-outline">,</span>
+        <span :class="['select-all inline-block align-bottom', valueColorClass, props.wrapEnabled ? 'whitespace-pre-wrap break-all' : 'whitespace-nowrap max-w-none']" v-html="linkify(formatValue(data))" />
+        <span v-if="!isLast" class="text-outline shrink-0">,</span>
       </div>
     </div>
 
@@ -167,7 +227,7 @@ watch(
           >chevron_right</span>
         </div>
 
-        <div class="flex-1 min-w-0 select-text" :class="props.wrapEnabled ? 'flex flex-wrap items-center' : 'whitespace-nowrap overflow-x-auto'">
+        <div class="flex-1 select-text" :class="props.wrapEnabled ? 'min-w-0 flex flex-wrap items-center' : 'min-w-max whitespace-nowrap'">
           <span v-if="nodeKey !== null" class="mr-ax-xs text-primary">
             <span class="text-outline">'</span>{{ nodeKey }}<span class="text-outline">'</span
             ><span class="text-outline">:</span>
@@ -190,7 +250,7 @@ watch(
       <div v-show="isExpanded && !isEmpty" class="relative">
         <div class="absolute top-0 bottom-0 left-[7px] z-0 w-0 border-l border-dashed border-outline-variant/40 transition-colors group-hover/tree:border-outline/50" />
         <div class="relative z-10 pl-4">
-          <JsonViewer
+          <AxJsonViewer
             v-for="(val, key, index) in parsedData as any"
             :key="key"
             :node-key="dataType === 'array' ? null : key"
@@ -198,6 +258,9 @@ watch(
             :is-last="index === (dataType === 'array' ? (parsedData as any[]).length : Object.keys(parsedData as object).length) - 1"
             :expand-trigger="expandTrigger"
             :deep-expand-trigger="childDeepTrigger"
+            :depth="(props.depth ?? 0) + 1"
+            :expand-level="props.expandLevel"
+            :default-expand-all="props.defaultExpandAll"
             :is-root="false"
             :wrap-enabled="props.wrapEnabled"
           />

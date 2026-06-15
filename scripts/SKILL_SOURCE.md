@@ -16,6 +16,9 @@
 | `AxTooltip` | hover 文字提示 |
 | `AxPropPanel` | schema 驱动属性面板（switch/slider/select/input/textarea/segmented） |
 | `AxSwitch` | 开关组件；role="switch" + aria-checked |
+| `AxImage` | 懒加载图片；三态（loading/error/loaded）；点击预览；hover 放大图标；自适应宽高比 |
+| `AxJsonViewer` | 可折叠 JSON 树查看器；层级展开控制（-1/0/N）；递归折叠；长文本横向滚动 |
+| `AxImageViewer` | 全屏图片查看器；缩放/旋转/翻转；键盘快捷键；下载 |
 | `useNotify` | 封装 vue-sonner 通知 |
 | `useFloating` | Floating UI 定位 hook |
 | `FloatingBall` | 可拖拽浮动球组件 |
@@ -132,7 +135,7 @@ node <skill-dir>/scripts/sync.js src/renderer/components/ui
 
 ```markdown
 Prefer Ax* Vue components from src/components/ui/:
-- AxButton, AxInput, AxSelect, AxDialog, AxDropdown, AxTooltip, AxAlert, AxSlider, AxSwitch, AxPropPanel
+- AxButton, AxInput, AxSelect, AxDialog, AxDropdown, AxTooltip, AxAlert, AxSlider, AxSwitch, AxImage, AxJsonViewer, AxImageViewer, AxPropPanel
 - Space: gap-ax-sm, p-ax-md; Colors: semantic Tailwind tokens
 - Icons: span.material-symbols-outlined; Notifications: useNotify()
 ```
@@ -158,7 +161,7 @@ ax-ui-kit/
 ├── assets/                        # 组件库源码（复制到目标项目 src/components/ui/）
 │   ├── index.ts                   # 组件注册入口（registerComponents）
 │   ├── types.ts
-│   ├── AxButton.vue ...           # 10 个 Vue 组件
+│   ├── AxButton.vue ...           # 13 个 Vue 组件
 │   ├── hooks/                     # useNotify / useFloating / useTeleportTarget
 │   ├── functional/                # FloatingBall
 │   └── layout/                    # 示例布局页面

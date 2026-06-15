@@ -1,12 +1,7 @@
 import type { App } from 'vue'
-import { Toaster } from 'vue-sonner'
-import 'vue-sonner/style.css'
-import 'material-symbols/outlined.css'
-import '@fontsource/geist/400.css'
-import '@fontsource/geist/600.css'
-import '@fontsource/jetbrains-mono/400.css'
-import '@fontsource/jetbrains-mono/500.css'
-import '../../style.css'
+// import { Toaster } from 'vue-sonner'
+// import 'vue-sonner/style.css'
+import '../../cdn-theme.css'
 
 import AxButton from './AxButton.vue'
 import AxInput from './AxInput.vue'
@@ -44,10 +39,9 @@ const AxiomUI = {
     app.component('AxJsonViewer', AxJsonViewer)
     app.component('AxImageViewer', AxImageViewer)
     app.component('AxFloatingBall', FloatingBall)
-    app.component('Toaster', Toaster)
+    // app.component('Toaster', Toaster)
   },
 
-  // hooks 挂在 AxiomUI 上，CDN 场景通过 AxiomUI.useNotify() 访问
   ..._hooks,
 }
 

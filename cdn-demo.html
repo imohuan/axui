@@ -4,7 +4,78 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Axiom UI CDN 测试页</title>
+
+  <!-- Vue -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+  <!-- Tailwind CSS (CDN) — 使用自定义主题配置 -->
+  <script>
+    tailwind = { config: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#000000', 'on-primary': '#ffffff',
+            secondary: '#5f5e61', 'on-secondary': '#ffffff',
+            tertiary: '#000000',
+            error: '#ba1a1a', 'on-error': '#ffffff',
+            background: '#f9f9fa',
+            surface: '#f9f9fa',
+            'surface-container-lowest': '#ffffff',
+            'surface-container-low': '#f3f3f4',
+            'surface-container': '#eeeeef',
+            'surface-container-high': '#e8e8e9',
+            'surface-container-highest': '#e2e2e3',
+            'surface-variant': '#e2e2e3',
+            'on-surface': '#1a1c1d',
+            'on-surface-variant': '#47464a',
+            'on-background': '#1a1c1d',
+            outline: '#78767b',
+            'outline-variant': '#c8c5ca',
+            'secondary-container': '#e4e1e5',
+            'on-secondary-container': '#656467',
+            'error-container': '#ffdad6',
+            'on-error-container': '#93000a',
+            ball: '#6366f1',
+            'ball-light': '#818cf8',
+          },
+          spacing: {
+            'ax-xs': '0.25rem',
+            'ax-sm': '0.5rem',
+            'ax-md': '1rem',
+            'ax-lg': '1.5rem',
+            'ax-xl': '2rem',
+            gutter: '16px',
+            margin: '24px',
+          },
+          fontFamily: {
+            display: 'Geist, sans-serif',
+            'headline-lg': 'Geist, sans-serif',
+            'headline-md': 'Geist, sans-serif',
+            'headline-sm': 'Geist, sans-serif',
+            'body-lg': 'Geist, sans-serif',
+            'body-md': 'Geist, sans-serif',
+            'body-sm': 'Geist, sans-serif',
+            'label-md': '"JetBrains Mono", monospace',
+          },
+        },
+      },
+    }};
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- 字体（CDN） -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist@5/400.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist@5/600.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5/400.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5/500.css" />
+
+  <!-- Material Symbols -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <!-- Axiom UI Theme CSS（仅主题变量 + 自定义样式，不含 Tailwind/字体） -->
+  <link rel="stylesheet" href="./axiom-ui.css" />
+
+  <!-- Axiom UI JS -->
   <script src="./axiom-ui.umd.js"></script>
 </head>
 <body class="h-full bg-background">
@@ -114,7 +185,6 @@
       <section class="mb-ax-lg">
         <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxDropdown</h2>
         <div class="flex flex-wrap gap-ax-lg items-start">
-          <!-- click -->
           <div class="flex flex-col items-center gap-ax-xs">
             <span class="text-[10px] text-secondary">click 触发</span>
             <ax-dropdown v-model="drop1" menu-width="150px">
@@ -137,8 +207,6 @@
               </template>
             </ax-dropdown>
           </div>
-
-          <!-- hover -->
           <div class="flex flex-col items-center gap-ax-xs">
             <span class="text-[10px] text-secondary">hover 触发</span>
             <ax-dropdown v-model="drop2" trigger="hover" menu-width="150px">
@@ -157,8 +225,6 @@
               </template>
             </ax-dropdown>
           </div>
-
-          <!-- contextmenu -->
           <div class="flex flex-col items-center gap-ax-xs">
             <span class="text-[10px] text-secondary">右键触发</span>
             <ax-dropdown v-model="drop3" trigger="contextmenu" menu-width="150px">
@@ -191,6 +257,51 @@
           <ax-prop-panel :schema="demoSchema" v-model="demoProps"></ax-prop-panel>
           <p class="text-[13px] text-tertiary mt-ax-xs">值: {{ JSON.stringify(demoProps) }}</p>
         </div>
+      </section>
+
+      <!-- ======= AxImage ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxImage</h2>
+        <div class="flex flex-wrap gap-ax-md items-start">
+          <div class="flex flex-col items-center gap-ax-xs">
+            <div class="w-48 h-36 rounded-lg overflow-hidden border border-outline-variant">
+              <ax-image src="https://picsum.photos/seed/cdn-demo/400/300" alt="示例" />
+            </div>
+            <span class="text-[10px] text-secondary">正常加载</span>
+          </div>
+          <div class="flex flex-col items-center gap-ax-xs">
+            <div class="w-48 h-36 rounded-lg overflow-hidden border border-outline-variant">
+              <ax-image src="https://invalid.example/404.jpg" alt="失败" />
+            </div>
+            <span class="text-[10px] text-secondary">加载失败</span>
+          </div>
+          <div class="flex flex-col items-center gap-ax-xs">
+            <div class="w-48 h-36 rounded-lg overflow-hidden border border-outline-variant">
+              <ax-image src="https://picsum.photos/seed/contain/400/300" alt="Contain" object-fit="contain" />
+            </div>
+            <span class="text-[10px] text-secondary">Contain 模式</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======= AxJsonViewer ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxJsonViewer</h2>
+        <div class="max-w-[500px] bg-surface-container-low rounded-lg border border-outline-variant p-ax-md">
+          <ax-json-viewer :data="sampleJson" :is-root="true" />
+        </div>
+      </section>
+
+      <!-- ======= AxImageViewer ======= -->
+      <section class="mb-ax-lg">
+        <h2 class="text-[13px] font-semibold text-secondary mb-ax-sm border-b border-outline-variant pb-ax-xs">AxImageViewer</h2>
+        <div class="flex flex-wrap items-center gap-ax-md">
+          <ax-button variant="outline" @click="viewerVisible = true">
+            <template #prefix><span class="material-symbols-outlined text-[16px]">open_in_full</span></template>
+            浏览 {{ viewerImages.length }} 张图片
+          </ax-button>
+        </div>
+        <ax-image-viewer v-model:visible="viewerVisible" :images="viewerImages" :initial-index="0" />
       </section>
 
       <!-- ======= Notify ======= -->
@@ -233,11 +344,27 @@
           { key: 'mode', label: '模式', type: 'select', options: [{ value: 'auto', label: '自动' }, { value: 'manual', label: '手动' }] },
         ]
 
+        const viewerVisible = ref(false)
+        const viewerImages = [
+          'https://picsum.photos/seed/cdnv1/1200/800',
+          'https://picsum.photos/seed/cdnv2/1200/800',
+          'https://picsum.photos/seed/cdnv3/1200/800',
+        ]
+
+        const sampleJson = {
+          name: 'Axiom UI',
+          version: '1.0.0',
+          modules: ['core', 'ui', 'cdn'],
+          settings: { theme: 'light', language: 'zh-CN', features: { ai: true, search: false } },
+          description: 'Axiom UI 是一款基于 Vue 3 和 Tailwind CSS v4 的自研 UI 组件库，支持 CDN 直接引入，无需构建工具即可在任意 HTML 页面中使用。',
+          tags: ['vue3', 'tailwind', 'cdn', 'ui-library'],
+        }
+
         const { triggerNotify } = AxiomUI.useNotify()
         function notify(type, title) { triggerNotify(title, type, title) }
         function handleConfirm() { dialogVisible.value = false; triggerNotify('操作已确认', 'success', '操作成功') }
 
-        return { dialogVisible, select1, select2, drop1, drop2, drop3, selectOptions, demoProps, demoSchema, notify, handleConfirm }
+        return { dialogVisible, select1, select2, drop1, drop2, drop3, selectOptions, demoProps, demoSchema, notify, handleConfirm, viewerVisible, viewerImages, sampleJson }
       }
     })
 

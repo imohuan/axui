@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "build:cdn": "vite build --config vite.config.cdn.ts",
+    "build:cdn": "node scripts/build-cdn.js",
     "dev:cdn": "concurrently -n build,serve -c cyan,green \"vite build --config vite.config.cdn.ts --watch\" \"live-server dist-cdn --port=3000 --no-browser\"",
     "preview": "vite preview",
     "prepush": "node scripts/install.js",

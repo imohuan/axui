@@ -6,7 +6,7 @@ A self-developed Vue 3 component library with 13 components, built-in theme engi
 
 - **Theme System** — Three built-in presets (Material, Fluent, iOS) plus full runtime customization via `ThemeEngine`. Override colors, spacing, radius, shadows, borders, and typography at any granularity.
 - **13 Components** — Button, Input, Select, Dropdown, Dialog, Alert, Slider, Tooltip, Switch, Image, JsonViewer, ImageViewer, and PropPanel (schema-driven property panel).
-- **Zero CSS Dependencies** — No external CSS imports required. All styles are compiled into a single `axiom-ui.css`.
+- **Zero CSS Dependencies** — No external CSS imports required. All styles are compiled into a single `style.css`.
 - **CDN Ready** — Use directly in any HTML page via `<script>` and `<link>` tags. No build tools needed.
 - **Full TypeScript Support** — All components, hooks, and theme APIs are fully typed with exported type definitions.
 - **Custom Icon System** — Register SVG path icons at runtime. 27 built-in icons included. Supports `html`-based icons for complex SVGs.
@@ -40,8 +40,8 @@ bun add axui
 <!-- Vue 3 (required peer dependency) -->
 <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 
-<!-- Tailwind CSS (required for utility classes) -->
-<script src="https://cdn.tailwindcss.com"></script>
+
+
 
 <!-- Fonts -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist@5/400.css" />
@@ -53,8 +53,8 @@ bun add axui
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <!-- Axiom UI -->
-<link rel="stylesheet" href="https://unpkg.com/axui/dist/axiom-ui.css" />
-<script src="https://unpkg.com/axui/dist/axiom-ui.umd.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/axui/dist/style.css" />
+<script src="https://unpkg.com/axui/dist/axui.umd.js"></script>
 ```
 
 ## Quick Start
@@ -65,7 +65,7 @@ bun add axui
 // main.ts
 import { createApp } from 'vue'
 import AxiomUI from 'axui'
-import 'axui/dist/axiom-ui.css'
+import 'axui/dist/style.css'
 import App from './App.vue'
 
 const app = createApp(App)
@@ -106,9 +106,9 @@ Or use the plugin's auto-registration (no imports needed):
 <html>
 <head>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://unpkg.com/axui/dist/axiom-ui.css" />
-  <script src="https://unpkg.com/axui/dist/axiom-ui.umd.js"></script>
+  
+  <link rel="stylesheet" href="https://unpkg.com/axui/dist/style.css" />
+  <script src="https://unpkg.com/axui/dist/axui.umd.js"></script>
 </head>
 <body>
   <div id="app">

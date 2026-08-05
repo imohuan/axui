@@ -1,4 +1,6 @@
 import type { App } from 'vue'
+import { registerIcons } from '../../icons'
+import { builtinIcons } from '../../icons/builtin'
 import { Toaster } from 'vue-sonner'
 import './base.css'
 import { ThemeEngine } from '../../theme'
@@ -33,6 +35,9 @@ const AxiomUI = {
   install(app: App, options?: AxiomUIOptions) {
     const engine = new ThemeEngine(options?.theme)
     engine.apply()
+
+    // Register all builtin SVG icons
+    registerIcons(builtinIcons)
 
     app.component('AxButton', AxButton)
     app.component('AxInput', AxInput)

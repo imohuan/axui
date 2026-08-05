@@ -27,32 +27,29 @@ const set = (key: string, value: unknown) => {
 </script>
 
 <template>
-  <div class="w-full space-y-0.5">
-    <p
-      v-if="title"
-      class="font-label-md text-[10px] text-secondary uppercase tracking-wider px-1 pb-2"
-    >
+  <div class="ax-prop-panel-base">
+    <p v-if="title" class="ax-prop-panel-title">
       {{ title }}
     </p>
 
     <div
       v-for="item in schema"
       :key="item.key"
-      class="flex items-start justify-between gap-ax-md py-2 px-1 rounded-lg"
+      class="ax-prop-panel-item"
     >
-      <div class="flex-1 pt-0.5" style="min-width: 48px;">
-        <p class="font-body-sm text-[12px] font-semibold text-primary leading-tight break-words">
+      <div class="ax-prop-panel-label-area">
+        <p class="ax-prop-panel-label">
           {{ item.label }}
         </p>
         <p
           v-if="item.description"
-          class="font-body-sm text-[10px] text-secondary mt-0.5 leading-relaxed break-words"
+          class="ax-prop-panel-description"
         >
           {{ item.description }}
         </p>
       </div>
 
-      <div class="flex items-center min-w-0">
+      <div class="ax-prop-panel-control">
         <template v-if="item.type === 'switch'">
           <AxSwitch
             :model-value="!!modelValue[item.key]"
@@ -62,7 +59,7 @@ const set = (key: string, value: unknown) => {
         </template>
 
         <template v-else-if="item.type === 'segmented'">
-          <div class="flex items-center flex-wrap bg-surface-container rounded-lg p-0.5 gap-0.5 max-w-full">
+          <div class="ax-segmented-base">
             <AxButton
               v-for="opt in item.options"
               :key="opt.value"
@@ -76,28 +73,24 @@ const set = (key: string, value: unknown) => {
         </template>
 
         <template v-else-if="item.type === 'select'">
-          <div class="w-48">
-            <AxSelect
-              :model-value="modelValue[item.key] as string | number"
-              :options="item.options"
-              size="sm"
-              @update:model-value="set(item.key, $event)"
-            />
-          </div>
+          <AxSelect
+            :model-value="modelValue[item.key] as string | number"
+            :options="item.options"
+            size="sm"
+            style="width: 12rem"
+            @update:model-value="set(item.key, $event)"
+          />
         </template>
 
         <template v-else-if="item.type === 'slider'">
-          <div class="flex items-center gap-ax-sm w-48">
+          <div class="ax-prop-panel-slider-row" style="width: 12rem">
             <AxSlider
               :model-value="modelValue[item.key] as number"
               :min="item.min || 0"
               :max="item.max || 100"
-              class="flex-1"
               @update:model-value="set(item.key, $event)"
             />
-            <span
-              class="font-label-md text-[10px] text-primary font-semibold w-6 text-right tabular-nums"
-            >
+            <span class="ax-prop-panel-value" style="font-size: 10px; font-weight: 600; width: 1.5rem; text-align: right; font-variant-numeric: tabular-nums">
               {{ modelValue[item.key] }}
             </span>
           </div>
@@ -109,7 +102,7 @@ const set = (key: string, value: unknown) => {
             :model-value="modelValue[item.key] as string"
             :placeholder="item.placeholder || ''"
             size="sm"
-            class="w-48"
+            style="width: 12rem"
             @update:model-value="set(item.key, $event)"
           />
         </template>
@@ -122,7 +115,7 @@ const set = (key: string, value: unknown) => {
             resize="vertical"
             :rows="item.rows || 3"
             size="sm"
-            class="w-56"
+            style="width: 14rem"
             @update:model-value="set(item.key, $event)"
           />
         </template>

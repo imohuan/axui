@@ -79,7 +79,7 @@ const hide = () => {
 <template>
   <span
     ref="triggerRef"
-    class="ax-inline-flex"
+    class="ax-tooltip-trigger"
     @mouseenter="show"
     @mouseleave="hide"
     @focus="show"
@@ -100,14 +100,14 @@ const hide = () => {
         v-if="visible"
         ref="tooltipRef"
         :style="tooltipStyle"
-        class="ax-tooltip"
+        class="ax-tooltip-base"
       >
         <slot name="content">{{ content }}</slot>
         <div
           v-if="props.arrow"
           ref="arrowRef"
           :style="arrowStyle"
-          class="ax-tooltip__arrow"
+          class="ax-tooltip-arrow"
         />
       </div>
     </Transition>

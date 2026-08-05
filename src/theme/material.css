@@ -1,0 +1,2123 @@
+/* ============================================================
+   Axiom UI - Material Design Theme
+   Design Tokens & Semantic Component Classes
+   
+   命名规则：
+     .ax-component-base          → 组件根元素基础样式
+     .ax-component-variant       → variant（如 primary, outline, ghost, danger）
+     .ax-component-state         → state（如 disabled, loading, on, off）
+     .ax-component-subElement    → 子元素（如 spinner, thumb, header, footer）
+   ============================================================ */
+
+/* ===== CSS Custom Properties (Design Tokens) ===== */
+:root {
+  /* --- Colors --- */
+  --ax-color-primary: #000000;
+  --ax-color-ball: #6366f1;
+  --ax-color-ball-light: #818cf8;
+  --ax-color-on-primary: #ffffff;
+  --ax-color-secondary: #5f5e61;
+  --ax-color-on-secondary: #ffffff;
+  --ax-color-tertiary: #000000;
+  --ax-color-error: #ba1a1a;
+  --ax-color-on-error: #ffffff;
+  --ax-color-background: #f9f9fa;
+  --ax-color-surface: #f9f9fa;
+  --ax-color-surface-container-lowest: #ffffff;
+  --ax-color-surface-container-low: #f3f3f4;
+  --ax-color-surface-container: #eeeeef;
+  --ax-color-surface-container-high: #e8e8e9;
+  --ax-color-surface-container-highest: #e2e2e3;
+  --ax-color-surface-variant: #e2e2e3;
+  --ax-color-on-surface: #1a1c1d;
+  --ax-color-on-surface-variant: #47464a;
+  --ax-color-on-background: #1a1c1d;
+  --ax-color-outline: #78767b;
+  --ax-color-outline-variant: #c8c5ca;
+  --ax-color-secondary-container: #e4e1e5;
+  --ax-color-on-secondary-container: #656467;
+  --ax-color-error-container: #ffdad6;
+  --ax-color-on-error-container: #93000a;
+
+  /* --- Typography --- */
+  --ax-font-display: Geist, sans-serif;
+  --ax-font-headline-lg: Geist, sans-serif;
+  --ax-font-headline-lg-mobile: Geist, sans-serif;
+  --ax-font-headline-md: Geist, sans-serif;
+  --ax-font-headline-sm: Geist, sans-serif;
+  --ax-font-body-lg: Geist, sans-serif;
+  --ax-font-body-sm: Geist, sans-serif;
+  --ax-font-body-md: Geist, sans-serif;
+  --ax-font-label-md: "JetBrains Mono", monospace;
+
+  /* --- Text Sizes --- */
+  --ax-text-display-size: 36px;
+  --ax-text-display-line-height: 40px;
+  --ax-text-display-letter-spacing: -0.02em;
+  --ax-text-display-weight: 600;
+  --ax-text-headline-lg-size: 24px;
+  --ax-text-headline-lg-line-height: 32px;
+  --ax-text-headline-lg-letter-spacing: -0.02em;
+  --ax-text-headline-lg-weight: 600;
+  --ax-text-headline-lg-mobile-size: 20px;
+  --ax-text-headline-lg-mobile-line-height: 28px;
+  --ax-text-headline-lg-mobile-weight: 600;
+  --ax-text-headline-md-size: 20px;
+  --ax-text-headline-md-line-height: 28px;
+  --ax-text-headline-md-letter-spacing: -0.01em;
+  --ax-text-headline-md-weight: 600;
+  --ax-text-headline-sm-size: 16px;
+  --ax-text-headline-sm-line-height: 24px;
+  --ax-text-headline-sm-weight: 600;
+  --ax-text-body-lg-size: 16px;
+  --ax-text-body-lg-line-height: 24px;
+  --ax-text-body-lg-weight: 400;
+  --ax-text-body-sm-size: 12px;
+  --ax-text-body-sm-line-height: 16px;
+  --ax-text-body-sm-weight: 400;
+  --ax-text-body-md-size: 14px;
+  --ax-text-body-md-line-height: 20px;
+  --ax-text-body-md-weight: 400;
+  --ax-text-label-md-size: 12px;
+  --ax-text-label-md-line-height: 16px;
+  --ax-text-label-md-letter-spacing: 0.02em;
+  --ax-text-label-md-weight: 500;
+
+  /* --- Spacing --- */
+  --ax-spacing-xs: 0.25rem;
+  --ax-spacing-sm: 0.5rem;
+  --ax-spacing-md: 1rem;
+  --ax-spacing-lg: 1.5rem;
+  --ax-spacing-xl: 2rem;
+  --ax-spacing-gutter: 16px;
+  --ax-spacing-margin: 24px;
+
+  /* --- Border Radius --- */
+  --ax-radius-none: 0;
+  --ax-radius-xs: 0.125rem;
+  --ax-radius-sm: 0.25rem;
+  --ax-radius-md: 0.375rem;
+  --ax-radius-lg: 0.5rem;
+  --ax-radius-xl: 1rem;
+  --ax-radius-full: 9999px;
+  --ax-radius-button: var(--ax-radius-md);
+  --ax-radius-input: var(--ax-radius-md);
+  --ax-radius-card: var(--ax-radius-xl);
+  --ax-radius-dropdown: var(--ax-radius-xl);
+  --ax-radius-dialog: var(--ax-radius-xl);
+  --ax-radius-alert: var(--ax-radius-lg);
+  --ax-radius-switch-track: var(--ax-radius-full);
+  --ax-radius-switch-thumb: var(--ax-radius-full);
+
+  /* --- Control Size System (shared by Button, Input, Select Trigger) --- */
+  --ax-control-height-xs: 18px;
+  --ax-control-height-sm: 20px;
+  --ax-control-height-md: 24px;
+  --ax-control-height-lg: 28px;
+  --ax-control-height-xl: 32px;
+  --ax-control-padding-y-xs: 0;
+  --ax-control-padding-y-sm: 0;
+  --ax-control-padding-y-md: var(--ax-spacing-xs);
+  --ax-control-padding-y-lg: var(--ax-spacing-xs);
+  --ax-control-padding-y-xl: var(--ax-spacing-sm);
+  --ax-control-padding-x-xs: var(--ax-spacing-xs);
+  --ax-control-padding-x-sm: var(--ax-spacing-sm);
+  --ax-control-padding-x-md: var(--ax-spacing-sm);
+  --ax-control-padding-x-lg: var(--ax-spacing-md);
+  --ax-control-padding-x-xl: var(--ax-spacing-md);
+  --ax-control-radius-xs: var(--ax-radius-sm);
+  --ax-control-radius-sm: var(--ax-radius-sm);
+  --ax-control-radius-md: var(--ax-radius-md);
+  --ax-control-radius-lg: var(--ax-radius-lg);
+  --ax-control-radius-xl: var(--ax-radius-lg);
+  --ax-control-font-size-xs: var(--ax-text-body-sm-size);
+  --ax-control-font-size-sm: var(--ax-text-body-sm-size);
+  --ax-control-font-size-md: var(--ax-text-label-md-size);
+  --ax-control-font-size-lg: var(--ax-text-label-md-size);
+  --ax-control-font-size-xl: var(--ax-text-label-md-size);
+  --ax-control-line-height-xs: var(--ax-text-body-sm-line-height);
+  --ax-control-line-height-sm: var(--ax-text-body-sm-line-height);
+  --ax-control-line-height-md: var(--ax-text-label-md-line-height);
+  --ax-control-line-height-lg: var(--ax-text-label-md-line-height);
+  --ax-control-line-height-xl: var(--ax-text-label-md-line-height);
+
+  /* --- Switch Sizes --- */
+  --ax-switch-track-width-xs: 30px;
+  --ax-switch-track-height-xs: 18px;
+  --ax-switch-thumb-size-xs: 12px;
+  --ax-switch-thumb-offset-xs: 14px;
+  --ax-switch-track-width-sm: 34px;
+  --ax-switch-track-height-sm: 20px;
+  --ax-switch-thumb-size-sm: 14px;
+  --ax-switch-thumb-offset-sm: 16px;
+  --ax-switch-track-width-md: 40px;
+  --ax-switch-track-height-md: 24px;
+  --ax-switch-thumb-size-md: 16px;
+  --ax-switch-thumb-offset-md: 20px;
+  --ax-switch-track-width-lg: 44px;
+  --ax-switch-track-height-lg: 28px;
+  --ax-switch-thumb-size-lg: 20px;
+  --ax-switch-thumb-offset-lg: 20px;
+  --ax-switch-track-width-xl: 48px;
+  --ax-switch-track-height-xl: 32px;
+  --ax-switch-thumb-size-xl: 24px;
+  --ax-switch-thumb-offset-xl: 20px;
+
+  /* --- Button Icon Sizes --- */
+  --ax-size-button-icon: 24px;
+  --ax-size-button-icon-lg: 28px;
+
+  /* --- Shadow --- */
+  --ax-shadow-pro: 0 4px 12px rgba(0, 0, 0, 0.04);
+  --ax-shadow-dropdown: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --ax-shadow-dialog: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --ax-shadow-tooltip: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+
+  /* --- Transition --- */
+  --ax-transition-fast: 100ms ease;
+  --ax-transition-normal: 200ms ease;
+  --ax-transition-slow: 300ms ease;
+  --ax-transition-colors: color, background-color, border-color, box-shadow, opacity;
+}
+
+/* ===== Base Styles ===== */
+body {
+  font-family: "Geist", sans-serif;
+}
+
+/* ============================================================
+   Scrollbar 隐藏 — 通用工具
+   ============================================================ */
+.ax-scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.ax-scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================================
+   Pro Shadow — 通用投影工具
+   ============================================================ */
+.ax-shadow-pro {
+  box-shadow: var(--ax-shadow-pro);
+}
+
+/* ============================================================
+   Comp Preview — 组件预览背景（棋盘格）
+   ============================================================ */
+.ax-comp-preview {
+  background: repeating-conic-gradient(#f0f0f0 0% 25%, transparent 0% 50%) 0 0 / 12px 12px;
+  border-radius: var(--ax-radius-lg);
+}
+
+/* ============================================================
+   Range Input Slider Thumb — 全局滑块拇指样式
+   ============================================================ */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #000;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform var(--ax-transition-fast);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #000;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+/* ===== Keyframes ===== */
+@keyframes ax-ripple-anim {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes ax-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   Button 按钮组件 — AxButton.vue
+
+   class 层级：
+     .ax-button-base          → 按钮根元素基础样式
+     .ax-button-primary       → variant="primary"
+     .ax-button-outline       → variant="outline"
+     .ax-button-ghost         → variant="ghost"
+     .ax-button-danger        → variant="danger"
+     .ax-button-disabled      → disabled 状态
+     .ax-button-loading       → loading 状态
+     .ax-button-block         → block 属性（宽度100%）
+     .ax-button-icon          → size="icon" 图标专用
+     .ax-button-icon-lg       → size="icon-lg" 大图标专用
+     .ax-button-spinner       → loading 旋转器容器
+     .ax-button-spinner-track → 旋转器轨道
+     .ax-button-spinner-head  → 旋转器头部
+     .ax-ripple               → 涟漪容器
+     .ax-ripple-light         → 浅色涟漪（主色按钮上）
+     .ax-ripple-dark          → 深色涟漪（非主色按钮上）
+   ============================================================ */
+.ax-button-base {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ax-spacing-xs);
+  font-family: var(--ax-font-label-md);
+  font-size: var(--ax-text-label-md-size);
+  line-height: var(--ax-text-label-md-line-height);
+  font-weight: var(--ax-text-label-md-weight);
+  letter-spacing: var(--ax-text-label-md-letter-spacing);
+  transition: background-color var(--ax-transition-normal), opacity var(--ax-transition-normal), color var(--ax-transition-normal);
+  outline: none;
+  border: 0;
+  border-radius: var(--ax-radius-button);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* --- Button Variants --- */
+.ax-button-primary {
+  background-color: var(--ax-color-primary);
+  color: var(--ax-color-on-primary);
+}
+
+.ax-button-primary:hover {
+  opacity: 0.9;
+}
+
+.ax-button-outline {
+  background-color: #ffffff;
+  color: var(--ax-color-primary);
+}
+
+.ax-button-outline:hover {
+  background-color: var(--ax-color-surface-container-high);
+}
+
+.ax-button-ghost {
+  color: var(--ax-color-secondary);
+}
+
+.ax-button-ghost:hover {
+  background-color: var(--ax-color-surface-container-low);
+}
+
+.ax-button-danger {
+  color: var(--ax-color-error);
+}
+
+.ax-button-danger:hover {
+  background-color: var(--ax-color-error-container);
+  color: var(--ax-color-on-error-container);
+}
+
+/* --- Button States --- */
+.ax-button-disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.ax-button-loading {
+  cursor: wait;
+  pointer-events: none;
+}
+
+.ax-button-block {
+  width: 100%;
+}
+
+/* --- Button Icon Sizes --- */
+.ax-button-icon {
+  width: var(--ax-size-button-icon);
+  height: var(--ax-size-button-icon);
+  padding: 0;
+  line-height: 1;
+}
+
+.ax-button-icon-lg {
+  width: var(--ax-size-button-icon-lg);
+  height: var(--ax-size-button-icon-lg);
+  padding: 0;
+  line-height: 1;
+}
+
+/* --- Button Ripple --- */
+.ax-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ax-ripple-anim 600ms ease-out forwards;
+  pointer-events: none;
+}
+
+.ax-ripple-light {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.ax-ripple-dark {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* --- Button Spinner --- */
+.ax-button-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.ax-button-spinner svg {
+  animation: ax-button-spin 1s linear infinite;
+}
+
+.ax-button-spinner-track {
+  opacity: 0.25;
+}
+
+.ax-button-spinner-head {
+  opacity: 0.75;
+}
+
+/* ============================================================
+   Input 输入框组件 — AxInput.vue
+
+   class 层级：
+     .ax-input-base          → 输入框根元素基础样式
+     .ax-input-textarea      → multiline 模式（textarea）
+     .ax-input-has-prefix    → 有前缀时附加类
+     .ax-input-has-suffix    → 有后缀时附加类
+     .ax-input-resize-none      → resize="none"
+     .ax-input-resize-vertical  → resize="vertical"
+     .ax-input-resize-horizontal→ resize="horizontal"
+     .ax-input-resize-both      → resize="both"
+     .ax-input-wrapper       → 单行模式的包裹容器
+     .ax-input-prefix        → 前缀图标区
+     .ax-input-suffix        → 后缀图标区
+     .ax-input-password-toggle → 密码可见性切换按钮
+   ============================================================ */
+.ax-input-base {
+  width: 100%;
+  font-family: var(--ax-font-label-md);
+  font-size: var(--ax-text-label-md-size);
+  line-height: var(--ax-text-label-md-line-height);
+  font-weight: var(--ax-text-label-md-weight);
+  letter-spacing: var(--ax-text-label-md-letter-spacing);
+  background-color: var(--ax-color-surface-container-low);
+  border: 1px solid var(--ax-color-outline-variant);
+  border-radius: var(--ax-radius-input);
+  transition: border-color var(--ax-transition-fast), box-shadow var(--ax-transition-fast);
+  outline: none;
+}
+
+.ax-input-base:focus {
+  box-shadow: 0 0 0 1px var(--ax-color-primary);
+  border-color: var(--ax-color-primary);
+}
+
+.ax-input-base::placeholder {
+  color: var(--ax-color-outline);
+}
+
+.ax-input-base:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- Input Textarea Mode --- */
+.ax-input-textarea {
+  height: auto;
+}
+
+.ax-input-resize-none { resize: none; }
+.ax-input-resize-vertical { resize: vertical; }
+.ax-input-resize-horizontal { resize: horizontal; }
+.ax-input-resize-both { resize: both; }
+
+/* --- Input Wrapper (prefix/suffix) --- */
+.ax-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ax-input-wrapper .ax-input-has-prefix {
+  padding-left: 2rem;
+}
+
+.ax-input-wrapper .ax-input-has-suffix {
+  padding-right: 2rem;
+}
+
+.ax-input-prefix {
+  position: absolute;
+  left: 0.625rem;
+  display: flex;
+  align-items: center;
+  color: var(--ax-color-secondary);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ax-input-suffix {
+  position: absolute;
+  right: 0.625rem;
+  display: flex;
+  align-items: center;
+  color: var(--ax-color-secondary);
+  z-index: 10;
+}
+
+.ax-input-password-toggle {
+  position: absolute;
+  right: 0.625rem;
+  display: flex;
+  align-items: center;
+  color: var(--ax-color-secondary);
+  z-index: 10;
+  cursor: pointer;
+  transition: color var(--ax-transition-fast);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.ax-input-password-toggle:hover {
+  color: var(--ax-color-primary);
+}
+
+/* ============================================================
+   Card 卡片组件 — AxCard.vue
+
+   class 层级：
+     .ax-card-base         → 卡片根元素
+     .ax-card-header       → 卡片头部
+     .ax-card-header-title → 头部标题
+     .ax-card-body         → 卡片内容区
+   ============================================================ */
+.ax-card-base {
+  background-color: var(--ax-color-surface-container-lowest);
+  border: 1px solid var(--ax-color-outline-variant);
+  border-radius: var(--ax-radius-card);
+  overflow: hidden;
+  box-shadow: var(--ax-shadow-pro);
+}
+
+.ax-card-header {
+  padding: var(--ax-spacing-sm) var(--ax-spacing-md);
+  border-bottom: 1px solid var(--ax-color-outline-variant);
+  display: flex;
+  align-items: center;
+  gap: var(--ax-spacing-sm);
+  background-color: var(--ax-color-surface-container-low);
+}
+
+.ax-card-header-title {
+  font-family: var(--ax-font-label-md);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ax-color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ax-card-body {
+  padding: var(--ax-spacing-lg);
+}
+
+/* ============================================================
+   Dropdown 下拉菜单组件 — AxDropdown.vue
+
+   class 层级：
+     .ax-dropdown-base      → 下拉根容器
+     .ax-dropdown-menu      → 弹出菜单面板
+     .ax-dropdown-item      → 菜单项
+     .ax-dropdown-item-danger → 危险操作菜单项
+     .ax-dropdown-item-active → 选中/激活菜单项
+     .ax-dropdown-divider   → 分隔线
+     .ax-dropdown-body      → 菜单内容区（带 padding）
+   ============================================================ */
+.ax-dropdown-base {
+  position: relative;
+  text-align: left;
+}
+
+.ax-dropdown-menu {
+  z-index: 50;
+  border-radius: var(--ax-radius-dropdown);
+  background-color: var(--ax-color-surface-container-lowest);
+  border: 1px solid var(--ax-color-outline-variant);
+  box-shadow: var(--ax-shadow-dropdown), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.ax-dropdown-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: var(--ax-spacing-sm);
+  padding: var(--ax-spacing-xs) var(--ax-spacing-md);
+  text-align: left;
+  font-family: var(--ax-font-label-md);
+  font-size: var(--ax-text-label-md-size);
+  line-height: var(--ax-text-label-md-line-height);
+  color: var(--ax-color-primary);
+  border-radius: var(--ax-radius-lg);
+  transition: background-color var(--ax-transition-fast);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.ax-dropdown-item:hover {
+  background-color: var(--ax-color-surface-container-low);
+}
+
+.ax-dropdown-item-danger {
+  color: var(--ax-color-error);
+}
+
+.ax-dropdown-item-danger:hover {
+  background-color: var(--ax-color-error-container);
+  color: var(--ax-color-on-error-container);
+}
+
+.ax-dropdown-item-active {
+  background-color: var(--ax-color-primary);
+  color: var(--ax-color-on-primary);
+  font-weight: 500;
+}
+
+.ax-dropdown-divider {
+  margin: var(--ax-spacing-xs) 0;
+  border-top: 1px solid var(--ax-color-outline-variant);
+}
+
+.ax-dropdown-body {
+  padding: var(--ax-spacing-xs);
+}
+
+/* ============================================================
+   Dialog 弹窗组件 — AxDialog.vue
+
+   class 层级：
+     .ax-dialog-base         → 弹窗根元素
+     .ax-dialog-overlay      → 遮罩层
+     .ax-dialog-header       → 弹窗头部
+     .ax-dialog-header-left  → 头部左侧区域
+     .ax-dialog-title        → 弹窗标题
+     .ax-dialog-close        → 关闭按钮
+     .ax-dialog-body         → 弹窗内容区
+     .ax-dialog-footer       → 弹窗底部
+   ============================================================ */
+.ax-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  padding: var(--ax-spacing-md);
+}
+
+.ax-dialog-base {
+  background-color: var(--ax-color-surface-container-lowest);
+  border: 1px solid var(--ax-color-outline-variant);
+  border-radius: var(--ax-radius-dialog);
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--ax-shadow-dialog);
+  max-height: 85vh;
+}
+
+.ax-dialog-header {
+  height: 48px;
+  border-bottom: 1px solid var(--ax-color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--ax-spacing-md);
+  flex-shrink: 0;
+}
+
+.ax-dialog-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-spacing-sm);
+  min-width: 0;
+}
+
+.ax-dialog-title {
+  font-family: var(--ax-font-headline-sm);
+  font-size: var(--ax-text-body-md-size);
+  font-weight: 600;
+  color: var(--ax-color-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ax-dialog-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ax-color-secondary);
+  border-radius: var(--ax-radius-lg);
+  transition: background-color var(--ax-transition-fast);
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ax-dialog-close:hover {
+  background-color: var(--ax-color-surface-container-low);
+}
+
+.ax-dialog-body {
+  padding: var(--ax-spacing-lg);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.ax-dialog-footer {
+  height: 56px;
+  border-top: 1px solid var(--ax-color-outline-variant);
+  background-color: var(--ax-color-surface-container-low);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 var(--ax-spacing-md);
+  gap: var(--ax-spacing-sm);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   Alert 提示组件 — AxAlert.vue
+
+   class 层级：
+     .ax-alert-base        → 提示根元素
+     .ax-alert-info        → type="info"
+     .ax-alert-success     → type="success"
+     .ax-alert-warning     → type="warning"
+     .ax-alert-error       → type="error"
+     .ax-alert-content     → 内容区（icon + 文字）
+     .ax-alert-icon        → 图标
+     .ax-alert-title       → 标题
+     .ax-alert-description → 描述文字
+     .ax-alert-close       → 关闭按钮
+   ============================================================ */
+.ax-alert-base {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ax-spacing-sm);
+  padding: 0.625rem;
+  border-radius: 0 var(--ax-radius-alert) var(--ax-radius-alert) 0;
+}
+
+.ax-alert-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ax-spacing-xs);
+}
+
+.ax-alert-icon {
+  font-size: 16px;
+  margin-top: 0.125rem;
+}
+
+.ax-alert-title {
+  font-family: var(--ax-font-body-sm);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ax-alert-description {
+  font-size: 10px;
+  line-height: 1.6;
+  margin-top: 0.125rem;
+}
+
+.ax-alert-close {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ax-radius-sm);
+  transition: background-color var(--ax-transition-fast);
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* --- Alert: Info --- */
+.ax-alert-info {
+  color: var(--ax-color-on-surface-variant);
+  background-color: var(--ax-color-surface-container-lowest);
+  border: 1px solid var(--ax-color-outline-variant);
+  border-left: 2px solid var(--ax-color-primary);
+}
+
+.ax-alert-info .ax-alert-icon { color: var(--ax-color-primary); }
+.ax-alert-info .ax-alert-title { color: var(--ax-color-primary); }
+.ax-alert-info .ax-alert-description { color: var(--ax-color-secondary); }
+.ax-alert-info .ax-alert-close { color: var(--ax-color-secondary); }
+.ax-alert-info .ax-alert-close:hover { background-color: var(--ax-color-surface-container-low); }
+
+/* --- Alert: Success --- */
+.ax-alert-success {
+  color: var(--ax-color-on-surface-variant);
+  background-color: var(--ax-color-surface-container-lowest);
+  border: 1px solid var(--ax-color-outline-variant);
+  border-left: 2px solid var(--ax-color-primary);
+}
+
+.ax-alert-success .ax-alert-icon { color: var(--ax-color-primary); }
+.ax-alert-success .ax-alert-title { color: var(--ax-color-primary); }
+.ax-alert-success .ax-alert-description { color: var(--ax-color-secondary); }
+.ax-alert-success .ax-alert-close { color: var(--ax-color-secondary); }
+.ax-alert-success .ax-alert-close:hover { background-color: var(--ax-color-surface-container-low); }
+
+/* --- Alert: Warning --- */
+.ax-alert-warning {
+  color: var(--ax-color-on-surface-variant);
+  background-color: var(--ax-color-surface-container-lowest);
+  border: 1px solid var(--ax-color-outline-variant);
+  border-left: 2px solid var(--ax-color-primary);
+}
+
+.ax-alert-warning .ax-alert-icon { color: var(--ax-color-primary); }
+.ax-alert-warning .ax-alert-title { color: var(--ax-color-primary); }
+.ax-alert-warning .ax-alert-description { color: var(--ax-color-secondary); }
+.ax-alert-warning .ax-alert-close { color: var(--ax-color-secondary); }
+.ax-alert-warning .ax-alert-close:hover { background-color: var(--ax-color-surface-container-low); }
+
+/* --- Alert: Error --- */
+.ax-alert-error {
+  color: var(--ax-color-on-error-container);
+  background-color: var(--ax-color-error-container);
+  border: 1px solid var(--ax-color-error-container);
+  border-left: 2px solid var(--ax-color-error);
+}
+
+.ax-alert-error .ax-alert-icon { color: var(--ax-color-error); }
+.ax-alert-error .ax-alert-title { color: var(--ax-color-on-error-container); }
+.ax-alert-error .ax-alert-description { color: var(--ax-color-on-error-container); opacity: 0.9; }
+.ax-alert-error .ax-alert-close { color: var(--ax-color-on-error-container); }
+.ax-alert-error .ax-alert-close:hover { background-color: rgba(186, 26, 26, 0.1); }
+
+/* ============================================================
+   Switch 开关组件 — AxSwitch.vue
+
+   class 层级：
+     .ax-switch-base       → 开关根元素（track 轨道）
+     .ax-switch-on         → 开启状态
+     .ax-switch-off        → 关闭状态
+     .ax-switch-disabled   → 禁用状态
+     .ax-switch-enabled    → 可用状态
+     .ax-switch-thumb      → 滑块（thumb）
+     .ax-switch-thumb-on   → 滑块在开位置
+     .ax-switch-thumb-off  → 滑块在关位置
+   ============================================================ */
+.ax-switch-base {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  border-radius: var(--ax-radius-switch-track);
+  padding: 2px;
+  transition: background-color var(--ax-transition-normal);
+  outline: none;
+  background: none;
+  border: none;
+}
+
+.ax-switch-base:focus-visible {
+  box-shadow: 0 0 0 1px var(--ax-color-primary);
+}
+
+.ax-switch-on {
+  background-color: var(--ax-color-primary);
+}
+
+.ax-switch-off {
+  background-color: var(--ax-color-outline);
+}
+
+.ax-switch-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ax-switch-enabled {
+  cursor: pointer;
+}
+
+/* --- Switch Thumb --- */
+.ax-switch-thumb {
+  pointer-events: none;
+  display: inline-block;
+  border-radius: var(--ax-radius-switch-thumb);
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform var(--ax-transition-normal);
+}
+
+.ax-switch-thumb-on {
+  /* transform applied via :style binding in Vue component */
+}
+
+.ax-switch-thumb-off {
+  transform: translateX(0);
+}
+
+/* ============================================================
+   Tooltip 提示框组件 — AxTooltip.vue
+
+   class 层级：
+     .ax-tooltip-base    → 提示框根元素
+     .ax-tooltip-arrow   → 箭头
+   ============================================================ */
+.ax-tooltip-base {
+  z-index: 50;
+  background-color: var(--ax-color-primary);
+  color: var(--ax-color-on-primary);
+  font-family: var(--ax-font-body-sm);
+  font-size: 11px;
+  padding: var(--ax-spacing-xs) var(--ax-spacing-md);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-tooltip);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.ax-tooltip-arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--ax-color-primary);
+  transform: rotate(45deg);
+}
+
+/* ============================================================
+   Select 选择器组件 — AxSelect.vue
+
+   class 层级：
+     .ax-select-trigger          → 触发器按钮
+     .ax-select-trigger-open     → 下拉打开时
+     .ax-select-placeholder      → 占位文字
+     .ax-select-value            → 已选值文字
+     .ax-select-arrow            → 下拉箭头
+     .ax-select-arrow-open       → 箭头旋转180°
+     .ax-select-tag              → 多选标签
+     .ax-select-tag-label        → 标签文字
+     .ax-select-tag-remove       → 标签移除按钮
+     .ax-select-search-input     → 搜索输入框
+     .ax-select-option           → 选项
+     .ax-select-option-selected  → 已选中选项
+     .ax-select-option-highlighted → 键盘高亮选项
+     .ax-select-option-multi-selected → 多选已选项
+     .ax-select-checkbox         → 多选复选框
+     .ax-select-checkbox-checked → 复选框选中
+     .ax-select-no-results       → 无结果提示
+   ============================================================ */
+.ax-select-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--ax-color-surface-container-low);
+  border: 1px solid var(--ax-color-outline-variant);
+  border-radius: var(--ax-radius-input);
+  transition: border-color var(--ax-transition-fast), box-shadow var(--ax-transition-fast);
+  text-align: left;
+  cursor: pointer;
+  gap: var(--ax-spacing-xs);
+}
+
+.ax-select-trigger:hover {
+  background-color: var(--ax-color-surface-container);
+  border-color: var(--ax-color-outline);
+}
+
+.ax-select-trigger:focus {
+  box-shadow: 0 0 0 1px var(--ax-color-primary);
+  border-color: var(--ax-color-primary);
+}
+
+.ax-select-trigger-open {
+  box-shadow: 0 0 0 1px var(--ax-color-primary);
+  border-color: var(--ax-color-primary);
+}
+
+.ax-select-placeholder {
+  color: var(--ax-color-secondary);
+  flex: 1;
+  text-align: left;
+}
+
+.ax-select-value {
+  color: var(--ax-color-primary);
+  font-weight: 500;
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ax-select-arrow {
+  color: var(--ax-color-secondary);
+  flex-shrink: 0;
+  transition: transform var(--ax-transition-normal);
+}
+
+.ax-select-arrow-open {
+  transform: rotate(180deg);
+}
+
+.ax-select-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-spacing-xs);
+  background-color: var(--ax-color-surface-container-high);
+  padding: 0 var(--ax-spacing-xs);
+  border-radius: var(--ax-radius-sm);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ax-color-primary);
+  flex-shrink: 0;
+}
+
+.ax-select-tag-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ax-select-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--ax-radius-full);
+  transition: background-color var(--ax-transition-fast);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ax-select-tag-remove:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ax-select-search-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--ax-color-primary);
+  font-weight: 500;
+  font-family: var(--ax-font-label-md);
+  font-size: var(--ax-text-label-md-size);
+  padding: 0;
+  margin: 0;
+}
+
+.ax-select-search-input::placeholder {
+  color: var(--ax-color-secondary);
+}
+
+.ax-select-option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: var(--ax-spacing-sm);
+  padding: var(--ax-spacing-xs) var(--ax-spacing-md);
+  text-align: left;
+  font-family: var(--ax-font-label-md);
+  font-size: var(--ax-text-label-md-size);
+  line-height: var(--ax-text-label-md-line-height);
+  border-radius: var(--ax-radius-lg);
+  transition: background-color var(--ax-transition-fast);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.ax-select-option:hover {
+  background-color: var(--ax-color-surface-container-low);
+}
+
+.ax-select-option-selected {
+  background-color: var(--ax-color-primary);
+  color: var(--ax-color-on-primary);
+  font-weight: 500;
+}
+
+.ax-select-option-highlighted {
+  background-color: var(--ax-color-surface-container-highest);
+}
+
+.ax-select-option-multi-selected {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ax-select-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--ax-radius-sm);
+  border: 1px solid var(--ax-color-outline-variant);
+  transition: background-color var(--ax-transition-fast), border-color var(--ax-transition-fast);
+  flex-shrink: 0;
+}
+
+.ax-select-checkbox-checked {
+  background-color: var(--ax-color-primary);
+  border-color: var(--ax-color-primary);
+}
+
+.ax-select-no-results {
+  padding: var(--ax-spacing-md) 0;
+  text-align: center;
+  font-family: var(--ax-font-body-sm);
+  font-size: 11px;
+  color: var(--ax-color-secondary);
+}
+
+/* ============================================================
+   Icon 图标组件 — AxIcon.vue
+
+   class 层级：
+     .ax-icon-base          → 图标根元素
+     .ax-icon-fallback      → 加载失败回退
+   ============================================================ */
+.ax-icon-base {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.ax-icon-fallback {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  color: var(--ax-color-outline);
+}
+
+/* ============================================================
+   Image 图片组件 — AxImage.vue
+
+   class 层级：
+     .ax-image-base           → 图片根元素
+     .ax-image-fixed          → 固定高度模式
+     .ax-image-auto           → 自适应高度模式
+     .ax-image-placeholder    → 占位符模式（1:1）
+     .ax-image-loading        → 加载中指示器
+     .ax-image-error          → 错误指示器
+     .ax-image-img            → 图片元素
+     .ax-image-img-cover      → object-fit: cover
+     .ax-image-img-contain    → object-fit: contain
+     .ax-image-img-loaded     → 已加载（opacity: 1）
+     .ax-image-img-loading    → 加载中（opacity: 0）
+     .ax-image-overlay        → hover 叠加层
+   ============================================================ */
+.ax-image-base {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: var(--ax-color-surface-container-low);
+}
+
+.ax-image-fixed {
+  height: 100%;
+}
+
+.ax-image-auto {
+  height: auto;
+}
+
+.ax-image-placeholder {
+  aspect-ratio: 1 / 1;
+}
+
+.ax-image-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ax-color-outline);
+}
+
+.ax-image-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ax-color-error);
+  cursor: pointer;
+}
+
+.ax-image-img {
+  width: 100%;
+  transition: opacity var(--ax-transition-slow);
+}
+
+.ax-image-img-cover {
+  object-fit: cover;
+}
+
+.ax-image-img-contain {
+  object-fit: contain;
+}
+
+.ax-image-img-loaded {
+  opacity: 1;
+}
+
+.ax-image-img-loading {
+  opacity: 0;
+}
+
+.ax-image-overlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  opacity: 0;
+  transition: background-color var(--ax-transition-slow), opacity var(--ax-transition-slow);
+}
+
+.ax-image-base:hover .ax-image-overlay {
+  background-color: rgba(0, 0, 0, 0.3);
+  opacity: 1;
+}
+
+/* ============================================================
+   ImageViewer 图片查看器组件 — AxImageViewer.vue
+
+   class 层级：
+     .ax-image-viewer-base        → 查看器根元素（全屏遮罩）
+     .ax-image-viewer-close       → 关闭按钮
+     .ax-image-viewer-container   → 内容容器
+     .ax-image-viewer-nav         → 前后导航按钮
+     .ax-image-viewer-nav-prev    → 上一张
+     .ax-image-viewer-nav-next    → 下一张
+     .ax-image-viewer-image-area  → 图片拖拽区域
+     .ax-image-viewer-image       → 图片元素
+     .ax-image-viewer-image-dragging → 拖拽中（禁用过渡）
+     .ax-image-viewer-controls    → 底部控制栏容器
+     .ax-image-viewer-controls-inner → 底部控制栏内部
+     .ax-image-viewer-page        → 页码指示器
+     .ax-image-viewer-divider     → 控制栏分隔线
+     .ax-image-viewer-zoom-group  → 缩放按钮组
+     .ax-image-viewer-zoom-label  → 缩放百分比
+     .ax-image-viewer-btn         → 控制栏按钮
+   ============================================================ */
+.ax-image-viewer-base {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.95);
+  user-select: none;
+}
+
+.ax-image-viewer-close {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 10000;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ax-radius-lg);
+  color: #ffffff;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: background var(--ax-transition-normal);
+}
+
+.ax-image-viewer-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.ax-image-viewer-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ax-image-viewer-nav {
+  position: absolute;
+  z-index: 40;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: var(--ax-radius-lg);
+  color: #ffffff;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background var(--ax-transition-normal);
+}
+
+.ax-image-viewer-nav:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.ax-image-viewer-nav-prev {
+  left: 16px;
+}
+
+.ax-image-viewer-nav-next {
+  right: 16px;
+}
+
+.ax-image-viewer-image-area {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.ax-image-viewer-image-area:active {
+  cursor: grabbing;
+}
+
+.ax-image-viewer-image {
+  max-height: 100vh;
+  max-width: 100%;
+  object-fit: contain;
+  will-change: transform;
+}
+
+.ax-image-viewer-image-dragging {
+  transition: none !important;
+}
+
+.ax-image-viewer-controls {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+}
+
+.ax-image-viewer-controls-inner {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  background: rgba(24, 24, 27, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.ax-image-viewer-page {
+  font-size: 11px;
+  font-weight: 600;
+  color: #71717a;
+  letter-spacing: 0.1em;
+  padding: 0 6px;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.ax-image-viewer-divider {
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 3px;
+}
+
+.ax-image-viewer-zoom-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 2px 4px;
+}
+
+.ax-image-viewer-zoom-label {
+  min-width: 44px;
+  text-align: center;
+  font-size: 11px;
+  color: #ffffff;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.ax-image-viewer-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ax-image-viewer-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #60a5fa;
+}
+
+/* ============================================================
+   JsonViewer JSON查看器组件 — AxJsonViewer.vue
+
+   class 层级：
+     .ax-json-viewer-base        → 查看器根元素
+     .ax-json-viewer-wrap        → 换行模式
+     .ax-json-viewer-nowrap      → 不换行模式（横向滚动）
+     .ax-json-viewer-row         → 每行
+     .ax-json-viewer-arrow-cell  → 箭头单元格
+     .ax-json-viewer-toggle      → 展开/折叠按钮
+     .ax-json-viewer-toggle-hidden → 隐藏的toggle
+     .ax-json-viewer-chevron     → 箭头图标
+     .ax-json-viewer-chevron-open → 箭头展开状态
+     .ax-json-viewer-key         → key文字
+     .ax-json-viewer-value-string  → string值
+     .ax-json-viewer-value-number  → number值
+     .ax-json-viewer-value-boolean → boolean值
+     .ax-json-viewer-value-null    → null值
+     .ax-json-viewer-bracket     → 括号
+     .ax-json-viewer-ellipsis    → 省略号
+     .ax-json-viewer-count       → 计数
+     .ax-json-viewer-tree-line   → 树形连线
+     .ax-json-viewer-children    → 子节点容器
+   ============================================================ */
+.ax-json-viewer-base {
+  user-select: text;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ax-json-viewer-wrap {
+  min-width: 0;
+}
+
+.ax-json-viewer-nowrap {
+  overflow-x: auto;
+}
+
+.ax-json-viewer-row {
+  display: flex;
+  align-items: flex-start;
+  border-radius: var(--ax-radius-xs);
+  transition: background-color var(--ax-transition-fast);
+}
+
+.ax-json-viewer-row:hover {
+  background-color: rgba(243, 243, 244, 0.5);
+}
+
+.ax-json-viewer-arrow-cell {
+  width: 16px;
+  flex-shrink: 0;
+}
+
+.ax-json-viewer-toggle {
+  width: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.ax-json-viewer-toggle-hidden {
+  visibility: hidden;
+}
+
+.ax-json-viewer-chevron {
+  transition: transform var(--ax-transition-normal);
+}
+
+.ax-json-viewer-chevron-open {
+  transform: rotate(90deg);
+}
+
+.ax-json-viewer-key {
+  color: var(--ax-color-outline);
+}
+
+.ax-json-viewer-value-string {
+  color: #b91c1c;
+}
+
+.ax-json-viewer-value-number {
+  color: #2563eb;
+}
+
+.ax-json-viewer-value-boolean,
+.ax-json-viewer-value-null {
+  color: #0f766e;
+  font-weight: 500;
+}
+
+.ax-json-viewer-bracket {
+  color: var(--ax-color-outline);
+}
+
+.ax-json-viewer-ellipsis {
+  color: var(--ax-color-outline);
+  letter-spacing: 0.1em;
+}
+
+.ax-json-viewer-count {
+  color: rgba(120, 118, 123, 0.7);
+}
+
+.ax-json-viewer-tree-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 7px;
+  z-index: 0;
+  width: 0;
+  border-left: 1px dashed rgba(200, 197, 202, 0.4);
+  transition: border-color var(--ax-transition-fast);
+}
+
+.ax-json-viewer-row:hover .ax-json-viewer-tree-line {
+  border-color: rgba(120, 118, 123, 0.5);
+}
+
+.ax-json-viewer-children {
+  position: relative;
+  z-index: 10;
+  padding-left: 16px;
+}
+
+/* ============================================================
+   PropPanel 属性面板组件 — AxPropPanel.vue
+
+   class 层级：
+     .ax-prop-panel-base        → 面板根元素
+     .ax-prop-panel-title       → 面板标题
+     .ax-prop-panel-item        → 属性行
+     .ax-prop-panel-label-area  → 标签区域
+     .ax-prop-panel-label       → 属性名
+     .ax-prop-panel-description → 属性描述
+     .ax-prop-panel-control     → 控件区域
+   ============================================================ */
+.ax-prop-panel-base {
+  width: 100%;
+}
+
+.ax-prop-panel-title {
+  font-family: var(--ax-font-label-md);
+  font-size: 10px;
+  color: var(--ax-color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 var(--ax-spacing-xs);
+  padding-bottom: var(--ax-spacing-sm);
+}
+
+.ax-prop-panel-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ax-spacing-md);
+  padding: var(--ax-spacing-sm) var(--ax-spacing-xs);
+  border-radius: var(--ax-radius-lg);
+}
+
+.ax-prop-panel-label-area {
+  flex: 1;
+  padding-top: 0.125rem;
+  min-width: 48px;
+}
+
+.ax-prop-panel-label {
+  font-family: var(--ax-font-body-sm);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ax-color-primary);
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.ax-prop-panel-description {
+  font-family: var(--ax-font-body-sm);
+  font-size: 10px;
+  color: var(--ax-color-secondary);
+  margin-top: 0.125rem;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.ax-prop-panel-control {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* ============================================================
+   Segmented 分段控制器组件 — AxSegmented.vue
+
+   class 层级：
+     .ax-segmented-base → 分段器根元素
+   ============================================================ */
+.ax-segmented-base {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: var(--ax-color-surface-container);
+  border-radius: var(--ax-radius-lg);
+  padding: 2px;
+  gap: 2px;
+  max-width: 100%;
+}
+
+/* ============================================================
+   Layout 布局组件 — ConsoleLayout.vue / ComponentsView.vue
+
+   class 层级：
+     .ax-layout-sidebar → 侧边栏
+     .ax-layout-header  → 顶栏
+     .ax-layout-main    → 主内容区
+     .ax-layout-footer  → 底栏
+   ============================================================ */
+.ax-layout-sidebar {
+  width: 240px;
+  background-color: var(--ax-color-surface-container-lowest);
+  border-right: 1px solid var(--ax-color-outline-variant);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--ax-spacing-md) var(--ax-spacing-sm);
+  user-select: none;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.ax-layout-header {
+  height: 56px;
+  background-color: var(--ax-color-surface-container-lowest);
+  border-bottom: 1px solid var(--ax-color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--ax-spacing-margin);
+  user-select: none;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.ax-layout-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--ax-spacing-margin);
+}
+
+.ax-layout-footer {
+  height: 48px;
+  background-color: var(--ax-color-surface-container-lowest);
+  border-top: 1px solid var(--ax-color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--ax-spacing-margin);
+  user-select: none;
+  flex-shrink: 0;
+  font-size: var(--ax-text-body-sm-size);
+  color: var(--ax-color-secondary);
+}
+
+/* ============================================================
+   Nav Items 导航项
+
+   class 层级：
+     .ax-nav-item-base     → 主导航项
+     .ax-nav-item-active   → 激活状态
+     .ax-nav-item-inactive → 未激活状态
+     .ax-nav-subitem       → 子导航项
+     .ax-nav-subitem-dot   → 子项小圆点
+   ============================================================ */
+.ax-nav-item-base {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--ax-radius-xl);
+  padding: var(--ax-spacing-xs) var(--ax-spacing-sm);
+  font-family: var(--ax-font-label-md);
+  font-size: var(--ax-text-label-md-size);
+  line-height: var(--ax-text-label-md-line-height);
+  transition: all var(--ax-transition-fast);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ax-nav-item-active {
+  background-color: var(--ax-color-secondary-container);
+  color: var(--ax-color-on-secondary-container);
+  font-weight: 500;
+}
+
+.ax-nav-item-inactive {
+  color: var(--ax-color-secondary);
+}
+
+.ax-nav-item-inactive:hover {
+  background-color: var(--ax-color-surface-container-low);
+}
+
+.ax-nav-subitem {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-spacing-sm);
+  border-radius: var(--ax-radius-lg);
+  padding: var(--ax-spacing-xs) var(--ax-spacing-sm);
+  font-family: var(--ax-font-body-sm);
+  font-size: var(--ax-text-body-sm-size);
+  line-height: var(--ax-text-body-sm-line-height);
+  color: var(--ax-color-secondary);
+  transition: color var(--ax-transition-fast), background-color var(--ax-transition-fast);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.ax-nav-subitem:hover {
+  background-color: var(--ax-color-surface-container-low);
+  color: var(--ax-color-primary);
+}
+
+.ax-nav-subitem-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: var(--ax-radius-full);
+  background-color: var(--ax-color-outline);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   Notification Panel 通知面板
+
+   class 层级：
+     .ax-notification-panel-base → 通知面板根元素
+     .ax-notification-log        → 单条通知日志
+     .ax-notification-log-time   → 时间戳
+     .ax-notification-log-badge  → 徽章
+     .ax-notification-log-badge-info      → info 徽章
+     .ax-notification-log-badge-error     → error 徽章
+     .ax-notification-log-badge-secondary → secondary 徽章
+     .ax-notification-log-badge-success   → success 徽章
+     .ax-notification-log-title  → 通知标题
+     .ax-notification-log-message → 通知内容
+   ============================================================ */
+.ax-notification-panel-base {
+  position: fixed;
+  inset-y: 0;
+  right: 0;
+  width: 320px;
+  background-color: var(--ax-color-surface-container-lowest);
+  border-left: 1px solid var(--ax-color-outline-variant);
+  box-shadow: -4px 0 25px rgba(0, 0, 0, 0.1);
+  z-index: 40;
+  padding: var(--ax-spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ax-notification-log {
+  border: 1px solid var(--ax-color-outline-variant);
+  border-radius: var(--ax-radius-lg);
+  padding: var(--ax-spacing-sm);
+  background-color: var(--ax-color-surface-container-low);
+}
+
+.ax-notification-log-time {
+  font-family: var(--ax-font-label-md);
+  font-size: 10px;
+  color: var(--ax-color-secondary);
+}
+
+.ax-notification-log-badge {
+  font-family: var(--ax-font-label-md);
+  font-size: 9px;
+  padding: 0 var(--ax-spacing-xs);
+  border-radius: var(--ax-radius-sm);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.ax-notification-log-badge-info {
+  background-color: var(--ax-color-surface-container);
+  color: var(--ax-color-primary);
+  border: 1px solid var(--ax-color-outline);
+}
+
+.ax-notification-log-badge-error {
+  background-color: var(--ax-color-error-container);
+  color: var(--ax-color-on-error-container);
+}
+
+.ax-notification-log-badge-secondary {
+  background-color: var(--ax-color-secondary-container);
+  color: var(--ax-color-on-secondary-container);
+}
+
+.ax-notification-log-badge-success {
+  background-color: var(--ax-color-secondary-container);
+  color: var(--ax-color-primary);
+}
+
+.ax-notification-log-title {
+  font-family: var(--ax-font-body-sm);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ax-color-primary);
+  margin-top: var(--ax-spacing-xs);
+}
+
+.ax-notification-log-message {
+  font-family: var(--ax-font-body-sm);
+  font-size: 10px;
+  color: var(--ax-color-on-surface-variant);
+  line-height: 1.6;
+  margin-top: 0.125rem;
+}
+
+/* ============================================================
+   Slider 滑块组件 — AxSlider.vue
+
+   class 层级：
+     .ax-slider-base       → 滑块根元素
+     .ax-slider-track-bg   → 背景轨道
+     .ax-slider-track-fill → 已填充轨道
+     .ax-slider-input      → 原生 range input
+   ============================================================ */
+.ax-slider-base {
+  position: relative;
+  width: 100%;
+}
+
+.ax-slider-track-bg {
+  position: absolute;
+  height: 6px;
+  width: 100%;
+  background-color: var(--ax-color-surface-container);
+  border-radius: var(--ax-radius-full);
+  pointer-events: none;
+  inset-y: 0;
+  margin: auto 0;
+}
+
+.ax-slider-track-fill {
+  position: absolute;
+  height: 6px;
+  background-color: var(--ax-color-primary);
+  border-radius: var(--ax-radius-full);
+  pointer-events: none;
+  inset-y: 0;
+  margin: auto 0;
+}
+
+.ax-slider-input {
+  width: 100%;
+  height: 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  z-index: 10;
+}
+
+.ax-slider-input:focus {
+  outline: none;
+}
+
+/* ============================================================
+   FloatingBall 悬浮球组件 — FloatingBall.vue
+
+   class 层级：
+     .ax-floating-ball-base   → 悬浮球根元素
+     .ax-floating-ball-light  → 亮色主题
+     .ax-floating-ball-dark   → 暗色主题
+   ============================================================ */
+.ax-floating-ball-base {
+  position: fixed;
+  z-index: 100;
+  border-radius: var(--ax-radius-full);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: grab;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--ax-transition-fast);
+}
+
+.ax-floating-ball-base:active {
+  cursor: grabbing;
+}
+
+.ax-floating-ball-light {
+  background-color: var(--ax-color-surface-container-lowest);
+  border: 1px solid var(--ax-color-outline-variant);
+  color: var(--ax-color-primary);
+}
+
+.ax-floating-ball-dark {
+  background-color: var(--ax-color-primary);
+  color: var(--ax-color-on-primary);
+}
+
+/* ============================================================
+   Typography 排版类
+
+   class 层级：
+     .ax-text-display       → Display 展示文字
+     .ax-text-headline-lg   → 大标题
+     .ax-text-headline-md   → 中标题
+     .ax-text-headline-sm   → 小标题
+     .ax-text-body-lg       → 大正文
+     .ax-text-body-md       → 中正文
+     .ax-text-body-sm       → 小正文
+     .ax-text-label-md      → 标签文字
+   ============================================================ */
+.ax-text-display {
+  font-family: var(--ax-font-display);
+  font-size: var(--ax-text-display-size);
+  line-height: var(--ax-text-display-line-height);
+  letter-spacing: var(--ax-text-display-letter-spacing);
+  font-weight: var(--ax-text-display-weight);
+}
+
+.ax-text-headline-lg {
+  font-family: var(--ax-font-headline-lg);
+  font-size: var(--ax-text-headline-lg-size);
+  line-height: var(--ax-text-headline-lg-line-height);
+  letter-spacing: var(--ax-text-headline-lg-letter-spacing);
+  font-weight: var(--ax-text-headline-lg-weight);
+}
+
+.ax-text-headline-md {
+  font-family: var(--ax-font-headline-md);
+  font-size: var(--ax-text-headline-md-size);
+  line-height: var(--ax-text-headline-md-line-height);
+  letter-spacing: var(--ax-text-headline-md-letter-spacing);
+  font-weight: var(--ax-text-headline-md-weight);
+}
+
+.ax-text-headline-sm {
+  font-family: var(--ax-font-headline-sm);
+  font-size: var(--ax-text-headline-sm-size);
+  line-height: var(--ax-text-headline-sm-line-height);
+  font-weight: var(--ax-text-headline-sm-weight);
+}
+
+.ax-text-body-lg {
+  font-family: var(--ax-font-body-lg);
+  font-size: var(--ax-text-body-lg-size);
+  line-height: var(--ax-text-body-lg-line-height);
+  font-weight: var(--ax-text-body-lg-weight);
+}
+
+.ax-text-body-md {
+  font-family: var(--ax-font-body-md);
+  font-size: var(--ax-text-body-md-size);
+  line-height: var(--ax-text-body-md-line-height);
+  font-weight: var(--ax-text-body-md-weight);
+}
+
+.ax-text-body-sm {
+  font-family: var(--ax-font-body-sm);
+  font-size: var(--ax-text-body-sm-size);
+  line-height: var(--ax-text-body-sm-line-height);
+  font-weight: var(--ax-text-body-sm-weight);
+}
+
+.ax-text-label-md {
+  font-family: var(--ax-font-label-md);
+  font-size: var(--ax-text-label-md-size);
+  line-height: var(--ax-text-label-md-line-height);
+  letter-spacing: var(--ax-text-label-md-letter-spacing);
+  font-weight: var(--ax-text-label-md-weight);
+}
+
+/* ============================================================
+   Transition 过渡动画类（用于 Vue <Transition> 组件）
+
+   覆盖：
+     - Dialog（遮罩 + 弹窗）
+     - Dropdown（下拉菜单）
+     - Tooltip（提示框）
+     - Alert（提示条离开）
+     - Notification Panel（通知面板）
+   ============================================================ */
+
+/* --- Dialog Transitions --- */
+.ax-dialog-overlay-enter-active {
+  transition: opacity var(--ax-transition-slow);
+}
+
+.ax-dialog-overlay-leave-active {
+  transition: opacity var(--ax-transition-normal);
+}
+
+.ax-dialog-overlay-enter-from,
+.ax-dialog-overlay-leave-to {
+  opacity: 0;
+}
+
+.ax-dialog-enter-active {
+  transition: transform var(--ax-transition-slow), opacity var(--ax-transition-slow);
+}
+
+.ax-dialog-leave-active {
+  transition: transform var(--ax-transition-normal), opacity var(--ax-transition-normal);
+}
+
+.ax-dialog-enter-from {
+  transform: scale(0.95) translateY(1rem);
+  opacity: 0;
+}
+
+.ax-dialog-leave-to {
+  transform: scale(0.95) translateY(1rem);
+  opacity: 0;
+}
+
+/* --- Dropdown Transitions --- */
+.ax-dropdown-enter-active {
+  transition: opacity var(--ax-transition-fast), transform var(--ax-transition-fast);
+}
+
+.ax-dropdown-leave-active {
+  transition: opacity 75ms ease, transform 75ms ease;
+}
+
+.ax-dropdown-enter-from {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.ax-dropdown-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* --- Tooltip Transitions --- */
+.ax-tooltip-enter-active {
+  transition: opacity var(--ax-transition-fast), transform var(--ax-transition-fast);
+}
+
+.ax-tooltip-leave-active {
+  transition: opacity 75ms ease, transform 75ms ease;
+}
+
+.ax-tooltip-enter-from {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.ax-tooltip-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* --- Alert Transition --- */
+.ax-alert-leave-active {
+  transition: opacity var(--ax-transition-normal), transform var(--ax-transition-normal);
+}
+
+.ax-alert-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ax-alert-leave-to {
+  opacity: 0;
+  transform: translateY(-0.25rem);
+}
+
+/* --- Notification Panel Transitions --- */
+.ax-notification-panel-enter-active {
+  transition: transform var(--ax-transition-slow);
+}
+
+.ax-notification-panel-leave-active {
+  transition: transform var(--ax-transition-normal);
+}
+
+.ax-notification-panel-enter-from,
+.ax-notification-panel-leave-to {
+  transform: translateX(100%);
+}

@@ -2,8 +2,8 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import AxDropdown from './AxDropdown.vue'
 import AxIcon from './AxIcon.vue'
-import type { ControlSize, SelectOption, RoundedSize } from './types'
-import { ROUNDED_CLASSES } from './common'
+import type { ControlSize, SelectOption } from './types'
+import { CONTROL_SIZE_STYLES } from './common'
 
 const props = withDefaults(
   defineProps<{
@@ -20,7 +20,6 @@ const props = withDefaults(
     triggerWidth?: string
     triggerMaxWidth?: string
     size?: ControlSize
-    rounded?: RoundedSize
   }>(),
   {
     modelValue: '',
@@ -36,7 +35,6 @@ const props = withDefaults(
     triggerWidth: '',
     triggerMaxWidth: '',
     size: 'md',
-    rounded: 'md',
   },
 )
 
@@ -157,7 +155,7 @@ const triggerStyle = computed(() => {
   return s
 })
 
-const roundedClass = computed(() => ROUNDED_CLASSES[props.rounded])
+const controlStyle = computed(() => CONTROL_SIZE_STYLES[props.size])
 
 // ---- Keyboard ----
 
@@ -224,7 +222,8 @@ watch(open, (val) => {
     :match-width="isMatchWidth"
     :menu-width="dropdownMenuWidth"
     :menu-max-width="dropdownMaxWidth"
-    menu-class="max-h-56 overflow-y-auto"
+    menu-class="ax-overflow-y-auto"
+    :style="{ maxHeight: '14rem' }"
   >
     <!-- ============ Trigger area ============ -->
     <template #trigger="{ open: isOpen }">
@@ -233,11 +232,10 @@ watch(open, (val) => {
         <template v-if="searchable">
           <div
             :class="[
-              'ax-select__trigger',
-              roundedClass,
-              isOpen ? 'ax-select__trigger--open' : '',
+              'ax-select-trigger',
+              isOpen ? 'ax-select-trigger-open' : '',
             ]"
-            :style="triggerStyle"
+            :style="[controlStyle, triggerStyle]"
             @click="!isOpen && openDropdown()"
           >
             <template v-if="!isOpen">
@@ -245,47 +243,47 @@ watch(open, (val) => {
                 <span
                   v-for="opt in selectedLabels"
                   :key="opt.value"
-                  class="ax-select__tag"
+                  class="ax-select-tag"
                 >
-                  <span class="ax-select__tag-label" :style="tagLabelStyle">{{ opt.label }}</span>
+                  <span class="ax-select-tag-label" :style="tagLabelStyle">{{ opt.label }}</span>
                   <button
-                    class="ax-select__tag-remove"
+                    class="ax-select-tag-remove"
                     @click.stop="removeOption(opt.value)"
                   >
                     <AxIcon name="close" :size="12" />
                   </button>
                 </span>
               </template>
-              <span v-else class="ax-flex-grow" style="text-align: left">
-                <span v-if="multiple" class="ax-select__placeholder">{{ placeholder }}</span>
-                <span v-else class="ax-select__value">{{ displayLabel }}</span>
+              <span v-else style="text-align: left">
+                <span v-if="multiple" class="ax-select-placeholder">{{ placeholder }}</span>
+                <span v-else class="ax-select-value">{{ displayLabel }}</span>
               </span>
-              <AxIcon name="expand_more" :size="16" class="ax-select__arrow" />
+              <AxIcon name="expand_more" :size="16" class="ax-select-arrow" />
             </template>
 
             <template v-else>
-              <div v-if="multiple && selectedLabels.length > 0" class="ax-flex ax-flex-wrap ax-gap-xs" style="width: 100%">
+              <div v-if="multiple && selectedLabels.length > 0" style="width: 100%">
                 <span
                   v-for="opt in selectedLabels"
                   :key="opt.value"
-                  class="ax-select__tag"
+                  class="ax-select-tag"
                 >
-                  <span class="ax-select__tag-label" :style="tagLabelStyle">{{ opt.label }}</span>
+                  <span class="ax-select-tag-label" :style="tagLabelStyle">{{ opt.label }}</span>
                   <button
-                    class="ax-select__tag-remove"
+                    class="ax-select-tag-remove"
                     @click.stop="removeOption(opt.value)"
                   >
                     <AxIcon name="close" :size="12" />
                   </button>
                 </span>
               </div>
-              <div class="ax-flex ax-items-center ax-gap-xs ax-flex-1" style="min-height: 0; width: 100%">
+              <div style="min-height: 0; width: 100%">
                 <input
                   ref="searchInputRef"
                   v-model="searchQuery"
                   type="text"
                   :placeholder="selectedLabels.length === 0 ? searchPlaceholder : ''"
-                  class="ax-select__search-input"
+                  class="ax-select-search-input"
                   autocomplete="off"
                   @keydown="handleKeydown"
                   @click.stop
@@ -301,40 +299,40 @@ watch(open, (val) => {
           <button
             v-if="multiple"
             type="button"
-            :class="['ax-select__trigger', roundedClass]"
-            :style="triggerStyle"
+            class="ax-select-trigger"
+            :style="[controlStyle, triggerStyle]"
             @click="isOpen ? closeDropdown() : openDropdown()"
           >
             <template v-if="selectedLabels.length > 0">
               <span
                 v-for="opt in selectedLabels"
                 :key="opt.value"
-                class="ax-select__tag"
+                class="ax-select-tag"
               >
-                <span class="ax-select__tag-label" :style="tagLabelStyle">{{ opt.label }}</span>
+                <span class="ax-select-tag-label" :style="tagLabelStyle">{{ opt.label }}</span>
                 <button
-                  class="ax-select__tag-remove"
+                  class="ax-select-tag-remove"
                   @click.stop="removeOption(opt.value)"
                 >
                   <AxIcon name="close" :size="12" />
                 </button>
               </span>
             </template>
-            <span v-else class="ax-select__placeholder">{{ placeholder }}</span>
+            <span v-else class="ax-select-placeholder">{{ placeholder }}</span>
 
-            <span class="ax-inline-flex ax-items-center ax-gap-xs ax-flex-shrink-0" style="margin-left: auto">
+            <span style="margin-left: auto">
               <button
                 v-if="hasValue"
-                class="ax-select__tag-remove"
+                class="ax-select-tag-remove"
                 @click.stop="handleClear"
               >
-                <AxIcon name="close" :size="14" class="ax-color-secondary" />
+                <AxIcon name="close" :size="14" />
               </button>
               <AxIcon
                 name="expand_more"
                 :size="16"
-                class="ax-select__arrow"
-                :class="{ 'ax-select__arrow--open': isOpen }"
+                class="ax-select-arrow"
+                :class="{ 'ax-select-arrow-open': isOpen }"
               />
             </span>
           </button>
@@ -343,16 +341,16 @@ watch(open, (val) => {
           <button
             v-else
             type="button"
-            :class="['ax-select__trigger', roundedClass]"
-            :style="triggerStyle"
+            class="ax-select-trigger"
+            :style="[controlStyle, triggerStyle]"
             @click="isOpen ? closeDropdown() : openDropdown()"
           >
-            <span :class="hasValue ? 'ax-select__value' : 'ax-select__placeholder'">{{ displayLabel }}</span>
+            <span :class="hasValue ? 'ax-select-value' : 'ax-select-placeholder'">{{ displayLabel }}</span>
             <AxIcon
               name="expand_more"
               :size="16"
-              class="ax-select__arrow"
-              :class="{ 'ax-select__arrow--open': isOpen }"
+              class="ax-select-arrow"
+              :class="{ 'ax-select-arrow-open': isOpen }"
             />
           </button>
         </template>
@@ -367,14 +365,14 @@ watch(open, (val) => {
           :key="opt.value"
           type="button"
           data-option
-          class="ax-select__option"
+          class="ax-select-option"
           :class="[
             !multiple && modelValue === opt.value
-              ? 'ax-select__option--selected'
+              ? 'ax-select-option-selected'
               : highlightIndex === index
-                ? 'ax-select__option--highlighted'
+                ? 'ax-select-option-highlighted'
                 : multiple && isSelected(opt)
-                  ? 'ax-select__option--multi-selected'
+                  ? 'ax-select-option-multi-selected'
                   : '',
           ]"
           @click="selectOption(opt)"
@@ -383,23 +381,22 @@ watch(open, (val) => {
           <!-- 多选复选框 -->
           <span
             v-if="multiple"
-            class="ax-select__checkbox"
-            :class="isSelected(opt) ? 'ax-select__checkbox--checked' : ''"
+            class="ax-select-checkbox"
+            :class="isSelected(opt) ? 'ax-select-checkbox-checked' : ''"
           >
-            <AxIcon v-if="isSelected(opt)" name="check" :size="12" class="ax-color-on-primary" />
+            <AxIcon v-if="isSelected(opt)" name="check" :size="12" />
           </span>
-          <span class="ax-select__tag-label">{{ opt.label }}</span>
+          <span class="ax-select-tag-label">{{ opt.label }}</span>
           <AxIcon
             v-if="!multiple && modelValue === opt.value"
             name="check"
             :size="16"
-            class="ax-color-on-primary ax-flex-shrink-0"
             style="margin-left: auto"
           />
         </button>
         <div
           v-if="filteredOptions.length === 0"
-          class="ax-select__no-results"
+          class="ax-select-no-results"
         >
           无匹配选项
         </div>

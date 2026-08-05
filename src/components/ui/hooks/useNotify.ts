@@ -1,5 +1,6 @@
 ﻿import { ref, h } from 'vue'
 import { toast } from 'vue-sonner'
+import AxIcon from '../AxIcon.vue'
 
 type NotifyType = 'info' | 'success' | 'error' | 'secondary'
 
@@ -16,6 +17,12 @@ const getToastIcon = (type: NotifyType) => {
   if (type === 'error') return 'error'
   if (type === 'secondary') return 'settings'
   return 'info'
+}
+
+const getIconColor = (type: NotifyType) => {
+  if (type === 'error') return 'ax-color-error'
+  if (type === 'secondary') return 'ax-color-secondary'
+  return 'ax-color-primary'
 }
 
 export function useNotify() {
@@ -35,36 +42,30 @@ export function useNotify() {
           'div',
           {
             class:
-              'flex items-start gap-ax-sm bg-surface-container-lowest border border-outline-variant rounded-xl p-ax-md pro-shadow pointer-events-auto w-80 text-left',
+              'ax-flex ax-items-start ax-gap-sm ax-bg-surface-container-lowest ax-border ax-rounded-xl',
+            style: 'padding: 1rem; box-shadow: var(--ax-shadow-pro); pointer-events: auto; width: 20rem; text-align: left',
           },
           [
-            h(
-              'span',
-              {
-                class:
-                  'material-symbols-outlined mt-0.5 ' +
-                  (type === 'error'
-                    ? 'text-error'
-                    : type === 'secondary'
-                      ? 'text-secondary'
-                      : 'text-primary'),
-              },
-              getToastIcon(type),
-            ),
-            h('div', { class: 'flex-1' }, [
+            h(AxIcon, {
+              name: getToastIcon(type),
+              size: 20,
+              class: getIconColor(type),
+              style: 'margin-top: 0.125rem; flex-shrink: 0',
+            }),
+            h('div', { class: 'ax-flex-1' }, [
               h(
                 'h4',
                 {
-                  class:
-                    'font-headline-sm text-body-md font-semibold text-primary mb-0.5',
+                  class: 'ax-text-headline-sm ax-color-primary',
+                  style: 'font-size: 14px; font-weight: 600; margin-bottom: 0.125rem',
                 },
                 title,
               ),
               h(
                 'p',
                 {
-                  class:
-                    'font-body-sm text-body-sm text-on-surface-variant leading-normal',
+                  class: 'ax-text-body-sm ax-color-on-surface-variant',
+                  style: 'line-height: 1.5',
                 },
                 message,
               ),
@@ -74,9 +75,10 @@ export function useNotify() {
               {
                 onClick: props.onCloseToast,
                 class:
-                  'w-6 h-6 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0',
+                  'ax-button ax-button--icon ax-button--ghost',
+                style: 'flex-shrink: 0; margin-top: -0.125rem; margin-right: -0.25rem',
               },
-              [h('span', { class: 'material-symbols-outlined text-[16px]' }, 'close')],
+              [h(AxIcon, { name: 'close', size: 16 })],
             ),
           ],
         ),

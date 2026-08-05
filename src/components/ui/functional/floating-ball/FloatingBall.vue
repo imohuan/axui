@@ -89,35 +89,35 @@ const label = computed(() => props.prefs.label ?? 'FB')
 
 
 const stackClass = computed(() => {
-  const base = 'relative overflow-visible cursor-grab transition-[height,transform] duration-300 ease-out'
-  const drag = isDragging.value ? ' cursor-grabbing' : ''
-  const exp = expanded.value ? ' !translate-x-0' : ''
+  const base = 'position: relative; overflow: visible; cursor: grab; transition: height 300ms ease-out, transform 300ms ease-out'
+  const drag = isDragging.value ? '; cursor: grabbing' : ''
+  const exp = expanded.value ? '; transform: translateX(0) !important' : ''
   return base + drag + exp
 })
 
 const fabBase =
-  'absolute left-0 m-0 box-border flex items-center justify-center rounded-full border-0 p-0 outline-none transition-[opacity,box-shadow,background-color,border-color] duration-200 ease-out [-webkit-tap-highlight-color:transparent]'
+  'position: absolute; left: 0; margin: 0; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: 9999px; border: 0; padding: 0; outline: none; transition: opacity 200ms ease-out, box-shadow 200ms ease-out, background-color 200ms ease-out, border-color 200ms ease-out; -webkit-tap-highlight-color: transparent'
 
-const fabSoftClasses = `${fabBase} z-[2] cursor-pointer bg-transparent shadow-none`
+const fabSoftClasses = `${fabBase}; z-index: 2; cursor: pointer; background: transparent; box-shadow: none`
 
 const settingsIconClasses =
-  'flex items-center justify-center rounded-full border border-gray-100/90 bg-white text-ball shadow-md shadow-black/10 [&_svg]:size-[18px]'
+  'display: flex; align-items: center; justify-content: center; border-radius: 9999px; border: 1px solid rgba(243,243,244,0.9); background: #fff; color: var(--ax-color-ball); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1)'
 
 const fabMainClasses = computed(() => {
-  const drag = isDragging.value ? 'cursor-grabbing' : 'cursor-grab'
-  let radius = 'rounded-full'
-  if (dockSide.value === 'left') radius = 'rounded-l-md rounded-r-full'
-  else if (dockSide.value === 'right') radius = 'rounded-r-md rounded-l-full'
+  const drag = isDragging.value ? 'cursor: grabbing' : 'cursor: grab'
+  let radius = 'border-radius: 9999px'
+  if (dockSide.value === 'left') radius = 'border-radius: 0 0.375rem 9999px 9999px'
+  else if (dockSide.value === 'right') radius = 'border-radius: 9999px 0.375rem 9999px 0'
 
   if (isDarkTheme.value) {
-    return `${fabBase} z-[2] shadow-md border border-white/12 bg-zinc-800 shadow-black/40 ${drag} ${radius}`
+    return `${fabBase}; z-index: 2; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.12); background: #27272a; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.4); ${drag}; ${radius}`
   }
-  return `${fabBase} z-[2] shadow-md border border-gray-100/90 bg-white shadow-black/10 ${drag} ${radius}`
+  return `${fabBase}; z-index: 2; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid rgba(243,243,244,0.9); background: #fff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); ${drag}; ${radius}`
 })
 
 const fabCloseClasses = computed(() => {
-  const side = closeSide.value === 'left' ? 'right-[-8px] left-auto' : 'left-[-8px]'
-  return `${fabBase} z-[3] !size-4 cursor-pointer bg-zinc-400 text-white shadow-sm hover:bg-zinc-500 [&_svg]:size-2 ${side}`
+  const side = closeSide.value === 'left' ? 'right: -8px; left: auto' : 'left: -8px'
+  return `${fabBase}; z-index: 3; width: 1rem !important; height: 1rem !important; cursor: pointer; background: #a1a1aa; color: #fff; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); ${side}`
 })
 
 function fabStyle(slot: 'main' | 'settings') {
@@ -167,23 +167,23 @@ function innerBallStyle() {
 function themeCardClass(theme: FloatingBallTheme) {
   const selected = draftPrefs.value.theme === theme
   return selected
-    ? 'border-primary bg-surface-container-low'
-    : 'border-outline-variant bg-white hover:border-outline'
+    ? { borderColor: 'var(--ax-color-primary)', backgroundColor: 'var(--ax-color-surface-container-low)' }
+    : { borderColor: 'var(--ax-color-outline-variant)', backgroundColor: '#fff' }
 }
 </script>
 
 <template>
   <!-- The floating ball -->
   <Transition
-    enter-active-class="transition-opacity duration-200"
-    leave-active-class="transition-opacity duration-200"
-    enter-from-class="opacity-0"
-    leave-to-class="opacity-0"
+    enter-active-class=""
+    leave-active-class=""
+    enter-from-class=""
+    leave-to-class=""
   >
     <div
       v-if="visible"
-      class="fixed z-[9999] touch-none select-none"
-      :style="[toolbarStyle, toolbarHitAreaStyle]"
+      class="ax-floating-ball-wrapper"
+      :style="[{ ...toolbarStyle, ...toolbarHitAreaStyle, zIndex: 9999, touchAction: 'none', userSelect: 'none', position: 'fixed' }]"
       @mouseenter="onToolbarEnter"
       @mouseleave="onToolbarLeave"
     >
@@ -208,13 +208,11 @@ function themeCardClass(theme: FloatingBallTheme) {
           @pointerup="onMainPointerUp"
         >
           <span
-            class="relative flex items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-white shadow-sm shadow-ball/40"
-            :style="innerBallStyle()"
+            :style="[{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '9999px', background: 'linear-gradient(to bottom right, var(--ax-color-ball-light), var(--ax-color-ball))', color: '#fff', boxShadow: '0 1px 2px 0 rgba(99,102,241,0.4)', position: 'relative' }, innerBallStyle()]"
             aria-hidden="true"
           >
             <span
-              class="font-extrabold italic leading-none tracking-tight text-white"
-              :class="prefs.shrunk ? 'text-[9px]' : 'text-[11px]'"
+              :style="{ fontWeight: 800, fontStyle: 'italic', lineHeight: 1, letterSpacing: '-0.025em', color: '#fff', fontSize: prefs.shrunk ? '9px' : '11px' }"
             >{{ label }}</span>
           </span>
         </button>
@@ -264,89 +262,83 @@ function themeCardClass(theme: FloatingBallTheme) {
     v-model="showBallSettings"
     title="悬浮球设置"
     icon="tune"
-    max-width="max-w-md"
+    max-width="28rem"
     @close="showBallSettings = false"
   >
-    <div class="space-y-ax-md">
+    <div class="ax-space-y-md">
       <div>
-        <h2 class="font-headline-sm text-headline-sm text-primary">外观与行为</h2>
-        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">配置悬浮球的显示样式与交互选项。</p>
+        <h2 class="ax-text-headline-sm" style="color: var(--ax-color-primary)">外观与行为</h2>
+        <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); margin-top: 0.25rem">配置悬浮球的显示样式与交互选项。</p>
       </div>
 
-      <section class="rounded-lg border border-outline-variant bg-white p-ax-md">
-        <label class="font-label-md text-label-md font-semibold text-primary">主题样式</label>
-        <p class="font-body-sm text-body-sm text-on-surface-variant mt-ax-xs mb-ax-sm">选择悬浮球的外观配色方案</p>
-        <div class="grid grid-cols-2 gap-ax-sm">
+      <section style="border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-lg); background-color: var(--ax-color-surface-container-lowest); padding: 1rem">
+        <label class="ax-text-label-md" style="color: var(--ax-color-primary); font-weight: 600">主题样式</label>
+        <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); margin-top: 0.25rem; margin-bottom: 0.5rem">选择悬浮球的外观配色方案</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--ax-spacing-sm)">
           <button
             type="button"
-            :class="themeCardClass('light')"
-            class="flex flex-col items-center gap-ax-sm rounded-lg border p-ax-md transition-all duration-200"
+            :style="{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', borderRadius: 'var(--ax-radius-lg)', border: '1px solid', padding: '1rem', transition: 'all 200ms', ...themeCardClass('light') }"
             aria-label="亮色"
             @click="draftPrefs.theme = 'light'"
           >
-            <span class="flex size-9 items-center justify-center rounded-full border border-gray-100/90 bg-white shadow-sm shadow-black/10">
+            <span :style="{ display: 'flex', width: '2.25rem', height: '2.25rem', alignItems: 'center', justifyContent: 'center', borderRadius: '9999px', border: '1px solid rgba(243,243,244,0.9)', background: '#fff', boxShadow: '0 1px 2px 0 rgba(0,0,0,0.1)' }">
               <span
-                class="flex size-7 items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-[10px] font-extrabold italic text-white shadow-sm shadow-ball/40"
+                :style="{ display: 'flex', width: '1.75rem', height: '1.75rem', alignItems: 'center', justifyContent: 'center', borderRadius: '9999px', background: 'linear-gradient(to bottom right, var(--ax-color-ball-light), var(--ax-color-ball))', fontSize: '10px', fontWeight: 800, fontStyle: 'italic', color: '#fff', boxShadow: '0 1px 2px 0 rgba(99,102,241,0.4)' }"
               >FB</span>
             </span>
-            <span class="font-label-md text-label-md text-primary">亮色</span>
+            <span class="ax-text-label-md" style="color: var(--ax-color-primary)">亮色</span>
           </button>
           <button
             type="button"
-            :class="themeCardClass('dark')"
-            class="flex flex-col items-center gap-ax-sm rounded-lg border p-ax-md transition-all duration-200"
+            :style="{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', borderRadius: 'var(--ax-radius-lg)', border: '1px solid', padding: '1rem', transition: 'all 200ms', ...themeCardClass('dark') }"
             aria-label="暗色"
             @click="draftPrefs.theme = 'dark'"
           >
-            <span class="flex size-9 items-center justify-center rounded-full border border-white/12 bg-zinc-800 shadow-sm shadow-black/40">
+            <span :style="{ display: 'flex', width: '2.25rem', height: '2.25rem', alignItems: 'center', justifyContent: 'center', borderRadius: '9999px', border: '1px solid rgba(255,255,255,0.12)', background: '#27272a', boxShadow: '0 1px 2px 0 rgba(0,0,0,0.4)' }">
               <span
-                class="flex size-7 items-center justify-center rounded-full bg-gradient-to-br from-ball-light to-ball text-[10px] font-extrabold italic text-white shadow-sm shadow-ball/40"
+                :style="{ display: 'flex', width: '1.75rem', height: '1.75rem', alignItems: 'center', justifyContent: 'center', borderRadius: '9999px', background: 'linear-gradient(to bottom right, var(--ax-color-ball-light), var(--ax-color-ball))', fontSize: '10px', fontWeight: 800, fontStyle: 'italic', color: '#fff', boxShadow: '0 1px 2px 0 rgba(99,102,241,0.4)' }"
               >FB</span>
             </span>
-            <span class="font-label-md text-label-md text-primary">暗色</span>
+            <span class="ax-text-label-md" style="color: var(--ax-color-primary)">暗色</span>
           </button>
         </div>
       </section>
 
-      <section class="divide-y divide-outline-variant/40 rounded-lg border border-outline-variant bg-white">
-        <div class="flex items-center justify-between p-ax-md">
-          <div class="flex flex-col gap-ax-xs">
-            <label for="ball-shrunk" class="font-label-md text-label-md font-semibold text-primary">缩小悬浮球</label>
-            <p class="font-body-sm text-body-sm text-on-surface-variant">切换更小的悬浮球尺寸，节省屏幕空间</p>
+      <section style="border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-lg); background-color: var(--ax-color-surface-container-lowest)">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border-bottom: 1px solid rgba(200,197,202,0.4)">
+          <div style="display: flex; flex-direction: column; gap: var(--ax-spacing-xs)">
+            <label for="ball-shrunk" class="ax-text-label-md" style="color: var(--ax-color-primary); font-weight: 600">缩小悬浮球</label>
+            <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant)">切换更小的悬浮球尺寸，节省屏幕空间</p>
           </div>
           <button
             id="ball-shrunk"
             type="button"
             role="switch"
             :aria-checked="draftPrefs.shrunk"
-            :class="draftPrefs.shrunk ? 'bg-primary' : 'bg-outline'"
-            class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none"
+            :style="{ position: 'relative', display: 'inline-flex', height: '1.25rem', width: '2.25rem', flexShrink: 0, cursor: 'pointer', alignItems: 'center', borderRadius: '9999px', padding: '0.125rem', transition: 'background-color 200ms', outline: 'none', backgroundColor: draftPrefs.shrunk ? 'var(--ax-color-primary)' : 'var(--ax-color-outline)' }"
             @click="draftPrefs.shrunk = !draftPrefs.shrunk"
           >
             <span
-              :class="draftPrefs.shrunk ? 'translate-x-4' : 'translate-x-0'"
-              class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out"
+              :style="{ pointerEvents: 'none', display: 'inline-block', height: '1rem', width: '1rem', borderRadius: '9999px', background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.15)', transition: 'transform 200ms ease-in-out', transform: draftPrefs.shrunk ? 'translateX(1rem)' : 'translateX(0)' }"
             />
           </button>
         </div>
 
-        <div class="flex items-center justify-between p-ax-md">
-          <div class="flex flex-col gap-ax-xs">
-            <label for="ball-hidden" class="font-label-md text-label-md font-semibold text-primary">隐藏悬浮球</label>
-            <p class="font-body-sm text-body-sm text-on-surface-variant">完全隐藏悬浮球，可在设置中恢复显示</p>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem">
+          <div style="display: flex; flex-direction: column; gap: var(--ax-spacing-xs)">
+            <label for="ball-hidden" class="ax-text-label-md" style="color: var(--ax-color-primary); font-weight: 600">隐藏悬浮球</label>
+            <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant)">完全隐藏悬浮球，可在设置中恢复显示</p>
           </div>
           <button
             id="ball-hidden"
             type="button"
             role="switch"
             :aria-checked="draftPrefs.hidden"
-            :class="draftPrefs.hidden ? 'bg-primary' : 'bg-outline'"
-            class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none"
+            :style="{ position: 'relative', display: 'inline-flex', height: '1.25rem', width: '2.25rem', flexShrink: 0, cursor: 'pointer', alignItems: 'center', borderRadius: '9999px', padding: '0.125rem', transition: 'background-color 200ms', outline: 'none', backgroundColor: draftPrefs.hidden ? 'var(--ax-color-primary)' : 'var(--ax-color-outline)' }"
             @click="draftPrefs.hidden = !draftPrefs.hidden"
           >
             <span
-              :class="draftPrefs.hidden ? 'translate-x-4' : 'translate-x-0'"
-              class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out"
+              :style="{ pointerEvents: 'none', display: 'inline-block', height: '1rem', width: '1rem', borderRadius: '9999px', background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.15)', transition: 'transform 200ms ease-in-out', transform: draftPrefs.hidden ? 'translateX(1rem)' : 'translateX(0)' }"
             />
           </button>
         </div>

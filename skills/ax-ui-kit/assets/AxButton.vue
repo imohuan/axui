@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, type Ref } from 'vue'
-import type { ButtonSize, ButtonVariant, RoundedSize } from './types'
-import { ROUNDED_CLASSES } from './common'
+import type { ButtonSize, ButtonVariant } from './types'
+import { CONTROL_SIZE_STYLES } from './common'
 import AxIcon from './AxIcon.vue'
 
 const props = withDefaults(
   defineProps<{
     variant?: ButtonVariant
     size?: ButtonSize
-    rounded?: RoundedSize
     disabled?: boolean
     icon?: string
     iconSize?: string | number
@@ -19,7 +18,6 @@ const props = withDefaults(
   {
     variant: 'primary',
     size: 'md',
-    rounded: 'md',
     disabled: false,
     icon: '',
     iconSize: 16,
@@ -47,18 +45,25 @@ const isIconOnly = computed(() =>
   (props.size === 'icon' || props.size === 'icon-lg') && (!!props.icon || props.loading),
 )
 
+const isControlSize = (s: ButtonSize): s is 'xs' | 'sm' | 'md' | 'lg' | 'xl' =>
+  s !== 'icon' && s !== 'icon-lg'
+
+const controlStyle = computed(() =>
+  isControlSize(props.size) ? CONTROL_SIZE_STYLES[props.size] : {},
+)
+
 const classes = computed(() => [
-  'ax-button',
-  `ax-button--${props.size}`,
-  `ax-button--${props.variant}`,
-  ROUNDED_CLASSES[props.rounded],
-  props.block ? 'ax-button--block' : '',
-  props.disabled ? 'ax-button--disabled' : '',
-  props.loading ? 'ax-button--loading' : '',
+  'ax-button-base',
+  isIconOnly.value
+    ? (props.size === 'icon-lg' ? 'ax-button-icon-lg' : 'ax-button-icon')
+    : `ax-button-${props.variant}`,
+  props.block ? 'ax-button-block' : '',
+  props.disabled ? 'ax-button-disabled' : '',
+  props.loading ? 'ax-button-loading' : '',
 ])
 
 const rippleClass = computed(() =>
-  props.variant === 'primary' ? 'ax-ripple--light' : 'ax-ripple--dark',
+  props.variant === 'primary' ? 'ax-ripple-light' : 'ax-ripple-dark',
 )
 
 const onClick = (e: MouseEvent) => {
@@ -86,10 +91,10 @@ const onClick = (e: MouseEvent) => {
   <button
     :type="type"
     :class="classes"
+    :style="controlStyle"
     :disabled="disabled"
     @click="onClick"
   >
-    <!-- Ripple -->
     <span
       v-for="r in ripples"
       :key="r.id"
@@ -103,10 +108,10 @@ const onClick = (e: MouseEvent) => {
       }"
     />
 
-    <span v-if="loading" class="ax-button__spinner">
+    <span v-if="loading" class="ax-button-spinner">
       <svg :style="{ width: iconSize + 'px', height: iconSize + 'px' }" viewBox="0 0 24 24" fill="none">
-        <circle class="ax-button__spinner-track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="ax-button__spinner-head" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+        <circle class="ax-button-spinner-track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="ax-button-spinner-head" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
       </svg>
     </span>
     <AxIcon v-else-if="icon" :name="icon" :size="iconSize" />
@@ -115,53 +120,3 @@ const onClick = (e: MouseEvent) => {
     <slot name="suffix" />
   </button>
 </template>
-
-<style scoped>
-.ax-ripple {
-  position: absolute;
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ax-ripple-anim 600ms ease-out forwards;
-  pointer-events: none;
-}
-
-.ax-ripple--light {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.ax-ripple--dark {
-  background: rgba(0, 0, 0, 0.12);
-}
-
-@keyframes ax-ripple-anim {
-  to {
-    transform: scale(1);
-    opacity: 0;
-  }
-}
-
-.ax-button__spinner {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-
-.ax-button__spinner svg {
-  animation: ax-button-spin 1s linear infinite;
-}
-
-.ax-button__spinner-track {
-  opacity: 0.25;
-}
-
-.ax-button__spinner-head {
-  opacity: 0.75;
-}
-
-@keyframes ax-button-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>

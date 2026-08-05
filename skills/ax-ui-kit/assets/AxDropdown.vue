@@ -31,7 +31,7 @@ const props = withDefaults(
     hoverCloseDelay: 150,
     menuWidth: '',
     menuMaxWidth: '',
-    bodyClass: 'p-1',
+    bodyClass: 'ax-dropdown-body',
     teleport: true,
   },
 )
@@ -131,7 +131,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="containerRef" class="ax-dropdown">
+  <div ref="containerRef" class="ax-dropdown-base">
     <div ref="triggerRef" v-bind="triggerEvents">
       <slot name="trigger" :open="isOpen" :toggle="toggle" :close="close" />
     </div>
@@ -150,7 +150,7 @@ onBeforeUnmount(() => {
           ref="menuRef"
           :style="menuStyle"
           v-bind="panelEvents"
-          :class="['ax-dropdown__menu', bodyClass]"
+          :class="['ax-dropdown-menu', bodyClass]"
           role="menu"
         >
           <slot :close="close" />

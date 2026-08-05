@@ -178,11 +178,11 @@ function formatValue(val: unknown): string {
 
 const valueColorClass = computed(() => {
   switch (dataType.value) {
-    case 'string':  return 'ax-json-viewer__value--string'
+    case 'string':  return 'ax-json-viewer-value-string'
     case 'boolean':
-    case 'null':    return 'ax-json-viewer__value--boolean'
-    case 'number':  return 'ax-json-viewer__value--number'
-    default:        return 'ax-color-primary'
+    case 'null':    return 'ax-json-viewer-value-boolean'
+    case 'number':  return 'ax-json-viewer-value-number'
+    default:        return 'ax-json-viewer-value-default'
   }
 })
 
@@ -196,51 +196,49 @@ watch(
 </script>
 
 <template>
-  <div class="ax-json-viewer" :class="{ 'ax-json-viewer--nowrap': !props.wrapEnabled && props.isRoot, 'ax-json-viewer--wrap': props.wrapEnabled }">
+  <div class="ax-json-viewer-base" :class="{ 'ax-json-viewer-nowrap': !props.wrapEnabled && props.isRoot, 'ax-json-viewer-wrap': props.wrapEnabled }">
     <!-- 简单值（非对象/数组） -->
-    <div v-if="!isComplex" class="ax-json-viewer__row">
-      <div class="ax-json-viewer__arrow-cell" />
-      <div :class="props.wrapEnabled ? 'ax-flex-1' : 'ax-flex-1'" style="min-width: 0">
-        <span v-if="nodeKey !== null" class="ax-json-viewer__key" style="margin-right: 0.25rem">
-          <span class="ax-color-outline">'</span>{{ nodeKey }}<span class="ax-color-outline">'</span
-          ><span class="ax-color-outline">:</span>
+    <div v-if="!isComplex" class="ax-json-viewer-row">
+      <div class="ax-json-viewer-arrow-cell" />
+      <div style="min-width: 0">
+        <span v-if="nodeKey !== null" class="ax-json-viewer-key" style="margin-right: 0.25rem">
+          <span class="ax-json-viewer-bracket">'</span>{{ nodeKey }}<span class="ax-json-viewer-bracket">'</span
+          ><span class="ax-json-viewer-bracket">:</span>
         </span>
-        <span :class="[valueColorClass, props.wrapEnabled ? '' : '']" style="display: inline-block; vertical-align: bottom" v-html="linkify(formatValue(data))" />
-        <span v-if="!isLast" class="ax-color-outline ax-flex-shrink-0">,</span>
+        <span :class="valueColorClass" style="display: inline-block; vertical-align: bottom" v-html="linkify(formatValue(data))" />
+        <span v-if="!isLast" class="ax-json-viewer-bracket" style="flex-shrink: 0">,</span>
       </div>
     </div>
 
     <!-- 对象 / 数组 -->
-    <div v-else class="ax-json-viewer__row">
+    <div v-else class="ax-json-viewer-row">
       <div
-        class="ax-flex ax-items-start"
-        :class="{ 'ax-rounded-xs': true }"
         style="cursor: pointer; width: 100%"
         @click="handleToggle"
       >
         <!-- 折叠箭头 -->
-        <div class="ax-json-viewer__toggle" :class="{ 'ax-json-viewer__toggle--hidden': isEmpty }">
+        <div class="ax-json-viewer-toggle" :class="{ 'ax-json-viewer-toggle-hidden': isEmpty }">
           <AxIcon
             name="chevron_right"
             :size="12"
-            class="ax-json-viewer__chevron ax-color-outline"
-            :class="{ 'ax-json-viewer__chevron--open': isExpanded }"
+            class="ax-json-viewer-chevron"
+            :class="{ 'ax-json-viewer-chevron-open': isExpanded }"
           />
         </div>
 
-        <div class="ax-flex-1" :class="props.wrapEnabled ? 'ax-flex ax-flex-wrap ax-items-center' : ''" style="min-width: 0">
-          <span v-if="nodeKey !== null" class="ax-color-primary" style="margin-right: 0.25rem">
-            <span class="ax-color-outline">'</span>{{ nodeKey }}<span class="ax-color-outline">'</span
-            ><span class="ax-color-outline">:</span>
+        <div style="min-width: 0">
+          <span v-if="nodeKey !== null" style="margin-right: 0.25rem">
+            <span class="ax-json-viewer-bracket">'</span>{{ nodeKey }}<span class="ax-json-viewer-bracket">'</span
+            ><span class="ax-json-viewer-bracket">:</span>
           </span>
-          <span class="ax-json-viewer__bracket">{{ openBracket }}</span>
+          <span class="ax-json-viewer-bracket">{{ openBracket }}</span>
           <template v-if="!isExpanded && !isEmpty">
-            <span v-if="dataType === 'array'" class="ax-json-viewer__ellipsis">...</span>
-            <span v-else class="ax-json-viewer__count">
+            <span v-if="dataType === 'array'" class="ax-json-viewer-ellipsis">...</span>
+            <span v-else class="ax-json-viewer-count">
               {{ itemCount }} 项
             </span>
           </template>
-          <span v-if="!isExpanded || isEmpty" class="ax-json-viewer__bracket">
+          <span v-if="!isExpanded || isEmpty" class="ax-json-viewer-bracket">
             <span v-if="!isExpanded && dataType === 'array' && !isEmpty"> </span>{{ closeBracket
             }}<span v-if="!isLast">,</span>
           </span>
@@ -248,8 +246,8 @@ watch(
       </div>
 
       <!-- 展开的子节点 -->
-      <div v-show="isExpanded && !isEmpty" class="ax-json-viewer__children">
-        <div class="ax-json-viewer__tree-line" />
+      <div v-show="isExpanded && !isEmpty" class="ax-json-viewer-children">
+        <div class="ax-json-viewer-tree-line" />
         <div>
           <AxJsonViewer
             v-for="(val, key, index) in parsedData as any"
@@ -269,7 +267,7 @@ watch(
       </div>
 
       <!-- 闭合括号 -->
-      <div v-show="isExpanded && !isEmpty" class="ax-json-viewer__bracket" style="padding-left: 7px">{{ closeBracket }}<span v-if="!isLast">,</span></div>
+      <div v-show="isExpanded && !isEmpty" class="ax-json-viewer-bracket" style="padding-left: 7px">{{ closeBracket }}<span v-if="!isLast">,</span></div>
     </div>
   </div>
 </template>

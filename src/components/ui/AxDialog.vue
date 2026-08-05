@@ -15,7 +15,7 @@ const props = withDefaults(
     modelValue: false,
     title: '',
     icon: '',
-    maxWidth: 'max-w-xl',
+    maxWidth: 'ax-dialog-xl',
     closeOnOverlay: true,
     bodyClass: '',
   },
@@ -136,28 +136,28 @@ defineExpose({ open, close, setFocusableRef, dialogRef })
         <div
           v-show="modelValue"
           ref="dialogRef"
-          :class="['ax-dialog', maxWidth]"
+          :class="['ax-dialog-base', maxWidth]"
           role="dialog"
           aria-modal="true"
           @keydown="handleKeyDown"
         >
-          <div class="ax-dialog__header">
-            <div class="ax-dialog__header-left">
+          <div class="ax-dialog-header">
+            <div class="ax-dialog-header-left">
               <AxIcon
                 v-if="icon"
                 :name="icon"
                 :size="18"
-                class="ax-color-primary ax-flex-shrink-0"
+                class="ax-dialog-header-icon"
               />
               <slot name="header">
-                <h3 class="ax-dialog__title">
+                <h3 class="ax-dialog-title">
                   {{ title }}
                 </h3>
               </slot>
             </div>
             <button
               ref="closeBtnRef"
-              class="ax-dialog__close"
+              class="ax-dialog-close"
               aria-label="关闭弹窗"
               @click="close"
             >
@@ -165,13 +165,13 @@ defineExpose({ open, close, setFocusableRef, dialogRef })
             </button>
           </div>
 
-          <div :class="['ax-dialog__body', bodyClass]">
+          <div :class="['ax-dialog-body', bodyClass]">
             <slot :close="close" :set-focusable-ref="setFocusableRef" />
           </div>
 
           <div
             v-if="$slots.footer"
-            class="ax-dialog__footer"
+            class="ax-dialog-footer"
           >
             <slot name="footer" :close="close" :set-focusable-ref="setFocusableRef" />
           </div>

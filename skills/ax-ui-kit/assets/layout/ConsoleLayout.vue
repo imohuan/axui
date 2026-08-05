@@ -241,7 +241,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="ax-flex" style="height: 100vh; width: 100vw; overflow: hidden" @keydown="handleGlobalKeydown">
+  <div class="ax-layout-root" @keydown="handleGlobalKeydown">
     <Toaster
       position="top-center"
       :toast-options="{ style: { background: 'transparent', border: 'none', boxShadow: 'none', padding: '0px' } }"
@@ -249,62 +249,59 @@ onBeforeUnmount(() => {
 
     <aside class="ax-layout-sidebar">
       <div class="ax-space-y-lg">
-        <div class="ax-flex ax-items-center ax-gap-sm" style="padding: 0 0.5rem">
-          <div class="ax-bg-primary ax-rounded-lg ax-flex ax-items-center ax-justify-center" style="width: 1.75rem; height: 1.75rem; color: var(--ax-color-on-primary)">
+        <div class="ax-sidebar-brand">
+          <div class="ax-sidebar-brand-logo">
             <AxIcon name="settings" :size="18" />
           </div>
-          <div>
-            <h2 class="ax-text-headline-sm ax-color-primary">Axiom Console</h2>
-            <div class="ax-flex ax-items-center ax-gap-xs">
-              <span class="ax-inline-block ax-rounded-full ax-bg-primary" style="width: 6px; height: 6px; animation: pulse 2s infinite"></span>
-              <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">v1.0.5-BETA</span>
+          <div class="ax-sidebar-brand-text">
+            <h2 class="ax-text-headline-sm" style="color: var(--ax-color-primary)">Axiom Console</h2>
+            <div class="ax-sidebar-brand-version">
+              <span class="ax-sidebar-brand-dot"></span>
+              <span class="ax-text-label-md" style="color: var(--ax-color-secondary)">v1.0.5-BETA</span>
             </div>
           </div>
         </div>
 
-        <div style="padding: 0 0.5rem">
-          <div
-            class="ax-flex ax-items-center ax-justify-between ax-bg-surface-container-low ax-border ax-rounded-lg" style="padding: 0.375rem 0.5rem; cursor: pointer"
-            @click="focusSearch"
-          >
-            <div class="ax-flex ax-items-center ax-gap-xs ax-color-secondary">
+        <div class="ax-sidebar-search">
+          <div class="ax-sidebar-search-inner" @click="focusSearch">
+            <div class="ax-sidebar-nav-item" style="color: var(--ax-color-secondary)">
               <AxIcon name="search" :size="16" />
               <span class="ax-text-body-sm">搜索组件...</span>
             </div>
-            <kbd class="ax-text-label-md ax-bg-surface-container ax-border ax-rounded-sm ax-color-secondary" style="font-size: 10px; padding: 0 0.25rem">⌘K</kbd>
+            <kbd class="ax-sidebar-search-kbd ax-text-label-md" style="color: var(--ax-color-secondary)">⌘K</kbd>
           </div>
         </div>
 
         <nav class="ax-space-y-xs">
-          <p class="ax-text-label-md ax-color-secondary" style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; padding: 0 0.5rem; padding-bottom: 0.25rem">主要视图</p>
+          <p class="ax-text-label-md ax-sidebar-nav-section" style="color: var(--ax-color-secondary)">主要视图</p>
           <div v-for="item in navItems" :key="item.id">
             <div
               :class="[
-                activeTab === item.id ? 'ax-nav-item--active' : 'ax-nav-item--inactive',
+                activeTab === item.id ? 'ax-nav-item-active' : 'ax-nav-item-inactive',
               ]"
               class="ax-nav-item"
               @click="handleParentClick(item)"
             >
-              <div class="ax-flex ax-items-center ax-gap-sm">
+              <div class="ax-sidebar-nav-item">
                 <AxIcon :name="item.icon" :size="18" />
                 <span>{{ item.name }}</span>
               </div>
-              <div class="ax-flex ax-items-center ax-gap-xs">
+              <div class="ax-sidebar-nav-item-meta">
                 <span
                   v-if="item.badge"
-                  class="ax-text-label-md ax-bg-surface-container ax-border ax-rounded-sm ax-color-primary" style="font-size: 10px; padding: 0.125rem 0.375rem; font-weight: 500"
+                  class="ax-sidebar-nav-item-badge ax-text-label-md" style="color: var(--ax-color-primary)"
                 >{{ item.badge }}</span>
                 <AxIcon
                   name="expand_more"
                   :size="14"
-                  class="ax-color-secondary ax-flex-shrink-0"
-                  :class="item.expanded ? 'ax-select__arrow--open' : ''"
+                  class="ax-sidebar-nav-item-arrow" style="color: var(--ax-color-secondary)"
+                  :class="item.expanded ? 'ax-select-arrow-open' : ''"
                 />
               </div>
             </div>
 
             <div
-              class="ax-hidden"
+              class="ax-sidebar-nav-sub"
               :class="item.expanded ? '' : ''"
               :style="item.expanded ? '' : 'display: none'"
             >
@@ -316,7 +313,7 @@ onBeforeUnmount(() => {
                   class="ax-nav-subitem"
                   @click.prevent="handleSubClick(item, sub.sectionId)"
                 >
-                  <span class="ax-nav-subitem__dot"></span>
+                  <span class="ax-nav-subitem-dot"></span>
                   <span>{{ sub.name }}</span>
                 </a>
               </div>
@@ -334,57 +331,53 @@ onBeforeUnmount(() => {
           @click="settingsDialogRef?.open()"
         >设置界面</AxButton>
 
-        <div class="ax-border-t ax-flex ax-items-center ax-justify-between" style="padding: 0 0.5rem; padding-top: 1rem">
-          <div class="ax-flex ax-items-center ax-justify-between" style="width: 100%">
-          <div class="ax-flex ax-items-center ax-gap-sm">
-            <div class="ax-bg-surface-container ax-border ax-rounded-full ax-flex ax-items-center ax-justify-center ax-color-primary" style="width: 2rem; height: 2rem; font-size: 14px; font-weight: 600; font-family: var(--ax-font-label-md)">
-              AM
-            </div>
-            <div style="overflow: hidden; width: 6rem">
-              <h4 class="ax-text-body-sm ax-color-primary" style="font-size: 12px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Alex Mercer</h4>
-              <p class="ax-text-body-sm ax-color-secondary" style="font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">System Architect</p>
-            </div>
+        <div class="ax-sidebar-user">
+          <div class="ax-sidebar-user-avatar">
+            AM
+          </div>
+          <div class="ax-sidebar-user-info">
+            <h4 class="ax-text-body-sm" style="color: var(--ax-color-primary)">Alex Mercer</h4>
+            <p class="ax-text-body-sm" style="color: var(--ax-color-secondary)">System Architect</p>
           </div>
           <AxDropdown v-model="showProfileDropdown" placement="top-start">
             <template #trigger>
               <AxButton variant="ghost" size="icon" icon="more_vert" icon-size="16px" />
             </template>
             <template #default="{ close }">
-              <div class="ax-dropdown__body" style="width: 11rem">
-                <button class="ax-dropdown__item" @click="triggerDropdownAction('export'); close()">
+              <div class="ax-dropdown-body" style="width: 11rem">
+                <button class="ax-dropdown-item" @click="triggerDropdownAction('export'); close()">
                   <AxIcon name="download" :size="16" /><span>导出系统配置</span>
                 </button>
-                <button class="ax-dropdown__item" @click="triggerDropdownAction('logs'); close()">
+                <button class="ax-dropdown-item" @click="triggerDropdownAction('logs'); close()">
                   <AxIcon name="refresh" :size="16" /><span>清空日志队列</span>
                 </button>
-                <div class="ax-dropdown__divider" />
-                <button class="ax-dropdown__item ax-dropdown__item--danger" @click="triggerDropdownAction('reset'); close()">
+                <div class="ax-dropdown-divider" />
+                <button class="ax-dropdown-item ax-dropdown-item-danger" @click="triggerDropdownAction('reset'); close()">
                   <AxIcon name="refresh" :size="16" /><span>复位仪表盘</span>
                 </button>
               </div>
             </template>
           </AxDropdown>
-          </div>
         </div>
       </div>
     </aside>
 
-    <div class="ax-flex-1 ax-flex ax-flex-col" style="overflow: hidden; background-color: var(--ax-color-background)">
+    <div class="ax-layout-content">
       <header class="ax-layout-header">
-        <div class="ax-flex ax-items-center ax-gap-sm">
-          <span class="ax-text-body-sm ax-color-secondary">工作空间</span>
-          <span class="ax-color-outline-variant">/</span>
-          <span class="ax-text-body-sm ax-color-secondary">控制台</span>
-          <span class="ax-color-outline-variant">/</span>
-          <span class="ax-text-body-sm ax-color-primary" style="font-weight: 500">{{ activeTabTitle }}</span>
+        <div class="ax-header-breadcrumb">
+          <span class="ax-text-body-sm" style="color: var(--ax-color-secondary)">工作空间</span>
+          <span class="ax-header-breadcrumb-sep" style="color: var(--ax-color-outline-variant)">/</span>
+          <span class="ax-text-body-sm" style="color: var(--ax-color-secondary)">控制台</span>
+          <span class="ax-header-breadcrumb-sep" style="color: var(--ax-color-outline-variant)">/</span>
+          <span class="ax-header-breadcrumb-current ax-text-body-sm" style="color: var(--ax-color-primary); font-weight: 500">{{ activeTabTitle }}</span>
         </div>
-        <div class="ax-flex ax-items-center ax-gap-md">
-          <div class="ax-text-label-md ax-color-secondary ax-border ax-bg-surface-container-low ax-rounded-lg ax-flex ax-items-center ax-gap-xs" style="padding: 0.25rem 0.625rem">
+        <div class="ax-header-actions">
+          <div class="ax-header-time ax-text-label-md" style="color: var(--ax-color-secondary)">
             <AxIcon name="settings" :size="14" />
             <span>{{ liveTime }}</span>
           </div>
-          <div style="position: relative">
-            <AxInput ref="globalSearchInput" v-model="searchQuery" size="lg" placeholder="快速搜索..." class="w-44" @keydown.esc="searchQuery = ''">
+          <div class="ax-header-search">
+            <AxInput ref="globalSearchInput" v-model="searchQuery" size="lg" placeholder="快速搜索..." style="width: 11rem" @keydown.esc="searchQuery = ''">
               <template #prefix><AxIcon name="search" :size="14" /></template>
             </AxInput>
           </div>
@@ -393,13 +386,13 @@ onBeforeUnmount(() => {
               variant="ghost"
               size="icon-lg"
               icon="settings"
-              class="ax-border"
+              class="ax-header-notify-btn" style="border: 1px solid var(--ax-color-outline-variant)"
               @click="showNotificationsPanel = !showNotificationsPanel"
             >
               <template #suffix>
                 <span
                   v-if="activeNotificationCount > 0"
-                  class="ax-bg-primary ax-rounded-full ax-flex ax-items-center ax-justify-center" style="position: absolute; top: -0.25rem; right: -0.25rem; width: 0.875rem; height: 0.875rem; font-size: 9px; color: var(--ax-color-on-primary); font-weight: 700"
+                  class="ax-header-notify-badge" style="background-color: var(--ax-color-primary); border-radius: 9999px"
                 >{{ activeNotificationCount }}</span>
               </template>
             </AxButton>
@@ -439,28 +432,28 @@ onBeforeUnmount(() => {
           class="ax-notification-panel"
         >
           <div>
-            <div class="ax-flex ax-items-center ax-justify-between ax-border-b" style="padding-bottom: 0.5rem; margin-bottom: 1rem">
-              <h3 class="ax-text-headline-sm ax-color-primary" style="font-size: 14px; font-weight: 600">系统通知历史队列</h3>
+            <div class="ax-notification-panel-header">
+              <h3 class="ax-text-headline-sm" style="color: var(--ax-color-primary)">系统通知历史队列</h3>
               <AxButton variant="ghost" size="icon" icon="close" icon-size="16px" @click="showNotificationsPanel = false" />
             </div>
-            <div class="ax-space-y-sm ax-scrollbar-hide" style="overflow-y: auto; max-height: 70vh; padding-right: 0.25rem">
+            <div class="ax-notification-panel-body ax-space-y-sm ax-scrollbar-hide">
               <div v-for="log in notificationHistory" :key="log.id" class="ax-notification-log">
-                <div class="ax-flex ax-items-center ax-justify-between">
-                  <span class="ax-notification-log__time">{{ log.time }}</span>
+                <div class="ax-notification-panel-header">
+                  <span class="ax-notification-log-time">{{ log.time }}</span>
                   <span
-                    class="ax-notification-log__badge"
+                    class="ax-notification-log-badge"
                     :class="{
-                      'ax-notification-log__badge--info': log.type === 'info',
-                      'ax-notification-log__badge--error': log.type === 'error',
-                      'ax-notification-log__badge--secondary': log.type === 'secondary',
-                      'ax-notification-log__badge--success': log.type === 'success',
+                      'ax-notification-log-badge-info': log.type === 'info',
+                      'ax-notification-log-badge-error': log.type === 'error',
+                      'ax-notification-log-badge-secondary': log.type === 'secondary',
+                      'ax-notification-log-badge-success': log.type === 'success',
                     }"
                   >{{ log.type }}</span>
                 </div>
-                <h5 class="ax-notification-log__title">{{ log.title }}</h5>
-                <p class="ax-notification-log__message">{{ log.message }}</p>
+                <h5 class="ax-notification-log-title">{{ log.title }}</h5>
+                <p class="ax-notification-log-message">{{ log.message }}</p>
               </div>
-              <div v-if="notificationHistory.length === 0" class="ax-color-secondary ax-text-body-sm" style="text-align: center; padding: 3rem 0">当前尚无系统交互历史记录</div>
+              <div v-if="notificationHistory.length === 0" class="ax-notification-panel-empty ax-text-body-sm" style="color: var(--ax-color-secondary); text-align: center; padding: 3rem 0">当前尚无系统交互历史记录</div>
             </div>
           </div>
           <AxButton
@@ -474,18 +467,18 @@ onBeforeUnmount(() => {
       </Transition>
 
       <footer class="ax-layout-footer">
-        <div class="ax-flex ax-items-center ax-gap-md">
-          <div class="ax-flex ax-items-center ax-gap-xs">
-            <span class="ax-inline-block ax-rounded-full" style="width: 0.5rem; height: 0.5rem; background-color: #10b981; animation: pulse 2s infinite"></span>
+        <div class="ax-footer-left">
+          <div class="ax-footer-status">
+            <span class="ax-footer-status-dot"></span>
             <span>核心系统: 正常运行 (Operational)</span>
           </div>
-          <span class="ax-color-outline-variant">|</span>
-          <span class="ax-text-label-md" style="font-size: 11px">API 往返延时: {{ latestLatency }}ms</span>
+          <span class="ax-footer-separator" style="color: var(--ax-color-outline-variant)">|</span>
+          <span class="ax-text-label-md">API 往返延时: {{ latestLatency }}ms</span>
         </div>
-        <div class="ax-flex ax-items-center ax-gap-sm">
+        <div class="ax-footer-right">
           <span>Axiom Studio © 2026</span>
-          <span class="ax-color-outline-variant">•</span>
-          <a href="#" class="ax-color-primary ax-text-label-md ax-flex ax-items-center ax-gap-xs" style="font-size: 11px">
+          <span class="ax-footer-separator" style="color: var(--ax-color-outline-variant)">•</span>
+          <a href="#" class="ax-footer-link ax-text-label-md" style="color: var(--ax-color-primary)">
             <span>系统架构白皮书</span>
             <AxIcon name="arrow_back" :size="12" />
           </a>
@@ -497,16 +490,16 @@ onBeforeUnmount(() => {
       <AxAlert type="error" :dismissible="false" title="高风险行为警告">
         您正试图执行系统核心重构恢复方案。这会直接洗刷掉所有内存缓存历史日志，并重置控制台内的一切算力及安全防御设置。请保证已备份完毕。
       </AxAlert>
-      <div class="ax-space-y-sm">
-        <label class="ax-text-label-md ax-color-primary ax-block" style="font-weight: 600">第一步：在输入框内确认您的重置声明书</label>
-        <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">
-          请精确键入 "<span class="ax-text-label-md ax-color-primary" style="font-weight: 700">CONFIRM</span>" 来开启下方的二次确认授权锁定。
+      <div class="ax-dialog-content-section">
+        <label class="ax-dialog-content-label ax-text-label-md" style="color: var(--ax-color-primary); font-weight: 600">第一步：在输入框内确认您的重置声明书</label>
+        <p class="ax-dialog-content-desc ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">
+          请精确键入 "<span class="ax-text-label-md" style="color: var(--ax-color-primary); font-weight: 700">CONFIRM</span>" 来开启下方的二次确认授权锁定。
         </p>
         <AxInput ref="confirmInput" v-model="dialogConfirmText" placeholder="CONFIRM" />
       </div>
       <div class="ax-space-y-xs">
-        <label class="ax-text-label-md ax-color-primary ax-block" style="font-weight: 600">第二步：确定重置后分配给初始化进程的限制等级</label>
-        <div class="ax-bg-surface-container-low ax-border ax-rounded-lg" style="padding: 0.5rem">
+        <label class="ax-dialog-content-label ax-text-label-md" style="color: var(--ax-color-primary); font-weight: 600">第二步：确定重置后分配给初始化进程的限制等级</label>
+        <div style="background-color: var(--ax-color-surface-container-low); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-lg); padding: 0.5rem">
           <AxSlider v-model="dialogSliderVal" :min="5" :max="95" show-value :value-label="dialogSliderVal + '%'" />
         </div>
       </div>
@@ -516,14 +509,13 @@ onBeforeUnmount(() => {
       </template>
     </AxDialog>
 
-    <AxDialog v-model="showSimpleDialog" title="系统提示" icon="info" max-width="max-w-sm">
-      <p class="ax-text-body-sm ax-color-on-surface-variant" style="line-height: 1.6">这是一个简单的提示对话框，仅包含文字内容。点击关闭按钮或按 ESC 键即可关闭。</p>
+    <AxDialog v-model="showSimpleDialog" title="系统提示" icon="info" max-width="24rem">
+      <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); line-height: 1.6">这是一个简单的提示对话框，仅包含文字内容。点击关闭按钮或按 ESC 键即可关闭。</p>
       <template #footer="{ close }">
         <AxButton @click="close">知道了</AxButton>
       </template>
     </AxDialog>
 
-    <!-- 方式二：对话框式设置面板 -->
     <SettingsDialog
       ref="settingsDialogRef"
       v-model:active-tab="settingsActiveTab"

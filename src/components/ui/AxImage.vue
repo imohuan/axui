@@ -111,7 +111,7 @@ function handleClick(): void {
     <div v-else-if="loadState === 'error'" class="ax-image__error">
       <AxIcon name="broken_image" :size="20" style="margin-bottom: 0.25rem" />
       <span style="font-size: 10px; font-weight: 500">加载失败</span>
-      <span class="ax-color-outline" style="margin-top: 0.125rem; font-size: 9px">点击重试</span>
+      <span style="color: var(--ax-color-outline); margin-top: 0.125rem; font-size: 9px">点击重试</span>
     </div>
 
     <img

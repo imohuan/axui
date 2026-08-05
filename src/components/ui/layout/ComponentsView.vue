@@ -223,28 +223,28 @@ function handleBallSave(prefs: FloatingBallPrefs) {
 </script>
 
 <template>
-  <div class="ax-space-y-lg">
-    <div class="ax-border-b" style="padding-bottom: 1rem">
-      <h2 class="ax-text-headline-sm ax-color-primary" style="font-size: 20px; line-height: 28px">UI 组件列表</h2>
-      <p class="ax-text-body-sm ax-color-on-surface-variant" style="margin-top: 0.25rem">展示所有组件的每一种状态变体。左侧预览区，右侧属性配置面板，实时联动。</p>
+  <div style="display: flex; flex-direction: column; gap: 1.5rem">
+    <div style="border-bottom: 1px solid var(--ax-color-outline-variant); padding-bottom: 1rem">
+      <h2 class="ax-text-headline-sm" style="color: var(--ax-color-primary); font-size: 20px; line-height: 28px">UI 组件列表</h2>
+      <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); margin-top: 0.25rem">展示所有组件的每一种状态变体。左侧预览区，右侧属性配置面板，实时联动。</p>
     </div>
 
     <!-- Button -->
-    <div id="section-btn" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Button</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">按钮组件 — 支持 4 种变体、3 种尺寸、图标、加载态、禁用态</span>
+    <div id="section-btn" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Button</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">按钮组件 — 支持 4 种变体、3 种尺寸、图标、加载态、禁用态</span>
       </div>
-      <div class="ax-flex" style="min-height: 200px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-lg ax-items-start ax-justify-center" style="padding: 1.5rem">
-          <div class="ax-flex ax-flex-wrap ax-items-center ax-gap-sm">
+      <div style="display: flex; min-height: 200px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.5rem; padding: 1.5rem">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem">
             <AxButton :variant="btnProps.variant" :size="btnProps.size" :rounded="btnProps.rounded" :disabled="btnProps.disabled"
               :icon="btnProps.showIcon ? 'bolt' : ''" :block="btnProps.block" :loading="btnProps.loading">
               {{ btnProps.label }}
             </AxButton>
           </div>
-          <div class="ax-flex ax-flex-wrap ax-gap-xs">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px; margin-right: 0.25rem">所有变体：</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px; margin-right: 0.25rem">所有变体：</span>
             <AxButton variant="primary" size="sm">Primary</AxButton>
             <AxButton variant="outline" size="sm">Outline</AxButton>
             <AxButton variant="ghost" size="sm">Ghost</AxButton>
@@ -254,21 +254,21 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <AxButton variant="outline" size="sm" disabled>禁用</AxButton>
           </div>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="btnProps" :schema="btnSchema" title="按钮属性" />
         </div>
       </div>
     </div>
 
     <!-- Input -->
-    <div id="section-input" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Input</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">输入框 — 支持单行/多行切换、3 种尺寸、前缀图标、密码模式、禁用态</span>
+    <div id="section-input" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Input</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">输入框 — 支持单行/多行切换、3 种尺寸、前缀图标、密码模式、禁用态</span>
       </div>
-      <div class="ax-flex" style="min-height: 260px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-md ax-items-start ax-justify-center" style="padding: 1.5rem">
-          <form class="ax-flex ax-flex-col ax-gap-md ax-items-start" autocomplete="off" @submit.prevent style="position: relative">
+      <div style="display: flex; min-height: 260px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1rem; padding: 1.5rem">
+          <form autocomplete="off" @submit.prevent style="position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 1rem">
             <div style="position: relative">
               <input v-if="inputProps.showPassword" type="text" name="username" autocomplete="username" tabindex="-1" aria-hidden="true"
                 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0">
@@ -284,139 +284,139 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               </AxInput>
             </div>
           </form>
-          <div class="ax-flex ax-flex-wrap ax-gap-sm">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px; align-self: center">所有尺寸：</span>
-            <AxInput size="sm" placeholder="Small" class="w-28" />
-            <AxInput size="md" placeholder="Medium" class="w-28" />
-            <AxInput size="lg" placeholder="Large" class="w-28" />
+          <div style="display: flex; flex-wrap: wrap; gap: 0.75rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px; align-self: center">所有尺寸：</span>
+            <AxInput size="sm" placeholder="Small" style="width: 7rem" />
+            <AxInput size="md" placeholder="Medium" style="width: 7rem" />
+            <AxInput size="lg" placeholder="Large" style="width: 7rem" />
           </div>
-          <div class="ax-flex ax-flex-wrap ax-gap-sm">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px; align-self: center">带图标：</span>
-            <AxInput size="lg" placeholder="带前缀" class="w-40">
+          <div style="display: flex; flex-wrap: wrap; gap: 0.75rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px; align-self: center">带图标：</span>
+            <AxInput size="lg" placeholder="带前缀" style="width: 10rem">
               <template #prefix><AxIcon name="search" :size="16" /></template>
             </AxInput>
-            <AxInput size="lg" placeholder="带后缀" class="w-40">
+            <AxInput size="lg" placeholder="带后缀" style="width: 10rem">
               <template #suffix><AxIcon name="close" :size="16" /></template>
             </AxInput>
-            <AxInput size="lg" placeholder="禁用状态" class="w-36" disabled />
+            <AxInput size="lg" placeholder="禁用状态" style="width: 9rem" disabled />
           </div>
-          <form class="ax-flex ax-flex-wrap ax-gap-sm ax-items-center" autocomplete="off" @submit.prevent style="position: relative">
+          <form autocomplete="off" @submit.prevent style="position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem">
             <input type="text" name="username" autocomplete="username" tabindex="-1" aria-hidden="true"
               style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px; align-self: center">密码模式：</span>
-            <AxInput size="lg" placeholder="请输入密码" class="w-44" password />
-            <AxInput size="lg" placeholder="密码已输入" class="w-44" password model-value="Admin@2026" autocomplete="current-password" />
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px; align-self: center">密码模式：</span>
+            <AxInput size="lg" placeholder="请输入密码" style="width: 11rem" password />
+            <AxInput size="lg" placeholder="密码已输入" style="width: 11rem" password model-value="Admin@2026" autocomplete="current-password" />
           </form>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="inputProps" :schema="inputSchema" title="输入框属性" />
         </div>
       </div>
     </div>
 
     <!-- Slider -->
-    <div id="section-slider" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Slider</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">滑块组件 — 支持自定义范围、标签、数值显示</span>
+    <div id="section-slider" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Slider</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">滑块组件 — 支持自定义范围、标签、数值显示</span>
       </div>
-      <div class="ax-flex" style="min-height: 180px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-lg ax-items-start ax-justify-center" style="padding: 1.5rem">
+      <div style="display: flex; min-height: 180px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.5rem; padding: 1.5rem">
           <div style="width: 18rem">
             <AxSlider v-model="sliderProps.value" :min="sliderProps.min" :max="sliderProps.max"
               :show-labels="sliderProps.showLabels" :show-value="sliderProps.showValue"
               :label-position="sliderProps.labelPosition" label-left="最小" label-right="最大"
               :value-label="sliderProps.value + '%'" />
           </div>
-          <div class="ax-space-y-sm" style="width: 100%; max-width: 24rem">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">带标签与数值：</span>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 24rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">带标签与数值：</span>
             <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载" value-label="72%" />
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">标签右侧模式：</span>
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">标签右侧模式：</span>
             <AxSlider :model-value="72" :min="0" :max="100" show-labels show-value label-left="空载" label-right="满载" value-label="72%" label-position="right" />
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">无标签简洁模式：</span>
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">无标签简洁模式：</span>
             <AxSlider :model-value="40" :min="0" :max="100" />
           </div>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="sliderProps" :schema="sliderSchema" title="滑块属性" />
         </div>
       </div>
     </div>
 
     <!-- Switch -->
-    <div id="section-switch" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Switch</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">开关组件 — 支持 v-model、禁用态、aria 可访问性</span>
+    <div id="section-switch" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Switch</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">开关组件 — 支持 v-model、禁用态、aria 可访问性</span>
       </div>
-      <div class="ax-flex" style="min-height: 180px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-lg ax-items-start ax-justify-center" style="padding: 1.5rem">
-          <div class="ax-flex ax-items-center ax-gap-md">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">动态预览：</span>
+      <div style="display: flex; min-height: 180px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.5rem; padding: 1.5rem">
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">动态预览：</span>
             <AxSwitch :model-value="switchProps.checked" :disabled="switchProps.disabled" :size="switchProps.size"
               @update:model-value="switchProps.checked = $event" />
-            <span class="ax-text-body-sm ax-color-primary" style="font-size: 12px; margin-left: 0.5rem">{{ switchProps.checked ? '开启' : '关闭' }}</span>
+            <span class="ax-text-body-sm" style="color: var(--ax-color-primary); font-size: 12px; margin-left: 0.5rem">{{ switchProps.checked ? '开启' : '关闭' }}</span>
           </div>
-          <div class="ax-space-y-sm" style="width: 100%; max-width: 24rem">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">所有状态：</span>
-            <div class="ax-flex ax-flex-wrap ax-items-center ax-gap-md">
-              <div class="ax-flex ax-items-center ax-gap-sm">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 24rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">所有状态：</span>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem">
+              <div style="display: flex; align-items: center; gap: 0.75rem">
                 <AxSwitch :model-value="true" />
-                <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">开启</span>
+                <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">开启</span>
               </div>
-              <div class="ax-flex ax-items-center ax-gap-sm">
+              <div style="display: flex; align-items: center; gap: 0.75rem">
                 <AxSwitch :model-value="false" />
-                <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">关闭</span>
+                <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">关闭</span>
               </div>
-              <div class="ax-flex ax-items-center ax-gap-sm">
+              <div style="display: flex; align-items: center; gap: 0.75rem">
                 <AxSwitch :model-value="true" disabled />
-                <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">禁用-开</span>
+                <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">禁用-开</span>
               </div>
-              <div class="ax-flex ax-items-center ax-gap-sm">
+              <div style="display: flex; align-items: center; gap: 0.75rem">
                 <AxSwitch :model-value="false" disabled />
-                <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">禁用-关</span>
+                <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">禁用-关</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="switchProps" :schema="switchSchema" title="开关属性" />
         </div>
       </div>
     </div>
 
     <!-- Alert -->
-    <div id="section-alert" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Alert</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">警示横幅 — 4 种语义、可关闭、带标题</span>
+    <div id="section-alert" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Alert</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">警示横幅 — 4 种语义、可关闭、带标题</span>
       </div>
-      <div class="ax-flex" style="min-height: 180px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-sm ax-items-start ax-justify-center" style="padding: 1.5rem">
+      <div style="display: flex; min-height: 180px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.75rem; padding: 1.5rem">
           <AxAlert :type="alertProps.type" :title="alertProps.title" :dismissible="alertProps.dismissible" model-value>
             {{ alertProps.message }}</AxAlert>
-          <div class="ax-space-y-xs" style="width: 100%; max-width: 28rem; margin-top: 0.5rem">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">所有类型：</span>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%; max-width: 28rem; margin-top: 0.5rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">所有类型：</span>
             <AxAlert type="info" title="信息" model-value :dismissible="false">这是一条系统信息提示。</AxAlert>
             <AxAlert type="success" title="成功" model-value :dismissible="false">操作已成功完成。</AxAlert>
             <AxAlert type="warning" title="警告" model-value :dismissible="false">请注意当前系统资源使用情况。</AxAlert>
             <AxAlert type="error" title="错误" model-value :dismissible="false">核心服务连接已中断。</AxAlert>
           </div>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="alertProps" :schema="alertSchema" title="警示属性" />
         </div>
       </div>
     </div>
 
     <!-- Select -->
-    <div id="section-select" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Select</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">自定义下拉选择 — 支持搜索过滤</span>
+    <div id="section-select" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Select</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">自定义下拉选择 — 支持搜索过滤</span>
       </div>
-      <div class="ax-flex" style="min-height: 180px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-lg ax-items-start ax-justify-center" style="padding: 1.5rem">
+      <div style="display: flex; min-height: 180px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.5rem; padding: 1.5rem">
           <div>
             <AxSelect v-model="selectProps.value" :size="selectProps.size" :rounded="selectProps.rounded" :options="demoSelectOptions"
               :searchable="selectProps.searchable" :multiple="selectProps.multiple"
@@ -425,30 +425,30 @@ function handleBallSave(prefs: FloatingBallPrefs) {
               :tag-max-width="selectProps.tagMaxWidth" :trigger-width="selectProps.triggerWidth"
               :trigger-max-width="selectProps.triggerMaxWidth" />
           </div>
-          <div class="ax-flex ax-items-center ax-gap-sm">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">带搜索的选择器：</span>
+          <div style="display: flex; align-items: center; gap: 0.75rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">带搜索的选择器：</span>
             <AxSelect model-value="opt2" :options="demoSelectOptions" searchable placeholder="选择框架..." />
           </div>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="selectProps" :schema="selectSchema" title="下拉选择属性" />
         </div>
       </div>
     </div>
 
     <!-- Tooltip -->
-    <div id="section-tooltip" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Tooltip</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">悬停提示气泡 — 8 个方向，Floating UI 精准定位</span>
+    <div id="section-tooltip" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Tooltip</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">悬停提示气泡 — 8 个方向，Floating UI 精准定位</span>
       </div>
-      <div class="ax-flex" style="min-height: 180px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-lg ax-items-center ax-justify-center" style="padding: 1.5rem">
+      <div style="display: flex; min-height: 180px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 1.5rem">
           <AxTooltip :content="tooltipProps.content" :placement="tooltipProps.placement" :arrow="tooltipProps.arrow"
             :offset="tooltipProps.offset">
             <AxButton variant="outline">悬停此处查看效果</AxButton>
           </AxTooltip>
-          <div class="ax-flex ax-flex-wrap ax-gap-sm ax-justify-center">
+          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem">
             <AxTooltip content="top 提示" placement="top"><AxButton variant="ghost" size="sm">上方</AxButton></AxTooltip>
             <AxTooltip content="bottom 提示" placement="bottom"><AxButton variant="ghost" size="sm">下方</AxButton></AxTooltip>
             <AxTooltip content="left 提示" placement="left"><AxButton variant="ghost" size="sm">左侧</AxButton></AxTooltip>
@@ -457,76 +457,76 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             <AxTooltip content="top-end 提示" placement="top-end"><AxButton variant="ghost" size="sm">右上角</AxButton></AxTooltip>
           </div>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="tooltipProps" :schema="tooltipSchema" title="气泡属性" />
         </div>
       </div>
     </div>
 
     <!-- Dropdown -->
-    <div id="section-dropdown" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Dropdown</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">上下文菜单 — 任意 Slot 内容，Floating UI 定位</span>
+    <div id="section-dropdown" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Dropdown</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">上下文菜单 — 任意 Slot 内容，Floating UI 定位</span>
       </div>
-      <div class="ax-flex" style="min-height: 180px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-items-center ax-justify-center" style="padding: 1.5rem; gap: 2rem">
-          <div class="ax-flex ax-flex-col ax-items-center ax-gap-sm">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">功能菜单</span>
+      <div style="display: flex; min-height: 180px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 1.5rem; gap: 2rem">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">功能菜单</span>
             <AxDropdown v-model="showDropdownDemo1" :trigger="dropdownProps.trigger"
               :placement="dropdownProps.placement" :offset="dropdownProps.offset"
               :match-width="dropdownProps.matchWidth" :menu-width="dropdownProps.menuWidth"
               :menu-max-width="dropdownProps.menuMaxWidth" :teleport="dropdownProps.teleport"
-              :menu-class="dropdownProps.menuWidth || dropdownProps.matchWidth ? '' : 'w-44'">
+              :menu-class="dropdownProps.menuWidth || dropdownProps.matchWidth ? '' : ''">
               <template #trigger>
                 <AxButton>打开菜单<template #suffix><AxIcon name="expand_more" :size="16" /></template></AxButton>
               </template>
               <template #default="{ close }">
-                <div class="ax-dropdown__body">
-                  <button class="ax-dropdown__item" @click="close()"><AxIcon name="download" :size="16" /><span>导出配置</span></button>
-                  <button class="ax-dropdown__item" @click="close()"><AxIcon name="edit" :size="16" /><span>编辑设置</span></button>
-                  <div class="ax-dropdown__divider" />
-                  <button class="ax-dropdown__item ax-dropdown__item--danger" @click="close()"><AxIcon name="delete" :size="16" /><span>删除</span></button>
+                <div class="ax-dropdown-body">
+                  <button class="ax-dropdown-item" @click="close()"><AxIcon name="download" :size="16" /><span>导出配置</span></button>
+                  <button class="ax-dropdown-item" @click="close()"><AxIcon name="edit" :size="16" /><span>编辑设置</span></button>
+                  <div class="ax-dropdown-divider" />
+                  <button class="ax-dropdown-item ax-dropdown-item--danger" @click="close()"><AxIcon name="delete" :size="16" /><span>删除</span></button>
                 </div>
               </template>
             </AxDropdown>
           </div>
-          <div class="ax-flex ax-flex-col ax-items-center ax-gap-sm">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">图标按钮触发</span>
-            <AxDropdown v-model="showDropdownDemo2" placement="bottom-end" menu-class="w-40">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">图标按钮触发</span>
+            <AxDropdown v-model="showDropdownDemo2" placement="bottom-end" menu-width="10rem">
               <template #trigger>
                 <AxButton variant="outline" size="icon"><AxIcon name="more_vert" :size="16" /></AxButton>
               </template>
               <template #default="{ close }">
-                <div class="ax-dropdown__body">
-                  <button class="ax-dropdown__item" @click="close()"><AxIcon name="info" :size="16" /><span>查看详情</span></button>
-                  <button class="ax-dropdown__item" @click="close()"><AxIcon name="settings" :size="16" /><span>分享链接</span></button>
+                <div class="ax-dropdown-body">
+                  <button class="ax-dropdown-item" @click="close()"><AxIcon name="info" :size="16" /><span>查看详情</span></button>
+                  <button class="ax-dropdown-item" @click="close()"><AxIcon name="settings" :size="16" /><span>分享链接</span></button>
                 </div>
               </template>
             </AxDropdown>
           </div>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="dropdownProps" :schema="dropdownSchema" title="下拉菜单属性" />
         </div>
       </div>
     </div>
 
     <!-- Popover -->
-    <div id="section-popover" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Popover</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">通用浮层容器 — 支持 click/hover/contextmenu 三种触发，内容完全由 Slot 自定义</span>
+    <div id="section-popover" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Popover</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">通用浮层容器 — 支持 click/hover/contextmenu 三种触发，内容完全由 Slot 自定义</span>
       </div>
-      <div class="ax-flex" style="min-height: 220px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-items-center ax-justify-center" style="padding: 1.5rem; gap: 2rem">
+      <div style="display: flex; min-height: 220px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 1.5rem; gap: 2rem">
           <!-- 通知卡片 (click) -->
-          <div class="ax-flex ax-flex-col ax-items-center ax-gap-sm">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">通知卡片</span>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">通知卡片</span>
             <AxDropdown v-model="showPopoverDemo1" :trigger="popoverProps.trigger" :placement="popoverProps.placement"
               :offset="popoverProps.offset" :teleport="popoverProps.teleport"
               :menu-width="popoverProps.width || undefined" :menu-max-width="popoverProps.maxWidth || undefined"
-              :panel-class="popoverProps.width ? 'p-0' : 'p-0 w-64'">
+              :panel-class="popoverProps.width ? '' : ''">
               <template #trigger>
                 <AxButton variant="outline">
                   <template #prefix><AxIcon name="settings" :size="16" /></template>
@@ -534,36 +534,36 @@ function handleBallSave(prefs: FloatingBallPrefs) {
                 </AxButton>
               </template>
               <template #default="{ close }">
-                <div class="ax-card__header">
-                  <div class="ax-flex ax-items-center ax-gap-sm">
-                    <AxIcon :name="popoverProps.icon" :size="16" class="ax-color-primary" />
-                    <span class="ax-color-primary" style="font-size: 13px; font-weight: 600">{{ popoverProps.title }}</span>
+                <div class="ax-card-header">
+                  <div style="display: flex; align-items: center; gap: 0.75rem">
+                    <AxIcon :name="popoverProps.icon" :size="16" style="color: var(--ax-color-primary)" />
+                    <span style="color: var(--ax-color-primary); font-size: 13px; font-weight: 600">{{ popoverProps.title }}</span>
                   </div>
-                  <button class="ax-dialog__close" @click="close()"><AxIcon name="close" :size="14" /></button>
+                  <button class="ax-dialog-close" @click="close()"><AxIcon name="close" :size="14" /></button>
                 </div>
-                <div class="ax-card__body ax-space-y-sm">
-                  <div class="ax-flex ax-items-start ax-gap-sm ax-bg-surface-container-low ax-rounded-lg" style="padding: 0.5rem">
-                    <AxIcon name="info" :size="16" class="ax-color-primary" style="margin-top: 0.125rem" />
+                <div class="ax-card-body" style="display: flex; flex-direction: column; gap: 0.75rem">
+                  <div style="display: flex; align-items: flex-start; gap: 0.75rem; background: var(--ax-color-surface-container-low); border-radius: var(--ax-radius-lg); padding: 0.5rem">
+                    <AxIcon name="info" :size="16" style="color: var(--ax-color-primary); margin-top: 0.125rem" />
                     <div style="min-width: 0">
-                      <p class="ax-text-body-sm ax-color-primary" style="font-size: 12px; font-weight: 600">系统更新 v2.4.0</p>
-                      <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; line-height: 1.6">新增 Popover 组件，支持富内容展示。</p>
+                      <p class="ax-text-body-sm" style="color: var(--ax-color-primary); font-size: 12px; font-weight: 600">系统更新 v2.4.0</p>
+                      <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px; line-height: 1.6">新增 Popover 组件，支持富内容展示。</p>
                     </div>
                   </div>
-                  <button class="ax-button ax-button--md ax-button--outline ax-button--block ax-rounded-md" style="font-family: var(--ax-font-label-md); font-size: var(--ax-text-label-md-size)" @click="close()">查看全部通知</button>
+                  <button class="ax-button ax-button--md ax-button--outline ax-button--block" style="border-radius: var(--ax-radius-md); font-family: var(--ax-font-label-md); font-size: var(--ax-text-label-md-size)" @click="close()">查看全部通知</button>
                 </div>
               </template>
             </AxDropdown>
           </div>
 
           <!-- 悬停触发 -->
-          <div class="ax-flex ax-flex-col ax-items-center ax-gap-sm">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">悬停触发</span>
-            <AxDropdown v-model="showPopoverDemo2" trigger="hover" placement="bottom" panel-class="p-ax-md">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">悬停触发</span>
+            <AxDropdown v-model="showPopoverDemo2" trigger="hover" placement="bottom" body-class="">
               <template #trigger><AxButton variant="outline" size="sm">悬停此处</AxButton></template>
               <template #default="{ close }">
-                <div class="ax-space-y-sm" style="width: 12rem">
-                  <p class="ax-text-body-sm ax-color-on-surface-variant" style="font-size: 12px; line-height: 1.6">鼠标悬停即可展示。移入面板后不会关闭。</p>
-                  <div class="ax-flex ax-gap-xs ax-justify-end">
+                <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 12rem; padding: 1rem">
+                  <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); font-size: 12px; line-height: 1.6">鼠标悬停即可展示。移入面板后不会关闭。</p>
+                  <div style="display: flex; justify-content: flex-end; gap: 0.5rem">
                     <AxButton variant="outline" size="sm" @click="close()">知道了</AxButton>
                   </div>
                 </div>
@@ -572,265 +572,265 @@ function handleBallSave(prefs: FloatingBallPrefs) {
           </div>
 
           <!-- 右键菜单 -->
-          <div class="ax-flex ax-flex-col ax-items-center ax-gap-sm">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">右键菜单 (AxDropdown)</span>
-            <AxDropdown v-model="showPopoverDemo3" trigger="contextmenu" placement="bottom-start" panel-class="p-0.5">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">右键菜单 (AxDropdown)</span>
+            <AxDropdown v-model="showPopoverDemo3" trigger="contextmenu" placement="bottom-start" body-class="">
               <template #trigger>
-                <div class="ax-flex ax-items-center ax-gap-sm ax-border ax-rounded-lg ax-color-secondary" style="padding: 0.5rem 1rem; border-style: dashed; cursor: context-menu; user-select: none; font-size: 11px">
+                <div style="display: flex; align-items: center; gap: 0.75rem; border: 1px dashed var(--ax-color-outline-variant); border-radius: var(--ax-radius-lg); color: var(--ax-color-secondary); padding: 0.5rem 1rem; cursor: context-menu; user-select: none; font-size: 11px">
                   <AxIcon name="settings" :size="16" />
                   <span>在此区域右键点击</span>
                 </div>
               </template>
               <template #default="{ close }">
-                <div class="ax-dropdown__body" style="width: 11rem">
-                  <button class="ax-dropdown__item" @click="close()"><AxIcon name="arrow_back" :size="16" /><span>向后</span></button>
-                  <button class="ax-dropdown__item" style="opacity: 0.4; pointer-events: none"><AxIcon name="settings" :size="16" /><span>向前</span></button>
-                  <button class="ax-dropdown__item" @click="close()"><AxIcon name="refresh" :size="16" /><span>重新加载</span></button>
-                  <div class="ax-dropdown__divider" />
-                  <button class="ax-dropdown__item" @click="close()"><AxIcon name="download" :size="16" /><span>另存为...</span></button>
-                  <div class="ax-dropdown__divider" />
-                  <button class="ax-dropdown__item" @click="close()"><AxIcon name="search" :size="16" /><span>打印...</span></button>
+                <div class="ax-dropdown-body" style="width: 11rem">
+                  <button class="ax-dropdown-item" @click="close()"><AxIcon name="arrow_back" :size="16" /><span>向后</span></button>
+                  <button class="ax-dropdown-item" style="opacity: 0.4; pointer-events: none"><AxIcon name="settings" :size="16" /><span>向前</span></button>
+                  <button class="ax-dropdown-item" @click="close()"><AxIcon name="refresh" :size="16" /><span>重新加载</span></button>
+                  <div class="ax-dropdown-divider" />
+                  <button class="ax-dropdown-item" @click="close()"><AxIcon name="download" :size="16" /><span>另存为...</span></button>
+                  <div class="ax-dropdown-divider" />
+                  <button class="ax-dropdown-item" @click="close()"><AxIcon name="search" :size="16" /><span>打印...</span></button>
                 </div>
               </template>
             </AxDropdown>
           </div>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="popoverProps" :schema="popoverSchema" title="气泡卡片属性" />
         </div>
       </div>
     </div>
 
     <!-- Dialog -->
-    <div id="section-dialog" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Dialog</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">模态弹窗 — 焦点陷阱、ESC 关闭、遮罩关闭</span>
+    <div id="section-dialog" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Dialog</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">模态弹窗 — 焦点陷阱、ESC 关闭、遮罩关闭</span>
       </div>
-      <div class="ax-flex" style="min-height: 180px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-md ax-items-center ax-justify-center" style="padding: 1.5rem">
-          <div class="ax-flex ax-gap-sm ax-flex-wrap ax-justify-center">
+      <div style="display: flex; min-height: 180px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 1.5rem">
+          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem">
             <AxButton @click="emit('open-dialog')">打开确认对话框</AxButton>
             <AxButton variant="outline" @click="emit('open-simple-dialog')">打开简单提示框</AxButton>
           </div>
-          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">点击上方按钮打开对话框，可通过 ESC 键或点击遮罩关闭。</p>
+          <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">点击上方按钮打开对话框，可通过 ESC 键或点击遮罩关闭。</p>
         </div>
-        <div class="ax-bg-surface-container-lowest ax-flex ax-items-center" style="width: 336px; padding: 1rem; overflow-y: auto">
-          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; line-height: 1.6">
-            Dialog 支持 <code class="ax-bg-surface-container ax-rounded-sm ax-color-primary" style="padding: 0 0.25rem">#header</code>、
-            <code class="ax-bg-surface-container ax-rounded-sm ax-color-primary" style="padding: 0 0.25rem">#default</code>、
-            <code class="ax-bg-surface-container ax-rounded-sm ax-color-primary" style="padding: 0 0.25rem">#footer</code> 三个插槽。
+        <div style="background: var(--ax-color-surface-container-lowest); display: flex; align-items: center; width: 336px; padding: 1rem; overflow-y: auto">
+          <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px; line-height: 1.6">
+            Dialog 支持 <code style="background: var(--ax-color-surface-container); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); padding: 0 0.25rem">#header</code>、
+            <code style="background: var(--ax-color-surface-container); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); padding: 0 0.25rem">#default</code>、
+            <code style="background: var(--ax-color-surface-container); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); padding: 0 0.25rem">#footer</code> 三个插槽。
           </p>
         </div>
       </div>
     </div>
 
     <!-- Notify -->
-    <div id="section-notify" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Notify</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">通知气泡 — 4 种语义、自动关闭、关闭按钮、日志记录</span>
+    <div id="section-notify" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Notify</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">通知气泡 — 4 种语义、自动关闭、关闭按钮、日志记录</span>
       </div>
-      <div class="ax-flex" style="min-height: 320px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-lg ax-items-start ax-justify-center" style="padding: 1.5rem">
-          <div class="ax-space-y-sm" style="width: 100%">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">所有类型静态预览：</span>
-            <div class="ax-card ax-flex ax-items-start ax-gap-sm" style="width: 20rem; padding: 1rem; text-align: left">
-              <AxIcon name="info" :size="18" class="ax-color-primary" style="margin-top: 0.125rem" />
-              <div class="ax-flex-1">
-                <h4 class="ax-color-primary" style="font-size: 14px; font-weight: 600; margin-bottom: 0.125rem">信息通知</h4>
-                <p class="ax-text-body-sm ax-color-on-surface-variant" style="line-height: 1.5">系统服务已启动，运行状态正常。</p>
+      <div style="display: flex; min-height: 320px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1.5rem; padding: 1.5rem">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">所有类型静态预览：</span>
+            <div class="ax-card" style="display: flex; align-items: flex-start; gap: 0.75rem; width: 20rem; padding: 1rem; text-align: left">
+              <AxIcon name="info" :size="18" style="color: var(--ax-color-primary); margin-top: 0.125rem" />
+              <div style="flex: 1">
+                <h4 style="color: var(--ax-color-primary); font-size: 14px; font-weight: 600; margin-bottom: 0.125rem">信息通知</h4>
+                <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); line-height: 1.5">系统服务已启动，运行状态正常。</p>
               </div>
-              <button class="ax-dialog__close" style="width: 1.5rem; height: 1.5rem"><AxIcon name="close" :size="16" /></button>
+              <button class="ax-dialog-close" style="width: 1.5rem; height: 1.5rem"><AxIcon name="close" :size="16" /></button>
             </div>
-            <div class="ax-card ax-flex ax-items-start ax-gap-sm" style="width: 20rem; padding: 1rem; text-align: left">
-              <AxIcon name="check_circle" :size="18" class="ax-color-primary" style="margin-top: 0.125rem" />
-              <div class="ax-flex-1">
-                <h4 class="ax-color-primary" style="font-size: 14px; font-weight: 600; margin-bottom: 0.125rem">操作成功</h4>
-                <p class="ax-text-body-sm ax-color-on-surface-variant" style="line-height: 1.5">配置已成功保存至云端。</p>
+            <div class="ax-card" style="display: flex; align-items: flex-start; gap: 0.75rem; width: 20rem; padding: 1rem; text-align: left">
+              <AxIcon name="check_circle" :size="18" style="color: var(--ax-color-primary); margin-top: 0.125rem" />
+              <div style="flex: 1">
+                <h4 style="color: var(--ax-color-primary); font-size: 14px; font-weight: 600; margin-bottom: 0.125rem">操作成功</h4>
+                <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); line-height: 1.5">配置已成功保存至云端。</p>
               </div>
-              <button class="ax-dialog__close" style="width: 1.5rem; height: 1.5rem"><AxIcon name="close" :size="16" /></button>
+              <button class="ax-dialog-close" style="width: 1.5rem; height: 1.5rem"><AxIcon name="close" :size="16" /></button>
             </div>
-            <div class="ax-card ax-flex ax-items-start ax-gap-sm" style="width: 20rem; padding: 1rem; text-align: left">
-              <AxIcon name="error" :size="18" class="ax-color-error" style="margin-top: 0.125rem" />
-              <div class="ax-flex-1">
-                <h4 class="ax-color-primary" style="font-size: 14px; font-weight: 600; margin-bottom: 0.125rem">连接中断</h4>
-                <p class="ax-text-body-sm ax-color-on-surface-variant" style="line-height: 1.5">核心服务连接已断开，请检查网络后重试。</p>
+            <div class="ax-card" style="display: flex; align-items: flex-start; gap: 0.75rem; width: 20rem; padding: 1rem; text-align: left">
+              <AxIcon name="error" :size="18" style="color: var(--ax-color-error); margin-top: 0.125rem" />
+              <div style="flex: 1">
+                <h4 style="color: var(--ax-color-primary); font-size: 14px; font-weight: 600; margin-bottom: 0.125rem">连接中断</h4>
+                <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); line-height: 1.5">核心服务连接已断开，请检查网络后重试。</p>
               </div>
-              <button class="ax-dialog__close" style="width: 1.5rem; height: 1.5rem"><AxIcon name="close" :size="16" /></button>
+              <button class="ax-dialog-close" style="width: 1.5rem; height: 1.5rem"><AxIcon name="close" :size="16" /></button>
             </div>
-            <div class="ax-card ax-flex ax-items-start ax-gap-sm" style="width: 20rem; padding: 1rem; text-align: left">
-              <AxIcon name="settings" :size="18" class="ax-color-secondary" style="margin-top: 0.125rem" />
-              <div class="ax-flex-1">
-                <h4 class="ax-color-primary" style="font-size: 14px; font-weight: 600; margin-bottom: 0.125rem">系统设置</h4>
-                <p class="ax-text-body-sm ax-color-on-surface-variant" style="line-height: 1.5">数据缓存清理完毕，释放空间 12.8 MB。</p>
+            <div class="ax-card" style="display: flex; align-items: flex-start; gap: 0.75rem; width: 20rem; padding: 1rem; text-align: left">
+              <AxIcon name="settings" :size="18" style="color: var(--ax-color-secondary); margin-top: 0.125rem" />
+              <div style="flex: 1">
+                <h4 style="color: var(--ax-color-primary); font-size: 14px; font-weight: 600; margin-bottom: 0.125rem">系统设置</h4>
+                <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); line-height: 1.5">数据缓存清理完毕，释放空间 12.8 MB。</p>
               </div>
-              <button class="ax-dialog__close" style="width: 1.5rem; height: 1.5rem"><AxIcon name="close" :size="16" /></button>
+              <button class="ax-dialog-close" style="width: 1.5rem; height: 1.5rem"><AxIcon name="close" :size="16" /></button>
             </div>
           </div>
 
-          <div class="ax-flex ax-items-center ax-gap-md">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px; align-self: center">动态触发：</span>
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px; align-self: center">动态触发：</span>
             <AxButton size="sm" @click="handleNotifyShow">
               <template #prefix><AxIcon name="settings" :size="16" /></template>
               发送通知
             </AxButton>
           </div>
 
-          <div v-if="notifyProps.showActions" class="ax-flex ax-flex-wrap ax-gap-md" style="width: 100%; max-width: 28rem">
-            <div class="ax-flex ax-items-center ax-gap-sm ax-bg-surface-container-low ax-rounded-lg" style="padding: 0.5rem 0.75rem">
-              <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">活跃通知数：</span>
-              <span class="ax-color-primary" style="font-size: 14px">{{ notify.activeNotificationCount }}</span>
+          <div v-if="notifyProps.showActions" style="display: flex; flex-wrap: wrap; gap: 1rem; width: 100%; max-width: 28rem">
+            <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--ax-color-surface-container-low); border-radius: var(--ax-radius-lg); padding: 0.5rem 0.75rem">
+              <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">活跃通知数：</span>
+              <span style="color: var(--ax-color-primary); font-size: 14px">{{ notify.activeNotificationCount }}</span>
             </div>
             <AxButton variant="outline" size="sm" @click="notify.clearLogs()">
               <template #prefix><AxIcon name="delete" :size="16" /></template>
               清空日志
             </AxButton>
           </div>
-          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">通知 4 秒后自动关闭，也可点 × 手动关闭。基于 <code class="ax-bg-surface-container ax-rounded-sm ax-color-primary" style="padding: 0 0.25rem">vue-sonner</code>。</p>
+          <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">通知 4 秒后自动关闭，也可点 × 手动关闭。基于 <code style="background: var(--ax-color-surface-container); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); padding: 0 0.25rem">vue-sonner</code>。</p>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="notifyProps" :schema="notifySchema" title="通知属性" />
         </div>
       </div>
     </div>
 
     <!-- FloatingBall -->
-    <div id="section-floating-ball" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">FloatingBall</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">可拖拽悬浮球 — 支持贴边、展开菜单、亮暗主题、缩小模式</span>
+    <div id="section-floating-ball" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">FloatingBall</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">可拖拽悬浮球 — 支持贴边、展开菜单、亮暗主题、缩小模式</span>
       </div>
-      <div class="ax-flex" style="min-height: 280px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-md ax-items-center ax-justify-center" style="padding: 1.5rem">
-          <div class="ax-flex ax-flex-wrap ax-items-center" style="gap: 2rem">
-            <div class="ax-flex ax-flex-col ax-items-center ax-gap-sm">
-              <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">标准尺寸</span>
-              <div class="ax-flex ax-items-center ax-justify-center ax-rounded-full" style="width: 36px; height: 36px; background: #fff; box-shadow: var(--ax-shadow-pro); border: 1px solid rgba(0,0,0,0.08)">
-                <span class="ax-flex ax-items-center ax-justify-center ax-rounded-full" style="width: 30px; height: 30px; background: linear-gradient(to bottom right, var(--ax-color-ball-light), var(--ax-color-ball)); color: #fff; box-shadow: 0 1px 3px rgba(99,102,241,0.4)">
+      <div style="display: flex; min-height: 280px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 1.5rem">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem">
+              <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">标准尺寸</span>
+              <div style="display: flex; align-items: center; justify-content: center; border-radius: 9999px; width: 36px; height: 36px; background: #fff; box-shadow: var(--ax-shadow-pro); border: 1px solid rgba(0,0,0,0.08)">
+                <span style="display: flex; align-items: center; justify-content: center; border-radius: 9999px; width: 30px; height: 30px; background: linear-gradient(to bottom right, var(--ax-color-ball-light), var(--ax-color-ball)); color: #fff; box-shadow: 0 1px 3px rgba(99,102,241,0.4)">
                   <span style="font-size: 11px; font-weight: 800; font-style: italic; color: #fff">{{ ballPrefs.label || 'FB' }}</span>
                 </span>
               </div>
             </div>
           </div>
-          <div class="ax-flex ax-gap-sm" style="margin-top: 1rem">
-            <button class="ax-button ax-button--md ax-button--primary ax-rounded-md" @click="showBall = !showBall">
+          <div style="display: flex; gap: 0.75rem; margin-top: 1rem">
+            <button class="ax-button ax-button--md ax-button--primary" style="border-radius: var(--ax-radius-md)" @click="showBall = !showBall">
               {{ showBall ? '隐藏页面悬浮球' : '在页面上展示悬浮球' }}
             </button>
           </div>
-          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">点击上方按钮将悬浮球渲染到页面中（固定定位，可在右下角找到）。</p>
+          <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">点击上方按钮将悬浮球渲染到页面中（固定定位，可在右下角找到）。</p>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="ballPrefs" :schema="ballSchema" title="悬浮球属性" />
         </div>
       </div>
     </div>
 
     <!-- AxImage -->
-    <div id="section-image" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">Image</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">懒加载图片 — 加载/成功/失败三态、点击放大预览、hover 图标、自适应宽高比</span>
+    <div id="section-image" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">Image</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">懒加载图片 — 加载/成功/失败三态、点击放大预览、hover 图标、自适应宽高比</span>
       </div>
-      <div class="ax-flex" style="min-height: 340px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-md ax-items-start ax-justify-center" style="padding: 1.5rem">
-          <div class="ax-flex ax-flex-wrap ax-items-start" style="gap: 2rem">
-            <div class="ax-flex ax-flex-col ax-items-center ax-gap-sm">
-              <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">动态预览</span>
-              <div class="ax-rounded-lg ax-border" style="width: 14rem; height: 10rem; overflow: hidden">
+      <div style="display: flex; min-height: 340px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1rem; padding: 1.5rem">
+          <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem">
+              <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">动态预览</span>
+              <div style="border-radius: var(--ax-radius-lg); border: 1px solid var(--ax-color-outline-variant); width: 14rem; height: 10rem; overflow: hidden">
                 <AxImage :src="imageProps.src" :alt="imageProps.alt" :object-fit="imageProps.objectFit"
                   :adaptive-aspect="imageProps.adaptiveAspect" />
               </div>
             </div>
-            <div class="ax-flex ax-flex-col ax-gap-sm">
-              <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">各种状态：</span>
-              <div class="ax-flex ax-gap-sm ax-flex-wrap">
-                <div class="ax-flex ax-flex-col ax-items-center ax-gap-xs">
-                  <div class="ax-rounded-lg ax-border" style="width: 7rem; height: 5rem; overflow: hidden">
+            <div style="display: flex; flex-direction: column; gap: 0.75rem">
+              <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">各种状态：</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.75rem">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem">
+                  <div style="border-radius: var(--ax-radius-lg); border: 1px solid var(--ax-color-outline-variant); width: 7rem; height: 5rem; overflow: hidden">
                     <AxImage src="https://picsum.photos/seed/normal/320/240" alt="正常" />
                   </div>
-                  <span class="ax-text-body-sm ax-color-outline" style="font-size: 10px">正常加载</span>
+                  <span class="ax-text-body-sm" style="color: var(--ax-color-outline); font-size: 10px">正常加载</span>
                 </div>
-                <div class="ax-flex ax-flex-col ax-items-center ax-gap-xs">
-                  <div class="ax-rounded-lg ax-border" style="width: 7rem; height: 5rem; overflow: hidden">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem">
+                  <div style="border-radius: var(--ax-radius-lg); border: 1px solid var(--ax-color-outline-variant); width: 7rem; height: 5rem; overflow: hidden">
                     <AxImage src="https://invalid.example/404.jpg" alt="失败" />
                   </div>
-                  <span class="ax-text-body-sm ax-color-outline" style="font-size: 10px">加载失败（可重试）</span>
+                  <span class="ax-text-body-sm" style="color: var(--ax-color-outline); font-size: 10px">加载失败（可重试）</span>
                 </div>
-                <div class="ax-flex ax-flex-col ax-items-center ax-gap-xs">
-                  <div class="ax-rounded-lg ax-border" style="width: 7rem; height: 5rem; overflow: hidden">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem">
+                  <div style="border-radius: var(--ax-radius-lg); border: 1px solid var(--ax-color-outline-variant); width: 7rem; height: 5rem; overflow: hidden">
                     <AxImage src="https://picsum.photos/seed/contain/320/240" alt="Contain" object-fit="contain" />
                   </div>
-                  <span class="ax-text-body-sm ax-color-outline" style="font-size: 10px">Contain 模式</span>
+                  <span class="ax-text-body-sm" style="color: var(--ax-color-outline); font-size: 10px">Contain 模式</span>
                 </div>
               </div>
             </div>
           </div>
-          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">点击已加载图片触发 <code class="ax-bg-surface-container ax-rounded-sm ax-color-primary" style="padding: 0 0.25rem">preview</code> 事件（可接入 ImageViewer 放大浏览）。</p>
+          <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">点击已加载图片触发 <code style="background: var(--ax-color-surface-container); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); padding: 0 0.25rem">preview</code> 事件（可接入 ImageViewer 放大浏览）。</p>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="imageProps" :schema="imageSchema" title="图片属性" />
         </div>
       </div>
     </div>
 
     <!-- AxJsonViewer -->
-    <div id="section-json-viewer" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">JsonViewer</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">可折叠 JSON 树查看器 — 递归展开/折叠、Ctrl+点击深层切换、语法高亮</span>
+    <div id="section-json-viewer" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">JsonViewer</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">可折叠 JSON 树查看器 — 递归展开/折叠、Ctrl+点击深层切换、语法高亮</span>
       </div>
-      <div class="ax-flex" style="min-height: 360px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-sm ax-items-start ax-justify-center" style="padding: 1.5rem">
-          <div class="ax-bg-surface-container-low ax-border ax-rounded-lg" style="width: 100%; max-width: 32rem; padding: 1rem">
+      <div style="display: flex; min-height: 360px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.75rem; padding: 1.5rem">
+          <div style="background: var(--ax-color-surface-container-low); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-lg); width: 100%; max-width: 32rem; padding: 1rem">
             <AxJsonViewer :data="sampleJson" :expand-level="jsonViewerProps.expandLevel"
               :wrap-enabled="jsonViewerProps.wrapEnabled" is-root />
           </div>
-          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">点击箭头展开/折叠节点，<kbd class="ax-text-label-md ax-bg-surface-container ax-border ax-rounded-sm ax-color-primary" style="font-size: 10px; padding: 0 0.25rem">Ctrl</kbd> + 点击递归展开/折叠所有子节点。</p>
+          <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">点击箭头展开/折叠节点，<kbd class="ax-text-label-md" style="background: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); font-size: 10px; padding: 0 0.25rem">Ctrl</kbd> + 点击递归展开/折叠所有子节点。</p>
         </div>
-        <div class="ax-bg-surface-container-lowest" style="width: 336px; padding: 1rem; overflow-y: auto">
+        <div style="background: var(--ax-color-surface-container-lowest); width: 336px; padding: 1rem; overflow-y: auto">
           <AxPropPanel v-model="jsonViewerProps" :schema="jsonViewerSchema" title="JSON属性" />
         </div>
       </div>
     </div>
 
     <!-- AxImageViewer -->
-    <div id="section-image-viewer" class="ax-card scroll-mt-4">
-      <div class="ax-card__header">
-        <span class="ax-card__header-title">ImageViewer</span>
-        <span class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">全屏图片查看器 — 缩放/旋转/翻转/键盘快捷键/下载</span>
+    <div id="section-image-viewer" class="ax-card" style="scroll-margin-top: 1rem">
+      <div class="ax-card-header">
+        <span class="ax-card-header-title">ImageViewer</span>
+        <span class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px">全屏图片查看器 — 缩放/旋转/翻转/键盘快捷键/下载</span>
       </div>
-      <div class="ax-flex" style="min-height: 260px">
-        <div class="ax-flex-1 ax-comp-preview ax-flex ax-flex-col ax-gap-lg ax-items-center ax-justify-center" style="padding: 1.5rem">
-          <div class="ax-flex ax-flex-wrap ax-items-center" style="gap: 1.5rem">
-            <div class="ax-flex ax-flex-col ax-items-center ax-gap-sm">
-              <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">点击打开查看器</span>
+      <div style="display: flex; min-height: 260px">
+        <div class="ax-comp-preview" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 1.5rem">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem">
+              <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">点击打开查看器</span>
               <AxButton variant="primary" icon="settings" @click="showImageViewer = true">
                 浏览 {{ demoImages.length }} 张图片
               </AxButton>
             </div>
-            <div class="ax-flex" style="margin-left: -0.5rem">
+            <div style="display: flex; margin-left: -0.5rem">
               <img v-for="(img, i) in demoImages.slice(0, 4)" :key="i" :src="img"
-                class="ax-border" style="width: 3.5rem; height: 2.5rem; border-radius: 6px; border-width: 2px; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1)"
+                style="width: 3.5rem; height: 2.5rem; border-radius: 6px; border: 2px solid var(--ax-color-outline-variant); object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1)"
                 :style="{ zIndex: demoImages.length - i, marginLeft: i > 0 ? '-0.5rem' : '0' }" />
             </div>
           </div>
-          <div class="ax-flex ax-flex-wrap ax-gap-sm" style="text-align: center">
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">键盘快捷键：</span>
-            <kbd class="ax-text-label-md ax-bg-surface-container ax-border ax-rounded-sm ax-color-primary" style="font-size: 10px; padding: 0 0.375rem">← →</kbd><span class="ax-text-body-sm ax-color-outline" style="font-size: 10px">切换</span>
-            <kbd class="ax-text-label-md ax-bg-surface-container ax-border ax-rounded-sm ax-color-primary" style="font-size: 10px; padding: 0 0.375rem">+ -</kbd><span class="ax-text-body-sm ax-color-outline" style="font-size: 10px">缩放</span>
-            <kbd class="ax-text-label-md ax-bg-surface-container ax-border ax-rounded-sm ax-color-primary" style="font-size: 10px; padding: 0 0.375rem">R</kbd><span class="ax-text-body-sm ax-color-outline" style="font-size: 10px">旋转</span>
-            <kbd class="ax-text-label-md ax-bg-surface-container ax-border ax-rounded-sm ax-color-primary" style="font-size: 10px; padding: 0 0.375rem">F</kbd><span class="ax-text-body-sm ax-color-outline" style="font-size: 10px">翻转</span>
-            <kbd class="ax-text-label-md ax-bg-surface-container ax-border ax-rounded-sm ax-color-primary" style="font-size: 10px; padding: 0 0.375rem">Esc</kbd><span class="ax-text-body-sm ax-color-outline" style="font-size: 10px">关闭</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; text-align: center">
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">键盘快捷键：</span>
+            <kbd class="ax-text-label-md" style="background: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); font-size: 10px; padding: 0 0.375rem">← →</kbd><span class="ax-text-body-sm" style="color: var(--ax-color-outline); font-size: 10px">切换</span>
+            <kbd class="ax-text-label-md" style="background: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); font-size: 10px; padding: 0 0.375rem">+ -</kbd><span class="ax-text-body-sm" style="color: var(--ax-color-outline); font-size: 10px">缩放</span>
+            <kbd class="ax-text-label-md" style="background: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); font-size: 10px; padding: 0 0.375rem">R</kbd><span class="ax-text-body-sm" style="color: var(--ax-color-outline); font-size: 10px">旋转</span>
+            <kbd class="ax-text-label-md" style="background: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); font-size: 10px; padding: 0 0.375rem">F</kbd><span class="ax-text-body-sm" style="color: var(--ax-color-outline); font-size: 10px">翻转</span>
+            <kbd class="ax-text-label-md" style="background: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); font-size: 10px; padding: 0 0.375rem">Esc</kbd><span class="ax-text-body-sm" style="color: var(--ax-color-outline); font-size: 10px">关闭</span>
           </div>
         </div>
-        <div class="ax-bg-surface-container-lowest ax-flex ax-items-start" style="width: 336px; padding: 1rem; overflow-y: auto">
-          <div class="ax-space-y-sm" style="width: 100%">
-            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; line-height: 1.6">
-              ImageViewer 基于 <code class="ax-bg-surface-container ax-rounded-sm ax-color-primary" style="padding: 0 0.25rem">Teleport to body</code> 全屏覆盖渲染。
+        <div style="background: var(--ax-color-surface-container-lowest); display: flex; align-items: flex-start; width: 336px; padding: 1rem; overflow-y: auto">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%">
+            <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px; line-height: 1.6">
+              ImageViewer 基于 <code style="background: var(--ax-color-surface-container); border-radius: var(--ax-radius-sm); color: var(--ax-color-primary); padding: 0 0.25rem">Teleport to body</code> 全屏覆盖渲染。
             </p>
-            <div class="ax-flex ax-gap-xs">
-              <span v-for="(img, i) in demoImages" :key="i" class="ax-bg-surface-container ax-border ax-rounded-sm" style="width: 2.5rem; height: 2rem; overflow: hidden">
+            <div style="display: flex; gap: 0.5rem">
+              <span v-for="(img, i) in demoImages" :key="i" style="background: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-sm); width: 2.5rem; height: 2rem; overflow: hidden">
                 <img :src="img" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6" />
               </span>
             </div>

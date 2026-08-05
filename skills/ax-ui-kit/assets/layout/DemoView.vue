@@ -50,12 +50,12 @@ const activities = ref([
 ])
 
 const navCards = [
-  { icon: 'settings', label: '实时监控', desc: '查看系统各项核心指标', color: 'ax-bg-primary ax-color-on-primary' },
-  { icon: 'search', label: '安全中心', desc: '管理权限与防御策略', color: 'ax-bg-secondary-container ax-color-on-surface' },
-  { icon: 'settings', label: '性能分析', desc: '算力与资源使用详情', color: 'ax-bg-surface-container-high ax-color-primary' },
-  { icon: 'settings', label: '告警日志', desc: '历史通知与事件追踪', color: 'ax-bg-surface-container-high ax-color-primary' },
-  { icon: 'settings', label: '备份管理', desc: '增量备份与恢复操作', color: 'ax-bg-surface-container-high ax-color-primary' },
-  { icon: 'settings', label: '系统配置', desc: '全局参数与高级选项', color: 'ax-bg-surface-container-high ax-color-primary' },
+  { icon: 'settings', label: '实时监控', desc: '查看系统各项核心指标', color: 'background: var(--ax-color-primary); color: var(--ax-color-on-primary)' },
+  { icon: 'search', label: '安全中心', desc: '管理权限与防御策略', color: 'background: var(--ax-color-secondary-container); color: var(--ax-color-on-surface)' },
+  { icon: 'settings', label: '性能分析', desc: '算力与资源使用详情', color: 'background: var(--ax-color-surface-container-high); color: var(--ax-color-primary)' },
+  { icon: 'settings', label: '告警日志', desc: '历史通知与事件追踪', color: 'background: var(--ax-color-surface-container-high); color: var(--ax-color-primary)' },
+  { icon: 'settings', label: '备份管理', desc: '增量备份与恢复操作', color: 'background: var(--ax-color-surface-container-high); color: var(--ax-color-primary)' },
+  { icon: 'settings', label: '系统配置', desc: '全局参数与高级选项', color: 'background: var(--ax-color-surface-container-high); color: var(--ax-color-primary)' },
 ]
 
 const settingGroups = [
@@ -80,67 +80,67 @@ const settingGroups = [
 </script>
 
 <template>
-  <div class="ax-space-y-lg">
+  <div style="display: flex; flex-direction: column; gap: 1.5rem">
     <section id="section-overview" class="ax-card" style="padding: 1.5rem; position: relative; overflow: hidden">
-      <div class="ax-flex ax-items-center ax-gap-xs" style="margin-bottom: 0.5rem">
-        <span class="ax-inline-block ax-rounded-full" style="width: 0.5rem; height: 0.5rem; background-color: #10b981; animation: pulse 2s infinite"></span>
-        <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em">系统运行中</span>
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem">
+        <span style="display: inline-block; border-radius: 9999px; width: 0.5rem; height: 0.5rem; background-color: #10b981; animation: pulse 2s infinite"></span>
+        <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em">系统运行中</span>
       </div>
-      <h1 class="ax-text-headline-lg ax-color-primary" style="margin-bottom: 0.5rem">控制台概览</h1>
-      <p class="ax-text-body-md ax-color-on-surface-variant" style="line-height: 1.6">
+      <h1 class="ax-text-headline-lg" style="color: var(--ax-color-primary); margin-bottom: 0.5rem">控制台概览</h1>
+      <p class="ax-text-body-md" style="color: var(--ax-color-on-surface-variant); line-height: 1.6">
         实时监控核心集群运行状态，快速访问常用功能模块，浏览最近系统活动记录。
       </p>
-      <div class="ax-hidden" style="position: absolute; right: 0; top: 0; bottom: 0; width: 33%; background: linear-gradient(to left, var(--ax-color-surface-container-low), transparent); opacity: 0.4; pointer-events: none"></div>
+      <div style="position: absolute; right: 0; top: 0; bottom: 0; width: 33%; background: linear-gradient(to left, var(--ax-color-surface-container-low), transparent); opacity: 0.4; pointer-events: none; display: none"></div>
     </section>
 
-    <div id="section-metrics" class="ax-flex ax-gap-gutter" style="flex-wrap: wrap">
+    <div id="section-metrics" style="display: flex; gap: 1rem; flex-wrap: wrap">
       <div class="ax-card" style="flex: 1; min-width: 200px; padding: 1rem">
-        <div class="ax-flex ax-justify-between ax-items-center ax-color-secondary" style="margin-bottom: 0.5rem">
+        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--ax-color-secondary); margin-bottom: 0.5rem">
           <span class="ax-text-label-md" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em">算力占用</span>
           <AxIcon name="settings" :size="16" />
         </div>
-        <div class="ax-flex ax-items-baseline ax-gap-xs">
-          <span class="ax-text-headline-lg ax-color-primary" style="font-size: 30px; font-weight: 700">{{ cpuLimit }}</span>
-          <span class="ax-color-secondary ax-text-label-md" style="font-size: 12px">%</span>
+        <div style="display: flex; align-items: baseline; gap: 0.5rem">
+          <span class="ax-text-headline-lg" style="color: var(--ax-color-primary); font-size: 30px; font-weight: 700">{{ cpuLimit }}</span>
+          <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 12px">%</span>
         </div>
-        <div class="ax-rounded-full" style="width: 100%; background-color: var(--ax-color-surface-container); height: 6px; margin-top: 0.75rem; overflow: hidden">
-          <div class="ax-bg-primary" style="height: 100%; transition: width 0.3s" :style="{ width: cpuLimit + '%' }"></div>
+        <div style="border-radius: 9999px; width: 100%; background-color: var(--ax-color-surface-container); height: 6px; margin-top: 0.75rem; overflow: hidden">
+          <div style="background: var(--ax-color-primary); height: 100%; transition: width 0.3s" :style="{ width: cpuLimit + '%' }"></div>
         </div>
       </div>
 
       <div class="ax-card" style="flex: 1; min-width: 200px; padding: 1rem">
-        <div class="ax-flex ax-justify-between ax-items-center ax-color-secondary" style="margin-bottom: 0.5rem">
+        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--ax-color-secondary); margin-bottom: 0.5rem">
           <span class="ax-text-label-md" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em">备份服务</span>
-          <span class="ax-rounded-full" :class="backupEnabled ? 'ax-bg-primary' : 'ax-bg-surface-container'" style="width: 0.5rem; height: 0.5rem; animation: pulse 2s infinite"></span>
+          <span style="border-radius: 9999px; width: 0.5rem; height: 0.5rem; animation: pulse 2s infinite" :style="{ background: backupEnabled ? 'var(--ax-color-primary)' : 'var(--ax-color-surface-container)' }"></span>
         </div>
-        <div class="ax-flex ax-items-baseline ax-gap-xs">
-          <span class="ax-text-headline-lg ax-color-primary" style="font-size: 30px; font-weight: 700">{{ backupEnabled ? '已开启' : '已离线' }}</span>
+        <div style="display: flex; align-items: baseline; gap: 0.5rem">
+          <span class="ax-text-headline-lg" style="color: var(--ax-color-primary); font-size: 30px; font-weight: 700">{{ backupEnabled ? '已开启' : '已离线' }}</span>
         </div>
-        <p class="ax-text-body-sm ax-color-on-surface-variant" style="font-size: 11px; margin-top: 0.5rem">每隔一小时归档持久化配置</p>
+        <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); font-size: 11px; margin-top: 0.5rem">每隔一小时归档持久化配置</p>
       </div>
 
       <div class="ax-card" style="flex: 1; min-width: 200px; padding: 1rem">
-        <div class="ax-flex ax-justify-between ax-items-center ax-color-secondary" style="margin-bottom: 0.5rem">
+        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--ax-color-secondary); margin-bottom: 0.5rem">
           <span class="ax-text-label-md" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em">防御等级</span>
           <AxIcon name="search" :size="16" />
         </div>
-        <div class="ax-flex ax-items-baseline">
-          <span class="ax-text-label-md ax-color-primary" style="font-size: 20px; font-weight: 700; line-height: 1.25; padding-top: 0.25rem">{{ selectedClearanceKey }}</span>
+        <div style="display: flex; align-items: baseline">
+          <span class="ax-text-label-md" style="color: var(--ax-color-primary); font-size: 20px; font-weight: 700; line-height: 1.25; padding-top: 0.25rem">{{ selectedClearanceKey }}</span>
         </div>
-        <div class="ax-flex ax-items-center ax-gap-xs" style="margin-top: 1rem">
-          <span v-for="i in 4" :key="i" class="ax-rounded-full" style="height: 4px; width: 24px" :class="i <= selectedClearanceLevel ? 'ax-bg-primary' : 'ax-bg-surface-container'"></span>
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem">
+          <span v-for="i in 4" :key="i" style="border-radius: 9999px; height: 4px; width: 24px" :style="{ background: i <= selectedClearanceLevel ? 'var(--ax-color-primary)' : 'var(--ax-color-surface-container)' }"></span>
         </div>
       </div>
 
-      <div class="ax-card ax-flex ax-flex-col ax-justify-between" style="flex: 1; min-width: 200px; padding: 1rem">
+      <div class="ax-card" style="flex: 1; min-width: 200px; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between">
         <div>
-          <div class="ax-flex ax-justify-between ax-items-center ax-color-secondary" style="margin-bottom: 0.25rem">
+          <div style="display: flex; justify-content: space-between; align-items: center; color: var(--ax-color-secondary); margin-bottom: 0.25rem">
             <span class="ax-text-label-md" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em">接口实时延迟</span>
-            <span class="ax-text-label-md ax-color-primary" style="font-size: 10px; font-weight: 600; border: 1px solid var(--ax-color-outline-variant); padding: 0 6px; border-radius: var(--ax-radius-sm); background-color: var(--ax-color-surface-container)">LIVE</span>
+            <span class="ax-text-label-md" style="color: var(--ax-color-primary); font-size: 10px; font-weight: 600; border: 1px solid var(--ax-color-outline-variant); padding: 0 6px; border-radius: var(--ax-radius-sm); background-color: var(--ax-color-surface-container)">LIVE</span>
           </div>
-          <div class="ax-flex ax-items-baseline ax-gap-xs">
-            <span class="ax-text-headline-lg ax-color-primary" style="font-size: 30px; font-weight: 700">{{ latestLatency }}</span>
-            <span class="ax-color-secondary ax-text-label-md" style="font-size: 12px">ms</span>
+          <div style="display: flex; align-items: baseline; gap: 0.5rem">
+            <span class="ax-text-headline-lg" style="color: var(--ax-color-primary); font-size: 30px; font-weight: 700">{{ latestLatency }}</span>
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 12px">ms</span>
           </div>
         </div>
         <div style="height: 2rem; margin-top: 0.5rem; width: 100%">
@@ -152,69 +152,69 @@ const settingGroups = [
       </div>
     </div>
 
-    <div id="section-nav-cards" class="ax-flex ax-gap-gutter" style="flex-wrap: wrap">
+    <div id="section-nav-cards" style="display: flex; gap: 1rem; flex-wrap: wrap">
       <div
         v-for="card in navCards"
         :key="card.label"
-        class="ax-card ax-flex ax-items-center ax-gap-md" style="flex: 1; min-width: 280px; padding: 1rem; cursor: pointer"
+        class="ax-card" style="flex: 1; min-width: 280px; padding: 1rem; cursor: pointer; display: flex; align-items: center; gap: 1rem"
       >
-        <div :class="card.color" class="ax-flex ax-items-center ax-justify-center ax-rounded-lg" style="width: 2.5rem; height: 2.5rem; flex-shrink: 0">
+        <div :style="card.color" style="display: flex; align-items: center; justify-content: center; border-radius: var(--ax-radius-lg); width: 2.5rem; height: 2.5rem; flex-shrink: 0">
           <AxIcon :name="card.icon" :size="20" />
         </div>
-        <div class="ax-flex-1" style="min-width: 0">
-          <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">{{ card.label }}</p>
-          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">{{ card.desc }}</p>
+        <div style="flex: 1; min-width: 0">
+          <p class="ax-text-body-sm" style="color: var(--ax-color-primary); font-size: 13px; font-weight: 600">{{ card.label }}</p>
+          <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px; margin-top: 0.125rem">{{ card.desc }}</p>
         </div>
-        <AxIcon name="chevron_right" :size="16" class="ax-color-secondary" />
+        <AxIcon name="chevron_right" :size="16" style="color: var(--ax-color-secondary)" />
       </div>
     </div>
 
-    <div class="ax-flex ax-gap-gutter" style="flex-wrap: wrap">
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap">
       <div style="flex: 3; min-width: 0">
-        <div id="section-settings-groups" class="ax-space-y-gutter scroll-mt-4">
+        <div id="section-settings-groups" style="display: flex; flex-direction: column; gap: 1rem; scroll-margin-top: 1rem">
         <div v-for="group in settingGroups" :key="group.title" class="ax-card">
-          <div class="ax-card__header">
-            <span class="ax-card__header-title">{{ group.title }}</span>
+          <div class="ax-card-header">
+            <span class="ax-card-header-title">{{ group.title }}</span>
           </div>
-          <div class="ax-card__body">
+          <div class="ax-card-body">
             <div
               v-for="item in group.items"
               :key="item.label"
-              class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4); cursor: pointer"
+              style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4); cursor: pointer"
             >
-              <AxIcon :name="item.icon" :size="18" class="ax-color-secondary" />
-              <div class="ax-flex-1" style="min-width: 0">
-                <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">{{ item.label }}</p>
-                <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">{{ item.desc }}</p>
+              <AxIcon :name="item.icon" :size="18" style="color: var(--ax-color-secondary)" />
+              <div style="flex: 1; min-width: 0">
+                <p class="ax-text-body-sm" style="color: var(--ax-color-primary); font-size: 13px; font-weight: 600">{{ item.label }}</p>
+                <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px; margin-top: 0.125rem">{{ item.desc }}</p>
               </div>
-              <AxIcon name="chevron_right" :size="16" class="ax-color-secondary" />
+              <AxIcon name="chevron_right" :size="16" style="color: var(--ax-color-secondary)" />
             </div>
           </div>
         </div>
         </div>
 
-        <div id="section-faq" class="ax-card scroll-mt-4">
-          <div class="ax-card__header">
-            <AxIcon name="search" :size="16" class="ax-color-secondary" />
-            <span class="ax-card__header-title">常见问题</span>
+        <div id="section-faq" class="ax-card" style="scroll-margin-top: 1rem">
+          <div class="ax-card-header">
+            <AxIcon name="search" :size="16" style="color: var(--ax-color-secondary)" />
+            <span class="ax-card-header-title">常见问题</span>
           </div>
-          <div class="ax-card__body">
+          <div class="ax-card-body">
             <div v-for="faq in faqs" :key="faq.id" style="border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
               <button
-                class="ax-flex ax-justify-between ax-items-center" style="width: 100%; padding: 0.75rem 0; text-align: left; background: none; border: none; cursor: pointer"
+                style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.75rem 0; text-align: left; background: none; border: none; cursor: pointer"
                 @click="toggleFaq(faq.id)"
               >
-                <span class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">{{ faq.q }}</span>
+                <span class="ax-text-body-sm" style="color: var(--ax-color-primary); font-size: 13px; font-weight: 600">{{ faq.q }}</span>
                 <AxIcon
                   name="expand_more"
                   :size="16"
-                  class="ax-color-secondary ax-flex-shrink-0"
-                  :class="openFaq === faq.id ? 'ax-select__arrow--open' : ''"
-                  style="margin-left: 0.5rem"
+                  style="color: var(--ax-color-secondary); flex-shrink: 0"
+                  :class="openFaq === faq.id ? 'ax-select-arrow--open' : ''"
+                  :style="{ marginLeft: '0.5rem' }"
                 />
               </button>
               <div v-show="openFaq === faq.id" style="padding-bottom: 0.75rem">
-                <p class="ax-text-body-sm ax-color-on-surface-variant" style="font-size: 12px; line-height: 1.6">{{ faq.a }}</p>
+                <p class="ax-text-body-sm" style="color: var(--ax-color-on-surface-variant); font-size: 12px; line-height: 1.6">{{ faq.a }}</p>
               </div>
             </div>
           </div>
@@ -222,44 +222,47 @@ const settingGroups = [
       </div>
 
       <div style="flex: 2; min-width: 0">
-        <div id="section-activities" class="ax-card scroll-mt-4" style="position: sticky; top: 0">
-          <div class="ax-card__header ax-justify-between">
-            <div class="ax-flex ax-items-center ax-gap-sm">
-              <AxIcon name="refresh" :size="16" class="ax-color-secondary" />
-              <span class="ax-card__header-title">最近活动</span>
+        <div id="section-activities" class="ax-card" style="scroll-margin-top: 1rem; position: sticky; top: 0">
+          <div class="ax-card-header" style="justify-content: space-between">
+            <div style="display: flex; align-items: center; gap: 0.75rem">
+              <AxIcon name="refresh" :size="16" style="color: var(--ax-color-secondary)" />
+              <span class="ax-card-header-title">最近活动</span>
             </div>
-            <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">过去 24 小时</span>
+            <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">过去 24 小时</span>
           </div>
-          <div class="ax-card__body ax-space-y-md">
-            <div v-for="act in activities" :key="act.id" class="ax-flex ax-gap-sm">
-              <div class="ax-flex ax-flex-col ax-items-center ax-gap-xs">
+          <div class="ax-card-body" style="display: flex; flex-direction: column; gap: 1rem">
+            <div v-for="act in activities" :key="act.id" style="display: flex; gap: 0.75rem">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem">
                 <div
-                  class="ax-rounded-full ax-flex-shrink-0"
-                  style="width: 0.5rem; height: 0.5rem; margin-top: 0.375rem"
-                  :class="{
-                    'ax-bg-surface-container': act.type === 'success',
-                    'ax-bg-primary': act.type === 'info',
-                    'ax-bg-tertiary-container': act.type === 'warning',
-                    'ax-bg-error-container': act.type === 'error',
+                  style="border-radius: 9999px; flex-shrink: 0; width: 0.5rem; height: 0.5rem; margin-top: 0.375rem"
+                  :style="{
+                    background: act.type === 'success' ? 'var(--ax-color-surface-container)' :
+                      act.type === 'info' ? 'var(--ax-color-primary)' :
+                      act.type === 'warning' ? 'var(--ax-color-tertiary-container)' :
+                      'var(--ax-color-error-container)'
                   }"
                 ></div>
-                <div v-if="act.id !== activities[activities.length - 1]?.id" class="ax-bg-surface-container" style="width: 1px; flex: 1"></div>
+                <div v-if="act.id !== activities[activities.length - 1]?.id" style="background: var(--ax-color-surface-container); width: 1px; flex: 1"></div>
               </div>
               <div style="padding-bottom: 0.75rem">
-                <div class="ax-flex ax-items-center ax-gap-xs" style="margin-bottom: 0.125rem">
-                  <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">{{ act.time }}</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.125rem">
+                  <span class="ax-text-label-md" style="color: var(--ax-color-secondary); font-size: 10px">{{ act.time }}</span>
                   <span
-                    class="ax-text-label-md ax-rounded-sm" style="font-size: 9px; padding: 0 0.25rem; text-transform: uppercase; font-weight: 600"
-                    :class="{
-                      'ax-bg-surface-container ax-color-primary ax-border': act.type === 'success',
-                      'ax-bg-primary-container ax-color-primary ax-border': act.type === 'info',
-                      'ax-bg-tertiary-container ax-color-tertiary ax-border': act.type === 'warning',
-                      'ax-bg-error-container ax-color-error ax-border': act.type === 'error',
+                    class="ax-text-label-md" style="font-size: 9px; padding: 0 0.25rem; text-transform: uppercase; font-weight: 600; border-radius: var(--ax-radius-sm); border: 1px solid var(--ax-color-outline-variant)"
+                    :style="{
+                      background: act.type === 'success' ? 'var(--ax-color-surface-container)' :
+                        act.type === 'info' ? 'var(--ax-color-primary-container)' :
+                        act.type === 'warning' ? 'var(--ax-color-tertiary-container)' :
+                        'var(--ax-color-error-container)',
+                      color: act.type === 'success' ? 'var(--ax-color-primary)' :
+                        act.type === 'info' ? 'var(--ax-color-primary)' :
+                        act.type === 'warning' ? 'var(--ax-color-tertiary)' :
+                        'var(--ax-color-error)',
                     }"
                   >{{ act.type }}</span>
                 </div>
-                <p class="ax-text-body-sm ax-color-primary" style="font-size: 12px; font-weight: 600">{{ act.title }}</p>
-                <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem; line-height: 1.6">{{ act.desc }}</p>
+                <p class="ax-text-body-sm" style="color: var(--ax-color-primary); font-size: 12px; font-weight: 600">{{ act.title }}</p>
+                <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px; margin-top: 0.125rem; line-height: 1.6">{{ act.desc }}</p>
               </div>
             </div>
           </div>

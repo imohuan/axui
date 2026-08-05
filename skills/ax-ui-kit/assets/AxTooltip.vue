@@ -28,23 +28,18 @@ const { floatingStyles, isPositioned, middlewareData, placement } = useFloating(
   triggerRef,
   tooltipRef,
   {
-    // 使用 computed ref 保证 placement/offset 变化时重新定位
     placement: computed(() => props.placement),
     offset: computed(() => props.offset),
-    // 仅当 arrow 启用时才传 arrowRef
     arrowRef: props.arrow ? arrowRef : undefined,
   },
 )
 
-// 防闪：位置就绪前放在视口外
 const tooltipStyle = computed(() =>
   isPositioned.value
     ? floatingStyles.value
     : { position: 'fixed' as const, left: '-9999px', top: '-9999px' },
 )
 
-// 箭头定位：动态轴由 middlewareData.arrow 提供（x 或 y 之一）
-// 静态轴由 placement 决定（箭头在 tooltip 的哪一边）
 const staticSideMap: Record<string, string> = {
   top: 'bottom',
   bottom: 'top',
@@ -52,7 +47,7 @@ const staticSideMap: Record<string, string> = {
   right: 'left',
 }
 
-const ARROW_HALF = 5 // 10px 方块旋转 45° 后视觉突出约为 5px
+const ARROW_HALF = 5
 
 const arrowStyle = computed(() => {
   const arrowData = middlewareData.value?.arrow
@@ -84,7 +79,7 @@ const hide = () => {
 <template>
   <span
     ref="triggerRef"
-    class="inline-flex"
+    class="ax-inline-flex"
     @mouseenter="show"
     @mouseleave="hide"
     @focus="show"
@@ -94,25 +89,25 @@ const hide = () => {
   </span>
   <Teleport :to="teleportTarget">
     <Transition
-      enter-active-class="transition duration-100 ease-out"
-      enter-from-class="opacity-0 scale-95"
-      enter-to-class="opacity-100 scale-100"
-      leave-active-class="transition duration-75 ease-in"
-      leave-from-class="opacity-100 scale-100"
-      leave-to-class="opacity-0 scale-95"
+      enter-active-class="ax-tooltip-enter-active"
+      enter-from-class="ax-tooltip-enter-from"
+      enter-to-class="ax-tooltip-enter-active"
+      leave-active-class="ax-tooltip-leave-active"
+      leave-from-class="ax-tooltip-leave-active"
+      leave-to-class="ax-tooltip-leave-to"
     >
       <div
         v-if="visible"
         ref="tooltipRef"
         :style="tooltipStyle"
-        class="z-50 bg-primary text-on-primary font-body-sm text-[11px] py-1.5 px-3 rounded-lg shadow-lg pointer-events-none whitespace-nowrap pro-shadow"
+        class="ax-tooltip"
       >
         <slot name="content">{{ content }}</slot>
         <div
           v-if="props.arrow"
           ref="arrowRef"
           :style="arrowStyle"
-          class="w-2.5 h-2.5 bg-primary rotate-45"
+          class="ax-tooltip__arrow"
         />
       </div>
     </Transition>

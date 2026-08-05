@@ -1,7 +1,9 @@
 import type { App } from 'vue'
 // import { Toaster } from 'vue-sonner'
 // import 'vue-sonner/style.css'
-import '../../cdn-theme.css'
+import './base.css'
+import { ThemeEngine } from '../../theme'
+import type { ThemeConfig } from '../../theme'
 
 import AxButton from './AxButton.vue'
 import AxInput from './AxInput.vue'
@@ -16,6 +18,7 @@ import AxSwitch from './AxSwitch.vue'
 import AxImage from './AxImage.vue'
 import AxJsonViewer from './AxJsonViewer.vue'
 import AxImageViewer from './AxImageViewer.vue'
+import AxIcon from './AxIcon.vue'
 import { FloatingBall } from './functional'
 import { useNotify } from './hooks/useNotify'
 import { useFloating } from './hooks/useFloating'
@@ -24,7 +27,10 @@ import { provideTeleportTarget, useTeleportTarget } from './hooks/useTeleportTar
 const _hooks = { useNotify, useFloating, provideTeleportTarget, useTeleportTarget }
 
 const AxiomUI = {
-  install(app: App) {
+  install(app: App, options?: { theme?: ThemeConfig }) {
+    const engine = new ThemeEngine(options?.theme)
+    engine.apply()
+
     app.component('AxButton', AxButton)
     app.component('AxInput', AxInput)
     app.component('AxSlider', AxSlider)
@@ -38,6 +44,7 @@ const AxiomUI = {
     app.component('AxImage', AxImage)
     app.component('AxJsonViewer', AxJsonViewer)
     app.component('AxImageViewer', AxImageViewer)
+    app.component('AxIcon', AxIcon)
     app.component('AxFloatingBall', FloatingBall)
     // app.component('Toaster', Toaster)
   },

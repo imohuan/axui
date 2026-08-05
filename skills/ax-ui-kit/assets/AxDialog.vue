@@ -1,5 +1,6 @@
 ﻿<script setup lang="ts">
 import { ref, watch, nextTick, onBeforeUnmount, onMounted } from 'vue'
+import AxIcon from './AxIcon.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -112,70 +113,65 @@ defineExpose({ open, close, setFocusableRef, dialogRef })
 
 <template>
   <Transition
-    enter-active-class="transition duration-300 ease-out"
-    enter-from-class="opacity-0"
-    enter-to-class="opacity-100"
-    leave-active-class="transition duration-200 ease-in"
-    leave-from-class="opacity-100"
-    leave-to-class="opacity-0"
+    enter-active-class="ax-dialog-overlay-enter-active"
+    enter-from-class="ax-dialog-overlay-enter-from"
+    enter-to-class="ax-dialog-overlay-enter-active"
+    leave-active-class="ax-dialog-overlay-leave-active"
+    leave-from-class="ax-dialog-overlay-leave-active"
+    leave-to-class="ax-dialog-overlay-leave-to"
   >
     <div
       v-show="modelValue"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-ax-md"
+      class="ax-dialog-overlay"
       @click.self="handleOverlayClick"
     >
       <Transition
-        enter-active-class="transition duration-300 ease-out transform"
-        enter-from-class="scale-95 translate-y-4"
-        enter-to-class="scale-100 translate-y-0"
-        leave-active-class="transition duration-200 ease-in transform"
-        leave-from-class="scale-100 translate-y-0"
-        leave-to-class="scale-95 translate-y-4"
+        enter-active-class="ax-dialog-enter-active"
+        enter-from-class="ax-dialog-enter-from"
+        enter-to-class="ax-dialog-enter-active"
+        leave-active-class="ax-dialog-leave-active"
+        leave-from-class="ax-dialog-leave-active"
+        leave-to-class="ax-dialog-leave-to"
       >
         <div
           v-show="modelValue"
           ref="dialogRef"
-          :class="[
-            'bg-surface-container-lowest border border-outline-variant rounded-xl w-full overflow-hidden flex flex-col pro-shadow max-h-[85vh]',
-            maxWidth,
-          ]"
+          :class="['ax-dialog', maxWidth]"
           role="dialog"
           aria-modal="true"
           @keydown="handleKeyDown"
         >
-          <div
-            class="h-12 border-b border-outline-variant flex items-center justify-between px-ax-md shrink-0"
-          >
-            <div class="flex items-center gap-ax-sm min-w-0">
-              <span
+          <div class="ax-dialog__header">
+            <div class="ax-dialog__header-left">
+              <AxIcon
                 v-if="icon"
-                class="material-symbols-outlined text-primary font-bold shrink-0"
-              >
-                {{ icon }}
-              </span>
+                :name="icon"
+                :size="18"
+                class="ax-color-primary ax-flex-shrink-0"
+              />
               <slot name="header">
-                <h3 class="font-headline-sm text-body-md font-semibold text-primary truncate">
+                <h3 class="ax-dialog__title">
                   {{ title }}
                 </h3>
               </slot>
             </div>
             <button
               ref="closeBtnRef"
-              class="w-8 h-8 flex items-center justify-center text-secondary hover:bg-surface-container-low rounded-lg transition-colors shrink-0"
+              class="ax-dialog__close"
               aria-label="关闭弹窗"
               @click="close"
             >
-              <span class="material-symbols-outlined">close</span>
+              <AxIcon name="close" :size="18" />
             </button>
           </div>
 
-          <div :class="['p-ax-lg overflow-y-auto space-y-ax-lg scrollbar-hide flex-1', bodyClass]">
+          <div :class="['ax-dialog__body', bodyClass]">
             <slot :close="close" :set-focusable-ref="setFocusableRef" />
           </div>
 
           <div
             v-if="$slots.footer"
-            class="h-14 border-t border-outline-variant bg-surface-container-low flex items-center justify-end px-ax-md gap-ax-sm shrink-0"
+            class="ax-dialog__footer"
           >
             <slot name="footer" :close="close" :set-focusable-ref="setFocusableRef" />
           </div>

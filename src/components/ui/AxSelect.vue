@@ -1,24 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 import AxDropdown from './AxDropdown.vue'
+import AxIcon from './AxIcon.vue'
 import type { ControlSize, SelectOption, RoundedSize } from './types'
-import { ROUNDED_CLASSES, CONTROL_SIZE_CLASSES } from './common'
-
-const SIZE_CLASSES = CONTROL_SIZE_CLASSES
-
-// 搜索打开态 — 无标签时固定高度（不撑开），有标签时 min-h 允许换行
-const SEARCH_SIZE_FIXED: Record<ControlSize, string> = {
-  xs: 'h-[18px] px-1.5 text-body-sm',
-  sm: 'h-5 px-2 text-body-sm',
-  md: 'h-6 px-2.5 text-label-md',
-  lg: 'h-7 px-3 text-label-md',
-}
-const SEARCH_SIZE_FLEX: Record<ControlSize, string> = {
-  xs: 'min-h-[18px] px-1.5 py-px text-body-sm',
-  sm: 'min-h-5 px-2 py-0.5 text-body-sm',
-  md: 'min-h-6 px-2.5 py-1 text-label-md',
-  lg: 'min-h-7 px-3 py-1.5 text-label-md',
-}
+import { ROUNDED_CLASSES } from './common'
 
 const props = withDefaults(
   defineProps<{
@@ -72,7 +57,6 @@ const selectedValueArray = computed<(string | number)[]>(() => {
   if (props.multiple) {
     const mv = props.modelValue
     if (Array.isArray(mv)) return mv.slice()
-    // 多选模式下，modelValue 可能是字符串（从单选切换而来），包装成数组
     if (mv === '' || mv === undefined || mv === null) return []
     return [mv as string | number]
   }
@@ -117,7 +101,6 @@ const selectOption = (opt: SelectOption) => {
     emit('change', current as any)
     searchQuery.value = ''
     highlightIndex.value = -1
-    // 多选时不关闭下拉
   } else {
     emit('update:modelValue', opt.value as any)
     emit('change', opt.value as any)
@@ -224,16 +207,6 @@ const dropdownMenuWidth = computed(() =>
 )
 const isMatchWidth = computed(() => props.dropdownWidth === 'match')
 
-// 搜索模式 trigger 尺寸：关闭态固定 h+py，打开态按标签区分布局
-const triggerSizeClass = computed(() => {
-  if (!open.value) return SIZE_CLASSES[props.size]
-  // 打开态：多选有标签 → min-h 可撑开，否则固定 h
-  if (props.multiple && selectedLabels.value.length > 0) {
-    return SEARCH_SIZE_FLEX[props.size]
-  }
-  return SEARCH_SIZE_FIXED[props.size]
-})
-
 // 打开/关闭时重置搜索和高亮
 watch(open, (val) => {
   if (!val) {
@@ -254,70 +227,65 @@ watch(open, (val) => {
     menu-class="max-h-56 overflow-y-auto"
   >
     <!-- ============ Trigger area ============ -->
-    <template #trigger="{ open: isOpen, toggle }">
-      <div class="relative w-full" @click.stop>
-        <!-- 搜索模式：单元素 + 动态 class，避免 DOM 切换导致 inline-block 宽度跳动 -->
+    <template #trigger="{ open: isOpen }">
+      <div class="ax-select__trigger-wrapper" @click.stop>
+        <!-- 搜索模式 -->
         <template v-if="searchable">
           <div
             :class="[
-              'w-full bg-surface-container-low transition-colors text-left',
+              'ax-select__trigger',
               roundedClass,
-              isOpen
-                ? 'flex flex-col gap-1 ring-1 ring-primary border-primary'
-                : 'flex flex-wrap items-center gap-1 border border-outline-variant hover:bg-surface-container hover:border-outline cursor-pointer',
-              triggerSizeClass,
+              isOpen ? 'ax-select__trigger--open' : '',
             ]"
             :style="triggerStyle"
             @click="!isOpen && openDropdown()"
           >
-            <!-- 关闭态内容：标签 + placeholder + 箭头 -->
             <template v-if="!isOpen">
               <template v-if="multiple && selectedLabels.length > 0">
                 <span
                   v-for="opt in selectedLabels"
                   :key="opt.value"
-                  class="inline-flex items-center gap-1 bg-surface-container-high pl-1.5 pr-1 py-px rounded text-[11px] font-medium text-primary shrink-0"
+                  class="ax-select__tag"
                 >
-                  <span class="truncate" :style="tagLabelStyle">{{ opt.label }}</span>
+                  <span class="ax-select__tag-label" :style="tagLabelStyle">{{ opt.label }}</span>
                   <button
-                    class="inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-black/10 transition-colors"
+                    class="ax-select__tag-remove"
                     @click.stop="removeOption(opt.value)"
                   >
-                    <span class="material-symbols-outlined text-[12px]">close</span>
+                    <AxIcon name="close" :size="12" />
                   </button>
                 </span>
               </template>
-              <span v-else class="text-left grow">
-                <span v-if="multiple" class="text-secondary">{{ placeholder }}</span>
-                <span v-else class="text-primary font-medium">{{ displayLabel }}</span>
+              <span v-else class="ax-flex-grow" style="text-align: left">
+                <span v-if="multiple" class="ax-select__placeholder">{{ placeholder }}</span>
+                <span v-else class="ax-select__value">{{ displayLabel }}</span>
               </span>
-              <span class="material-symbols-outlined text-secondary shrink-0 text-[16px] ml-auto">expand_more</span>
+              <AxIcon name="expand_more" :size="16" class="ax-select__arrow" />
             </template>
 
-            <!-- 打开态内容：标签行 + input + 清除按钮 -->
             <template v-else>
-              <div v-if="multiple && selectedLabels.length > 0" class="w-full flex flex-wrap items-center gap-1">
+              <div v-if="multiple && selectedLabels.length > 0" class="ax-flex ax-flex-wrap ax-gap-xs" style="width: 100%">
                 <span
                   v-for="opt in selectedLabels"
                   :key="opt.value"
-                  class="inline-flex items-center gap-1 bg-primary/10 pl-1.5 pr-1 py-px rounded text-[11px] font-medium text-primary shrink-0"
+                  class="ax-select__tag"
                 >
-                  <span class="truncate" :style="tagLabelStyle">{{ opt.label }}</span>
+                  <span class="ax-select__tag-label" :style="tagLabelStyle">{{ opt.label }}</span>
                   <button
-                    class="inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-primary/20 transition-colors"
+                    class="ax-select__tag-remove"
                     @click.stop="removeOption(opt.value)"
                   >
-                    <span class="material-symbols-outlined text-[12px]">close</span>
+                    <AxIcon name="close" :size="12" />
                   </button>
                 </span>
               </div>
-              <div class="w-full flex items-center gap-1 flex-1 min-h-0">
+              <div class="ax-flex ax-items-center ax-gap-xs ax-flex-1" style="min-height: 0; width: 100%">
                 <input
                   ref="searchInputRef"
                   v-model="searchQuery"
                   type="text"
                   :placeholder="selectedLabels.length === 0 ? searchPlaceholder : ''"
-                  class="flex-1 min-w-0 bg-transparent border-none outline-none focus:outline-none focus:ring-0 p-0 m-0 h-full text-primary font-medium placeholder:text-secondary text-label-md font-label-md"
+                  class="ax-select__search-input"
                   autocomplete="off"
                   @keydown="handleKeydown"
                   @click.stop
@@ -329,11 +297,11 @@ watch(open, (val) => {
 
         <!-- 非搜索模式 -->
         <template v-else>
-          <!-- 多选标签按钮（flex-wrap 换行显示全部标签） -->
+          <!-- 多选标签按钮 -->
           <button
             v-if="multiple"
             type="button"
-            :class="['w-full flex flex-wrap items-center gap-1 bg-surface-container-low border border-outline-variant hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left', roundedClass, SIZE_CLASSES[props.size]]"
+            :class="['ax-select__trigger', roundedClass]"
             :style="triggerStyle"
             @click="isOpen ? closeDropdown() : openDropdown()"
           >
@@ -341,33 +309,33 @@ watch(open, (val) => {
               <span
                 v-for="opt in selectedLabels"
                 :key="opt.value"
-                class="inline-flex items-center gap-1 bg-surface-container-high pl-1.5 pr-1 py-px rounded text-[11px] font-medium text-primary shrink-0"
+                class="ax-select__tag"
               >
-                <span class="truncate" :style="tagLabelStyle">{{ opt.label }}</span>
+                <span class="ax-select__tag-label" :style="tagLabelStyle">{{ opt.label }}</span>
                 <button
-                  class="inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-black/10 transition-colors"
+                  class="ax-select__tag-remove"
                   @click.stop="removeOption(opt.value)"
                 >
-                  <span class="material-symbols-outlined text-[12px]">close</span>
+                  <AxIcon name="close" :size="12" />
                 </button>
               </span>
             </template>
-            <span v-else class="text-secondary grow text-left">{{ placeholder }}</span>
+            <span v-else class="ax-select__placeholder">{{ placeholder }}</span>
 
-            <span class="inline-flex items-center gap-1 shrink-0 ml-auto">
+            <span class="ax-inline-flex ax-items-center ax-gap-xs ax-flex-shrink-0" style="margin-left: auto">
               <button
                 v-if="hasValue"
-                class="inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-black/10 transition-colors"
+                class="ax-select__tag-remove"
                 @click.stop="handleClear"
               >
-                <span class="material-symbols-outlined text-[14px] text-secondary">close</span>
+                <AxIcon name="close" :size="14" class="ax-color-secondary" />
               </button>
-              <span
-                class="material-symbols-outlined text-secondary transition-transform duration-200 text-[16px]"
-                :class="{ 'rotate-180': isOpen }"
-              >
-                expand_more
-              </span>
+              <AxIcon
+                name="expand_more"
+                :size="16"
+                class="ax-select__arrow"
+                :class="{ 'ax-select__arrow--open': isOpen }"
+              />
             </span>
           </button>
 
@@ -375,17 +343,17 @@ watch(open, (val) => {
           <button
             v-else
             type="button"
-            :class="['w-full flex items-center justify-between bg-surface-container-low border border-outline-variant hover:bg-surface-container hover:border-outline focus:ring-1 focus:ring-primary focus:border-primary transition-colors text-left', roundedClass, SIZE_CLASSES[props.size]]"
+            :class="['ax-select__trigger', roundedClass]"
             :style="triggerStyle"
             @click="isOpen ? closeDropdown() : openDropdown()"
           >
-            <span :class="[hasValue ? 'text-primary font-medium' : 'text-secondary', 'truncate']">{{ displayLabel }}</span>
-            <span
-              class="material-symbols-outlined text-secondary transition-transform duration-200 shrink-0"
-              :class="{ 'rotate-180': isOpen }"
-            >
-              expand_more
-            </span>
+            <span :class="hasValue ? 'ax-select__value' : 'ax-select__placeholder'">{{ displayLabel }}</span>
+            <AxIcon
+              name="expand_more"
+              :size="16"
+              class="ax-select__arrow"
+              :class="{ 'ax-select__arrow--open': isOpen }"
+            />
           </button>
         </template>
       </div>
@@ -393,21 +361,21 @@ watch(open, (val) => {
 
     <!-- ============ Dropdown content ============ -->
     <template #default>
-      <div ref="listRef" class="space-y-0.5" @keydown="handleKeydown">
+      <div ref="listRef" class="ax-dropdown__body" style="space-y: 2px" @keydown="handleKeydown">
         <button
           v-for="(opt, index) in filteredOptions"
           :key="opt.value"
           type="button"
           data-option
-          class="flex w-full items-center gap-2 px-3 py-1.5 text-left font-label-md text-label-md rounded-lg transition-colors"
+          class="ax-select__option"
           :class="[
             !multiple && modelValue === opt.value
-              ? 'bg-primary text-on-primary font-medium'
+              ? 'ax-select__option--selected'
               : highlightIndex === index
-                ? 'bg-surface-container-highest'
+                ? 'ax-select__option--highlighted'
                 : multiple && isSelected(opt)
-                  ? 'bg-primary/10'
-                  : 'text-primary hover:bg-surface-container-low',
+                  ? 'ax-select__option--multi-selected'
+                  : '',
           ]"
           @click="selectOption(opt)"
           @mouseenter="highlightIndex = index"
@@ -415,22 +383,23 @@ watch(open, (val) => {
           <!-- 多选复选框 -->
           <span
             v-if="multiple"
-            class="inline-flex items-center justify-center w-4 h-4 rounded border transition-colors shrink-0"
-            :class="isSelected(opt) ? 'bg-primary border-primary' : 'border-outline-variant'"
+            class="ax-select__checkbox"
+            :class="isSelected(opt) ? 'ax-select__checkbox--checked' : ''"
           >
-            <span v-if="isSelected(opt)" class="material-symbols-outlined text-[12px] text-on-primary">check</span>
+            <AxIcon v-if="isSelected(opt)" name="check" :size="12" class="ax-color-on-primary" />
           </span>
-          <span class="truncate">{{ opt.label }}</span>
-          <span
+          <span class="ax-select__tag-label">{{ opt.label }}</span>
+          <AxIcon
             v-if="!multiple && modelValue === opt.value"
-            class="material-symbols-outlined text-[16px] text-on-primary shrink-0 ml-auto"
-          >
-            check
-          </span>
+            name="check"
+            :size="16"
+            class="ax-color-on-primary ax-flex-shrink-0"
+            style="margin-left: auto"
+          />
         </button>
         <div
           v-if="filteredOptions.length === 0"
-          class="py-3 text-center font-body-sm text-[11px] text-secondary"
+          class="ax-select__no-results"
         >
           无匹配选项
         </div>

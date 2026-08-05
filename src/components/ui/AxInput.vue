@@ -1,32 +1,31 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
 import type { InputSize, RoundedSize } from './types'
-import { ROUNDED_CLASSES, CONTROL_SIZE_CLASSES } from './common'
+import AxIcon from './AxIcon.vue'
 
-const SIZE_CLASSES = CONTROL_SIZE_CLASSES as Record<InputSize, string>
-
-const ICON_SIZE_CLASSES: Record<InputSize, string> = {
-  xs: '!text-[12px]',
-  sm: '!text-[14px]',
-  md: '!text-[16px]',
-  lg: '!text-[18px]',
-  xl: '!text-[20px]',
+const ICON_SIZE_MAP: Record<InputSize, number> = {
+  xs: 12,
+  sm: 14,
+  md: 16,
+  lg: 18,
+  xl: 20,
 }
 
-/** textarea 模式只用 padding + font，不定高 */
-const TEXTAREA_SIZE_CLASSES: Record<InputSize, string> = {
-  xs: 'px-1.5 py-px text-body-sm',
-  sm: 'px-2 py-0.5 text-body-sm',
-  md: 'px-2.5 py-1 text-label-md',
-  lg: 'px-3 py-1.5 text-label-md',
-  xl: 'px-3.5 py-2 text-label-md',
+const ROUNDED_CLASSES: Record<RoundedSize, string> = {
+  none: 'rounded-ax-none',
+  xs: 'rounded-ax-xs',
+  sm: 'rounded-ax-sm',
+  md: 'rounded-ax-md',
+  lg: 'rounded-ax-lg',
+  xl: 'rounded-ax-xl',
+  full: 'rounded-ax-full',
 }
 
 const RESIZE_CLASSES: Record<string, string> = {
-  none: 'resize-none',
-  vertical: 'resize-y',
-  horizontal: 'resize-x',
-  both: 'resize',
+  none: 'ax-input--resize-none',
+  vertical: 'ax-input--resize-vertical',
+  horizontal: 'ax-input--resize-horizontal',
+  both: 'ax-input--resize-both',
 }
 
 const props = withDefaults(
@@ -86,21 +85,16 @@ const resolvedAutocomplete = computed(() => {
 })
 
 const inputClasses = computed(() => [
-  'w-full font-label-md bg-surface-container-low border border-outline-variant',
+  'ax-input',
+  `ax-input--${props.size}`,
   ROUNDED_CLASSES[props.rounded],
-  'focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-outline',
-  'transition-all',
-  'disabled:opacity-50 disabled:cursor-not-allowed',
-  SIZE_CLASSES[props.size],
 ])
 
 const textareaClasses = computed(() => [
-  'w-full font-label-md bg-surface-container-low border border-outline-variant',
+  'ax-input',
+  'ax-input--textarea',
+  `ax-input--textarea-${props.size}`,
   ROUNDED_CLASSES[props.rounded],
-  'focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-outline',
-  'transition-all',
-  'disabled:opacity-50 disabled:cursor-not-allowed',
-  TEXTAREA_SIZE_CLASSES[props.size],
   RESIZE_CLASSES[props.resize],
 ])
 
@@ -154,10 +148,10 @@ defineExpose({ focus, inputRef, textareaRef })
   />
 
   <!-- 单行 input 模式 -->
-  <div v-else class="relative flex items-center w-full">
+  <div v-else class="ax-input-wrapper">
     <div
       v-if="$slots.prefix"
-      class="absolute left-2.5 flex items-center text-secondary pointer-events-none z-10"
+      class="ax-input__prefix"
     >
       <slot name="prefix" />
     </div>
@@ -168,7 +162,7 @@ defineExpose({ focus, inputRef, textareaRef })
       :placeholder="placeholder"
       :disabled="disabled"
       :autocomplete="resolvedAutocomplete"
-      :class="[inputClasses, $slots.prefix ? 'pl-8' : '', ($slots.suffix || password) ? 'pr-8' : '']"
+      :class="[inputClasses, $slots.prefix ? 'ax-input--has-prefix' : '', ($slots.suffix || password) ? 'ax-input--has-suffix' : '']"
       @input="onInput"
       @keydown="emit('keydown', $event)"
       @blur="emit('blur', $event)"
@@ -177,7 +171,7 @@ defineExpose({ focus, inputRef, textareaRef })
     <!-- suffix slot (hidden when password mode is on) -->
     <div
       v-if="$slots.suffix && !password"
-      class="absolute right-2.5 flex items-center text-secondary z-10"
+      class="ax-input__suffix"
     >
       <slot name="suffix" />
     </div>
@@ -185,14 +179,15 @@ defineExpose({ focus, inputRef, textareaRef })
     <button
       v-if="password"
       type="button"
-      class="absolute right-2.5 flex items-center text-secondary hover:text-primary z-10 cursor-pointer transition-colors"
+      class="ax-input__password-toggle"
       :disabled="disabled"
       tabindex="-1"
       @click="togglePassword"
     >
-      <span class="material-symbols-outlined" :class="ICON_SIZE_CLASSES[size]">
-        {{ passwordVisible ? 'visibility' : 'visibility_off' }}
-      </span>
+      <AxIcon
+        :name="passwordVisible ? 'visibility' : 'visibility_off'"
+        :size="ICON_SIZE_MAP[size]"
+      />
     </button>
   </div>
 </template>

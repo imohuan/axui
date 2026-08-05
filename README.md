@@ -1,142 +1,308 @@
 # Axiom UI
 
-自研 Vue 3 组件库，13 个基础组件 + 功能模块 + 布局示例。基于 Tailwind v4 + Floating UI + Material Symbols。
+A self-developed Vue 3 component library with 13 components, built-in theme engine, and custom icon system. Built on Tailwind CSS v4 + Floating UI + Material Symbols.
 
-## 快速开始
+## Features
 
-```bash
-bun install
-bun dev
-```
+- **Theme System** — Three built-in presets (Material, Fluent, iOS) plus full runtime customization via `ThemeEngine`. Override colors, spacing, radius, shadows, borders, and typography at any granularity.
+- **13 Components** — Button, Input, Select, Dropdown, Dialog, Alert, Slider, Tooltip, Switch, Image, JsonViewer, ImageViewer, and PropPanel (schema-driven property panel).
+- **Zero CSS Dependencies** — No external CSS imports required. All styles are compiled into a single `axiom-ui.css`.
+- **CDN Ready** — Use directly in any HTML page via `<script>` and `<link>` tags. No build tools needed.
+- **Full TypeScript Support** — All components, hooks, and theme APIs are fully typed with exported type definitions.
+- **Custom Icon System** — Register SVG path icons at runtime. 27 built-in icons included. Supports `html`-based icons for complex SVGs.
+- **Floating UI Positioning** — Dropdown, Select, and Tooltip use `@floating-ui/vue` for intelligent viewport-aware positioning.
+- **Notify Hook** — Toast notification system powered by `vue-sonner` with `useNotify()` composable.
+- **FloatingBall** — Draggable floating action button with dock-to-edge, theme switching, and expandable menu.
 
-## 组件
+## Installation
 
-
-| 组件             | 说明                                                                         |
-| -------------- | -------------------------------------------------------------------------- |
-| `AxButton`     | variant: primary / outline / ghost / danger；size: sm / md / icon / icon-lg |
-| `AxInput`      | size: sm / md / lg；支持 password、prefix / suffix slot                        |
-| `AxSelect`     | 单选 / 多选 / 可搜索；基于 AxDropdown + useFloating                                  |
-| `AxDropdown`   | trigger: click / hover / contextmenu；浮层定位                                  |
-| `AxDialog`     | 遮罩弹窗；焦点锁定；滚动锁定；#footer slot                                                |
-| `AxAlert`      | type: info / success / warning / error                                     |
-| `AxSlider`     | 范围滑块                                                                       |
-| `AxTooltip`    | hover 文字提示                                                                 |
-| `AxPropPanel`  | schema 驱动属性面板（switch / slider / select / input / textarea / segmented）     |
-| `AxSwitch`     | 开关组件，支持 v-model、disabled、aria 可访问性                                        |
-| `AxImage`      | 懒加载图片，三态（loading/error/loaded），点击预览、hover 放大图标、自适应宽高比                       |
-| `AxJsonViewer` | 可折叠 JSON 树查看器，层级展开控制（-1/0/N）、Ctrl+点击递归折叠、长文本横向滚动                          |
-| `AxImageViewer` | 全屏图片查看器，缩放/旋转/翻转/键盘快捷键/下载                                                |
-| `FloatingBall` | 浮动球组件                                                                      |
-| `useNotify`    | 封装 vue-sonner 通知                                                           |
-| `useFloating`  | Floating UI 定位 hook                                                        |
-| `useTeleportTarget` | Shadow DOM 环境下 Teleport 目标注入（Content Script）                      |
-
-
-## 技能（Skill）
-
-本项目通过 `npx skills` 机制以技能形式分发组件库，使 AI 编辑器（WorkBuddy / Cursor / Copilot）能在接入项目时自动使用 `Ax*` 组件。
-
-### 发布机制
-
-`skills/ax-ui-kit/` 由 git pre-commit hook 自动构建，确保每次提交都包含最新的技能产物：
-
-```
-git commit
-  └─ husky pre-commit → node scripts/install.js → 生成 skills/ax-ui-kit/
-```
-
-### 安装方式
-
-#### 从 GitHub 安装
+### NPM
 
 ```bash
-npx skills add imohuan/axui@ax-ui-kit -y
+npm install axui
 ```
-
-#### 本地安装
 
 ```bash
-npx skills add ./skills/ax-ui-kit -y
+yarn add axui
 ```
-
-### 接入目标项目
-
-技能安装后，AI 编辑器会按 `SKILL.md` 指引自动完成：
-
-1. 将 `assets/` 复制到 `src/components/ui/`
-2. 安装依赖、配置 Vite + Tailwind
-3. 写入全局样式、字体、图标
-4. 注册组件与通知
-5. 配置 AI 编辑器规则，强制使用 `Ax*` 组件
-
-详细文档见 `references/component-install.md` 和 `references/ui-style.md`。
-
-### 更新同步
-
-组件仓库有新版本后，在已接入的项目中一键同步：
 
 ```bash
-# 一条命令：更新 skill 并覆盖组件到项目
-node <skill-dir>/scripts/sync.js
+pnpm add axui
 ```
-
-`sync.js` 自动执行两步：
-1. `npx skills add imohuan/axui@ax-ui-kit --full-depth -y` — 重新拉取最新（绕过 API 限流）
-2. 覆盖 `assets/` → 项目 `src/components/ui/`
-
-若目标路径不同，可传参：`node <skill-dir>/scripts/sync.js src/other/path`
-
-### 手动构建技能
 
 ```bash
-bun prepush
-# 或
-node scripts/install.js
+bun add axui
 ```
 
-## 目录结构
+### CDN
 
-```
-web/
-├── src/components/ui/       # 组件源码
-│   ├── AxButton.vue ...     # 13 个 Vue 组件
-│   ├── index.ts             # registerComponents
-│   ├── types.ts
-│   ├── hooks/               # useNotify / useFloating
-│   ├── functional/          # FloatingBall
-│   ├── layout/              # 示例界面
-│   └── docs/                # 安装文档 + 设计规范
-├── scripts/
-│   ├── SKILL_SOURCE.md      # 技能说明源文件
-│   ├── install.js           # 技能构建脚本
-│   └── sync.js              # 同步脚本源文件
-├── skills/                  # 技能产物（由 pre-commit 自动生成）
-│   └── ax-ui-kit/
-│       ├── SKILL.md
-│       ├── assets/          # 组件库源码
-│       ├── references/      # 参考文档
-│       └── scripts/sync.js  # 同步脚本
-└── .husky/pre-commit        # 提交前自动构建技能
+```html
+<!-- Vue 3 (required peer dependency) -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+<!-- Tailwind CSS (required for utility classes) -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Fonts -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist@5/400.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist@5/600.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5/400.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5/500.css" />
+
+<!-- Material Symbols -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+<!-- Axiom UI -->
+<link rel="stylesheet" href="https://unpkg.com/axui/dist/axiom-ui.css" />
+<script src="https://unpkg.com/axui/dist/axiom-ui.umd.js"></script>
 ```
 
-## 技术栈
+## Quick Start
 
+### ESM (Vite / Webpack)
 
-| 依赖                                  | 用途                                |
-| ----------------------------------- | --------------------------------- |
-| Vue 3 + Vite + TypeScript           | 框架                                |
-| Tailwind CSS v4                     | 样式引擎                              |
-| @floating-ui/vue                    | 浮层定位（Dropdown / Select / Tooltip） |
-| @vueuse/core                        | 组合式工具（onClickOutside 等）           |
-| vue-sonner                          | 通知队列（useNotify）                   |
-| material-symbols                    | Material Symbols 图标               |
-| @fontsource/geist                   | Geist UI 正文字体（400、600 字重）        |
-| @fontsource/jetbrains-mono          | JetBrains Mono 标签/等宽字体（400、500） |
+```ts
+// main.ts
+import { createApp } from 'vue'
+import AxiomUI from 'axui'
+import 'axui/dist/axiom-ui.css'
+import App from './App.vue'
 
+const app = createApp(App)
+app.use(AxiomUI)
+app.mount('#app')
+```
 
-## 注意事项
+Then use components directly in your templates:
 
-`skills/` 目录由 `.husky/pre-commit` 在提交时自动生成，无需手动维护。日常开发请直接修改 `src/components/ui/` 源码，不要编辑 `skills/` 下的文件。
+```vue
+<template>
+  <AxButton variant="primary">Click Me</AxButton>
+  <AxInput v-model="text" placeholder="Type something..." />
+  <AxAlert type="success">Operation completed!</AxAlert>
+</template>
 
-**禁止参考 `skills/` 目录下的任何内容**（含 `SKILL.md`、`assets/`、`references/` 等），除非用户明确要求。组件源码、文档、设计规范均以 `src/components/ui/` 为准。
+<script setup lang="ts">
+import { ref } from 'vue'
+import { AxButton, AxInput, AxAlert } from 'axui'
+
+const text = ref('')
+</script>
+```
+
+Or use the plugin's auto-registration (no imports needed):
+
+```vue
+<template>
+  <ax-button variant="primary">Click Me</ax-button>
+  <ax-input v-model="text" placeholder="Type something..." />
+</template>
+```
+
+### CDN (No Build Tools)
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/axui/dist/axiom-ui.css" />
+  <script src="https://unpkg.com/axui/dist/axiom-ui.umd.js"></script>
+</head>
+<body>
+  <div id="app">
+    <ax-button variant="primary">Click Me</ax-button>
+    <ax-input v-model="text" placeholder="Type..." />
+  </div>
+  <script>
+    const { createApp, ref } = Vue
+    createApp({ setup() { return { text: ref('') } } }).use(AxiomUI).mount('#app')
+  </script>
+</body>
+</html>
+```
+
+## Theme Configuration
+
+### Using a Preset
+
+```ts
+import { createApp } from 'vue'
+import AxiomUI from 'axui'
+import { materialTheme, fluentTheme, iosTheme } from 'axui'
+
+const app = createApp(App)
+app.use(AxiomUI, { theme: fluentTheme })
+app.mount('#app')
+```
+
+### Custom Theme
+
+```ts
+import { createApp } from 'vue'
+import AxiomUI from 'axui'
+
+app.use(AxiomUI, {
+  theme: {
+    colors: {
+      primary: '#1a73e8',
+      onPrimary: '#ffffff',
+      background: '#f8f9fa',
+    },
+    radius: {
+      md: '8px',
+      lg: '12px',
+    },
+    typography: {
+      fontDisplay: 'Inter',
+    },
+  },
+})
+```
+
+Only specify what you want to override — unspecified values fall back to the Material default.
+
+### Runtime Theme Updates
+
+```ts
+import { ThemeEngine } from 'axui'
+
+const engine = new ThemeEngine()
+
+// Switch presets at runtime
+engine.update(fluentTheme)
+
+// Fine-grained runtime tweaks
+engine.update({
+  colors: { primary: '#ff6b35' },
+  radius: { md: '12px' },
+})
+
+// Apply without updating the style tag yet
+engine.update(config, false)
+
+// Manually apply
+engine.apply()
+
+// Get current theme as object
+const current = engine.getTheme()
+
+// Get CSS variable string
+const cssVars = engine.toCssVars()
+```
+
+The theme engine writes CSS custom properties to a `<style id="axiom-theme-vars">` element. All components reference these variables, so changes apply instantly.
+
+## Custom Icons
+
+Axiom UI ships with 27 built-in SVG icons. You can register additional icons at runtime:
+
+```ts
+import { registerIcons, getIcon, getAllIcons } from 'axui'
+import type { IconDefinition } from 'axui'
+
+const customIcons: IconDefinition[] = [
+  {
+    name: 'rocket',
+    path: 'M12 2L2 22h6l4-4 4 4h6L12 2z',
+    viewBox: '0 0 24 24',
+  },
+  // Complex icons can use html instead of path
+  {
+    name: 'brand-logo',
+    html: '<circle cx="12" cy="12" r="10" fill="currentColor"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="10">A</text>',
+    viewBox: '0 0 24 24',
+  },
+]
+
+registerIcons(customIcons)
+
+// Use in templates
+// <AxIcon name="rocket" :size="24" />
+```
+
+Built-in icons: `close`, `expand_more`, `check`, `visibility`, `visibility_off`, `info`, `check_circle`, `warning`, `error`, `image`, `broken_image`, `zoom_in`, `zoom_out`, `chevron_left`, `chevron_right`, `download`, `rotate_left`, `rotate_right`, `flip`, `settings`, `menu`, `search`, `add`, `delete`, `edit`, `refresh`, `more_vert`, `more_horiz`, `arrow_back`.
+
+## Components
+
+| Component | Tag | Description |
+|---|---|---|
+| **AxButton** | `<AxButton>` / `<ax-button>` | Multi-variant button with ripple effect, loading state, icon support, and block mode |
+| **AxInput** | `<AxInput>` / `<ax-input>` | Text input with password toggle, multiline textarea, prefix/suffix slots, and autocomplete |
+| **AxSelect** | `<AxSelect>` / `<ax-select>` | Single/multi select with search, based on AxDropdown + useFloating |
+| **AxDropdown** | `<AxDropdown>` / `<ax-dropdown>` | Dropdown menu with click/hover/contextmenu triggers and floating positioning |
+| **AxDialog** | `<AxDialog>` / `<ax-dialog>` | Modal dialog with backdrop blur, focus trap, scroll lock, and #footer slot |
+| **AxAlert** | `<AxAlert>` / `<ax-alert>` | Info/success/warning/error alert banners |
+| **AxSlider** | `<AxSlider>` / `<ax-slider>` | Range slider with label, min/max, and step support |
+| **AxTooltip** | `<AxTooltip>` / `<ax-tooltip>` | Hover tooltip with configurable placement (top/right/bottom/left) |
+| **AxSwitch** | `<AxSwitch>` / `<ax-switch>` | Toggle switch with v-model, disabled state, and ARIA accessibility |
+| **AxImage** | `<AxImage>` / `<ax-image>` | Lazy-loading image with loading/error/loaded states, click preview, and aspect ratio |
+| **AxJsonViewer** | `<AxJsonViewer>` / `<ax-json-viewer>` | Collapsible JSON tree viewer with depth control, Ctrl+click recursive fold, and long text horizontal scroll |
+| **AxImageViewer** | `<AxImageViewer>` / `<ax-image-viewer>` | Fullscreen image viewer with zoom, rotate, flip, keyboard shortcuts, and download |
+| **AxPropPanel** | `<AxPropPanel>` / `<ax-prop-panel>` | Schema-driven property panel (switch/slider/select/input/textarea/segmented) |
+| **AxIcon** | `<AxIcon>` / `<ax-icon>` | SVG icon renderer from the icon registry |
+| **FloatingBall** | `<AxFloatingBall>` / `<ax-floating-ball>` | Draggable floating action button with dock-to-edge, theme toggle, and expandable menu |
+
+### Hooks
+
+| Hook | Description |
+|---|---|
+| `useNotify()` | Toast notification system. Returns `triggerNotify(message, type, title)`, `notificationHistory`, `clearLogs()` |
+| `useFloating(ref, ref, opts)` | Floating UI positioning hook. Returns `floatingStyles`, `updatePosition`, `isPositioned` |
+| `useTeleportTarget()` | Shadow DOM teleport target injection for Content Script environments |
+
+## API Reference
+
+### AxButton
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `variant` | `'primary' \| 'outline' \| 'ghost' \| 'danger'` | `'primary'` | Visual style variant |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'icon' \| 'icon-lg'` | `'md'` | Button size. `icon` / `icon-lg` render icon-only buttons |
+| `rounded` | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Border radius |
+| `disabled` | `boolean` | `false` | Disables the button |
+| `loading` | `boolean` | `false` | Shows a spinning loader, replaces content |
+| `icon` | `string` | `''` | Material Symbols icon name (requires material-symbols stylesheet) |
+| `iconSize` | `string` | `'16px'` | Icon font size |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | HTML button type |
+| `block` | `boolean` | `false` | Full-width button |
+
+**Events:** `click`
+
+**Slots:** `default`, `prefix`, `suffix`
+
+### AxInput
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `modelValue` | `string \| number` | `''` | Bound value (v-model) |
+| `type` | `string` | `'text'` | HTML input type (text, email, number, etc.) |
+| `placeholder` | `string` | `''` | Placeholder text |
+| `disabled` | `boolean` | `false` | Disables the input |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | Input size |
+| `rounded` | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Border radius |
+| `password` | `boolean` | `false` | Enables password mode with visibility toggle |
+| `autocomplete` | `string` | auto | HTML autocomplete attribute. Password fields default to `'new-password'` |
+| `multiline` | `boolean` | `false` | Renders as `<textarea>` instead of `<input>` |
+| `rows` | `number` | `3` | Textarea row count (multiline only) |
+| `resize` | `'none' \| 'vertical' \| 'horizontal' \| 'both'` | `'vertical'` | Textarea resize behavior (multiline only) |
+
+**Events:** `update:modelValue`, `keydown`, `blur`, `focus`
+
+**Slots:** `prefix`, `suffix`
+
+**Exposed:** `focus()`, `inputRef`, `textareaRef`
+
+## Browser Support
+
+All modern browsers that support CSS custom properties and ES2015+:
+
+- Chrome 63+
+- Firefox 60+
+- Safari 12+
+- Edge 79+
+
+## License
+
+MIT — see [LICENSE](./LICENSE) for details.

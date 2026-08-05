@@ -8,6 +8,7 @@ import SettingsDialog from './SettingsDialog.vue'
 import DemoView from './DemoView.vue'
 import type { AppSettings } from './SettingsView.vue'
 import AxInput from '../AxInput.vue'
+import AxIcon from '../AxIcon.vue'
 
 interface SubMenuItem {
   id: string
@@ -29,7 +30,7 @@ const navItems = ref<NavItem[]>([
   {
     id: 'components',
     name: 'UI 组件列表',
-    icon: 'widgets',
+    icon: 'settings',
     badge: '15 个组件',
     expanded: true,
     subMenus: [
@@ -53,7 +54,7 @@ const navItems = ref<NavItem[]>([
   {
     id: 'demo',
     name: 'DEMO 展示',
-    icon: 'analytics',
+    icon: 'settings',
     badge: null,
     expanded: false,
     subMenus: [
@@ -69,7 +70,6 @@ const navItems = ref<NavItem[]>([
 
 const activeTabTitle = computed(() => navItems.value.find((i) => i.id === activeTab.value)?.name ?? '工作台')
 
-/** 手风琴单开：仅保留指定项的展开状态，其余全部收起 */
 const setExpandedNav = (itemId: string, expanded: boolean) => {
   navItems.value.forEach((nav) => {
     nav.expanded = nav.id === itemId && expanded
@@ -90,7 +90,6 @@ const handleSubClick = (item: NavItem, sectionId: string) => {
     activeTab.value = item.id
     setExpandedNav(item.id, true)
   }
-  // 等待 DOM 更新后滚动
   nextTick(() => {
     const element = document.getElementById(sectionId)
     if (element) {
@@ -146,43 +145,18 @@ const sparklinePath = computed(() => {
 const sparklineAreaPath = computed(() => (sparklinePath.value ? `${sparklinePath.value} L 100 30 L 0 30 Z` : ''))
 
 const settings = reactive<AppSettings>({
-  language: 'zh',
-  timezone: 'asia-shanghai',
-  consoleName: 'Axiom Console',
-  theme: 'light',
-  autoSave: true,
-  workerCount: '4',
-  hwAccel: true,
-  sessionTimeout: 30,
-  twoFactor: false,
-  ipWhitelist: false,
-  ipList: '',
-  dbAddress: 'mongodb+srv://axiom-cluster-prod.internal.net:27017/core-system',
-  startupScript: '',
-  debugMode: false,
-  notifications: {
-    cpuAlert: true,
-    securityAlert: true,
-    backupComplete: true,
-    loginAlert: false,
-    updateAvailable: true,
-  },
+  language: 'zh', timezone: 'asia-shanghai', consoleName: 'Axiom Console', theme: 'light',
+  autoSave: true, workerCount: '4', hwAccel: true, sessionTimeout: 30,
+  twoFactor: false, ipWhitelist: false, ipList: '', dbAddress: 'mongodb+srv://axiom-cluster-prod.internal.net:27017/core-system',
+  startupScript: '', debugMode: false,
+  notifications: { cpuAlert: true, securityAlert: true, backupComplete: true, loginAlert: false, updateAvailable: true },
 })
 
 const resetSettings = () => {
   Object.assign(settings, {
-    language: 'zh',
-    timezone: 'asia-shanghai',
-    consoleName: 'Axiom Console',
-    theme: 'light',
-    autoSave: true,
-    workerCount: '4',
-    hwAccel: true,
-    sessionTimeout: 30,
-    twoFactor: false,
-    ipWhitelist: false,
-    ipList: '',
-    debugMode: false,
+    language: 'zh', timezone: 'asia-shanghai', consoleName: 'Axiom Console', theme: 'light',
+    autoSave: true, workerCount: '4', hwAccel: true, sessionTimeout: 30,
+    twoFactor: false, ipWhitelist: false, ipList: '', debugMode: false,
   })
   triggerNotify('所有设置已重置为出厂默认值。', 'info', '设置已重置')
 }
@@ -199,9 +173,7 @@ const openDialog = () => {
   dialogConfirmText.value = ''
   nextTick(() => confirmInput.value?.focus?.())
 }
-const onDialogClose = () => {
-  dialogConfirmText.value = ''
-}
+const onDialogClose = () => { dialogConfirmText.value = '' }
 const executeSystemReset = () => {
   if (dialogConfirmText.value !== 'CONFIRM') return
   cpuLimit.value = dialogSliderVal.value
@@ -215,15 +187,15 @@ const showProfileDropdown = ref(false)
 const settingsDialogRef = ref<InstanceType<typeof SettingsDialog> | null>(null)
 const settingsActiveTab = ref('general')
 const settingsNavItems = [
-  { id: 'general',       label: '通用设置',     icon: 'settings' },
-  { id: 'performance',   label: '性能与算力',   icon: 'speed' },
-  { id: 'security',      label: '安全与权限',   icon: 'security' },
-  { id: 'notifications', label: '通知与告警',   icon: 'notifications' },
-  { id: 'advanced',      label: '高级配置',     icon: 'build' },
+  { id: 'general', label: '通用设置', icon: 'settings' },
+  { id: 'performance', label: '性能与算力', icon: 'settings' },
+  { id: 'security', label: '安全与权限', icon: 'search' },
+  { id: 'notifications', label: '通知与告警', icon: 'settings' },
+  { id: 'advanced', label: '高级配置', icon: 'settings' },
 ]
 const settingsBottomNavItems = [
-  { id: 'help',   label: '帮助文档', icon: 'help_outline' },
-  { id: 'status', label: '系统状态', icon: 'analytics' },
+  { id: 'help', label: '帮助文档', icon: 'settings' },
+  { id: 'status', label: '系统状态', icon: 'settings' },
 ]
 const triggerDropdownAction = (action: string) => {
   if (action === 'export') triggerNotify('正在压缩状态并导出为 JSON。', 'info', '导出状态包')
@@ -269,97 +241,91 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="flex h-screen w-screen overflow-hidden" @keydown="handleGlobalKeydown">
+  <div class="ax-flex" style="height: 100vh; width: 100vw; overflow: hidden" @keydown="handleGlobalKeydown">
     <Toaster
       position="top-center"
       :toast-options="{ style: { background: 'transparent', border: 'none', boxShadow: 'none', padding: '0px' } }"
     />
 
-    <aside class="w-60 bg-surface-container-lowest border-r border-outline-variant flex flex-col justify-between py-ax-md px-ax-sm select-none z-10 shrink-0">
-      <div class="space-y-ax-lg">
-        <div class="flex items-center gap-ax-sm px-2">
-          <div class="h-7 w-7 rounded-lg bg-primary flex items-center justify-center text-on-primary">
-            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1">auto_fix_high</span>
+    <aside class="ax-layout-sidebar">
+      <div class="ax-space-y-lg">
+        <div class="ax-flex ax-items-center ax-gap-sm" style="padding: 0 0.5rem">
+          <div class="ax-bg-primary ax-rounded-lg ax-flex ax-items-center ax-justify-center" style="width: 1.75rem; height: 1.75rem; color: var(--ax-color-on-primary)">
+            <AxIcon name="settings" :size="18" />
           </div>
           <div>
-            <h2 class="font-headline-sm text-headline-sm text-primary tracking-tight">Axiom Console</h2>
-            <div class="flex items-center gap-ax-xs">
-              <span class="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-              <span class="font-label-md text-[10px] text-secondary">v1.0.5-BETA</span>
+            <h2 class="ax-text-headline-sm ax-color-primary">Axiom Console</h2>
+            <div class="ax-flex ax-items-center ax-gap-xs">
+              <span class="ax-inline-block ax-rounded-full ax-bg-primary" style="width: 6px; height: 6px; animation: pulse 2s infinite"></span>
+              <span class="ax-text-label-md ax-color-secondary" style="font-size: 10px">v1.0.5-BETA</span>
             </div>
           </div>
         </div>
 
-        <div class="px-2">
+        <div style="padding: 0 0.5rem">
           <div
-            class="flex items-center justify-between bg-surface-container-low border border-outline-variant hover:border-outline rounded-lg px-ax-sm py-1.5 cursor-pointer transition-colors"
+            class="ax-flex ax-items-center ax-justify-between ax-bg-surface-container-low ax-border ax-rounded-lg" style="padding: 0.375rem 0.5rem; cursor: pointer"
             @click="focusSearch"
           >
-            <div class="flex items-center gap-ax-xs text-secondary">
-              <span class="material-symbols-outlined text-[16px]">search</span>
-              <span class="font-body-sm text-body-sm">搜索组件...</span>
+            <div class="ax-flex ax-items-center ax-gap-xs ax-color-secondary">
+              <AxIcon name="search" :size="16" />
+              <span class="ax-text-body-sm">搜索组件...</span>
             </div>
-            <kbd class="font-label-md text-[10px] bg-surface-container border border-outline-variant px-1 rounded shadow-sm text-secondary">⌘K</kbd>
+            <kbd class="ax-text-label-md ax-bg-surface-container ax-border ax-rounded-sm ax-color-secondary" style="font-size: 10px; padding: 0 0.25rem">⌘K</kbd>
           </div>
         </div>
 
-        <nav class="space-y-ax-xs">
-          <p class="font-label-md text-[10px] text-secondary uppercase tracking-wider px-2 pb-1">主要视图</p>
+        <nav class="ax-space-y-xs">
+          <p class="ax-text-label-md ax-color-secondary" style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; padding: 0 0.5rem; padding-bottom: 0.25rem">主要视图</p>
           <div v-for="item in navItems" :key="item.id">
-            <!-- 父级菜单项 — 点击整行可折叠/展开 -->
             <div
               :class="[
-                activeTab === item.id
-                  ? 'bg-secondary-container text-on-secondary-container font-medium'
-                  : 'text-secondary hover:bg-surface-container-low',
+                activeTab === item.id ? 'ax-nav-item--active' : 'ax-nav-item--inactive',
               ]"
-              class="flex items-center justify-between rounded-xl py-1.5 px-2 font-label-md text-label-md transition-all duration-100 cursor-pointer select-none"
+              class="ax-nav-item"
               @click="handleParentClick(item)"
             >
-              <div class="flex items-center gap-ax-sm">
-                <span
-                  class="material-symbols-outlined"
-                  :style="{ fontVariationSettings: activeTab === item.id ? '\'FILL\' 1' : '\'FILL\' 0' }"
-                >{{ item.icon }}</span>
+              <div class="ax-flex ax-items-center ax-gap-sm">
+                <AxIcon :name="item.icon" :size="18" />
                 <span>{{ item.name }}</span>
               </div>
-              <div class="flex items-center gap-ax-xs">
+              <div class="ax-flex ax-items-center ax-gap-xs">
                 <span
                   v-if="item.badge"
-                  class="font-label-md text-[10px] px-1.5 py-0.5 rounded bg-surface-container font-medium text-primary border border-outline-variant"
+                  class="ax-text-label-md ax-bg-surface-container ax-border ax-rounded-sm ax-color-primary" style="font-size: 10px; padding: 0.125rem 0.375rem; font-weight: 500"
                 >{{ item.badge }}</span>
-                <span
-                  class="material-symbols-outlined text-[14px] text-secondary transition-transform duration-200 shrink-0"
-                  :class="item.expanded ? 'rotate-180' : ''"
-                >expand_more</span>
+                <AxIcon
+                  name="expand_more"
+                  :size="14"
+                  class="ax-color-secondary ax-flex-shrink-0"
+                  :class="item.expanded ? 'ax-select__arrow--open' : ''"
+                />
               </div>
             </div>
 
-            <!-- 子菜单列表（手风琴单开） -->
             <div
-              class="grid transition-[grid-template-rows] duration-200 ease-out"
-              :class="item.expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
+              class="ax-hidden"
+              :class="item.expanded ? '' : ''"
+              :style="item.expanded ? '' : 'display: none'"
             >
-              <div class="overflow-hidden">
-                <div class="ml-4 mt-ax-xs space-y-ax-xs border-l-2 border-outline-variant/60 pl-2">
-                  <a
-                    v-for="sub in item.subMenus"
-                    :key="sub.id"
-                    href="#"
-                    class="flex items-center gap-ax-sm rounded-lg py-1 px-2 font-body-sm text-body-sm text-secondary hover:bg-surface-container-low hover:text-primary transition-colors duration-100"
-                    @click.prevent="handleSubClick(item, sub.sectionId)"
-                  >
-                    <span class="h-1 w-1 rounded-full bg-outline shrink-0"></span>
-                    <span>{{ sub.name }}</span>
-                  </a>
-                </div>
+              <div v-show="item.expanded" style="margin-left: 1rem; margin-top: 0.25rem; border-left: 2px solid rgba(200, 197, 202, 0.6); padding-left: 0.5rem">
+                <a
+                  v-for="sub in item.subMenus"
+                  :key="sub.id"
+                  href="#"
+                  class="ax-nav-subitem"
+                  @click.prevent="handleSubClick(item, sub.sectionId)"
+                >
+                  <span class="ax-nav-subitem__dot"></span>
+                  <span>{{ sub.name }}</span>
+                </a>
               </div>
             </div>
           </div>
         </nav>
       </div>
 
-      <div class="space-y-ax-sm">
+      <div class="ax-space-y-sm">
         <AxButton
           variant="ghost"
           block
@@ -368,15 +334,15 @@ onBeforeUnmount(() => {
           @click="settingsDialogRef?.open()"
         >设置界面</AxButton>
 
-        <div class="border-t border-outline-variant pt-ax-md flex items-center justify-between px-2">
-          <div class="flex items-center justify-between w-full">
-          <div class="flex items-center gap-ax-sm">
-            <div class="h-8 w-8 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-primary font-semibold text-body-md font-label-md">
+        <div class="ax-border-t ax-flex ax-items-center ax-justify-between" style="padding: 0 0.5rem; padding-top: 1rem">
+          <div class="ax-flex ax-items-center ax-justify-between" style="width: 100%">
+          <div class="ax-flex ax-items-center ax-gap-sm">
+            <div class="ax-bg-surface-container ax-border ax-rounded-full ax-flex ax-items-center ax-justify-center ax-color-primary" style="width: 2rem; height: 2rem; font-size: 14px; font-weight: 600; font-family: var(--ax-font-label-md)">
               AM
             </div>
-            <div class="overflow-hidden w-24">
-              <h4 class="font-body-sm text-[12px] font-semibold text-primary truncate leading-tight">Alex Mercer</h4>
-              <p class="font-body-sm text-[10px] text-secondary truncate">System Architect</p>
+            <div style="overflow: hidden; width: 6rem">
+              <h4 class="ax-text-body-sm ax-color-primary" style="font-size: 12px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Alex Mercer</h4>
+              <p class="ax-text-body-sm ax-color-secondary" style="font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">System Architect</p>
             </div>
           </div>
           <AxDropdown v-model="showProfileDropdown" placement="top-start">
@@ -384,16 +350,16 @@ onBeforeUnmount(() => {
               <AxButton variant="ghost" size="icon" icon="more_vert" icon-size="16px" />
             </template>
             <template #default="{ close }">
-              <div class="py-1 w-44">
-                <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="triggerDropdownAction('export'); close()">
-                  <span class="material-symbols-outlined text-[16px]">download</span><span>导出系统配置</span>
+              <div class="ax-dropdown__body" style="width: 11rem">
+                <button class="ax-dropdown__item" @click="triggerDropdownAction('export'); close()">
+                  <AxIcon name="download" :size="16" /><span>导出系统配置</span>
                 </button>
-                <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-primary hover:bg-surface-container-low rounded-lg transition-colors" @click="triggerDropdownAction('logs'); close()">
-                  <span class="material-symbols-outlined text-[16px]">history</span><span>清空日志队列</span>
+                <button class="ax-dropdown__item" @click="triggerDropdownAction('logs'); close()">
+                  <AxIcon name="refresh" :size="16" /><span>清空日志队列</span>
                 </button>
-                <div class="my-1 border-t border-outline-variant"></div>
-                <button class="flex w-full items-center gap-ax-sm px-3 py-1.5 text-left font-label-md text-label-md text-error hover:bg-error-container hover:text-on-error-container rounded-lg transition-colors" @click="triggerDropdownAction('reset'); close()">
-                  <span class="material-symbols-outlined text-[16px]">restart_alt</span><span>复位仪表盘</span>
+                <div class="ax-dropdown__divider" />
+                <button class="ax-dropdown__item ax-dropdown__item--danger" @click="triggerDropdownAction('reset'); close()">
+                  <AxIcon name="refresh" :size="16" /><span>复位仪表盘</span>
                 </button>
               </div>
             </template>
@@ -403,37 +369,37 @@ onBeforeUnmount(() => {
       </div>
     </aside>
 
-    <div class="flex-1 flex flex-col overflow-hidden bg-background">
-      <header class="h-14 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-margin select-none shrink-0 z-10">
-        <div class="flex items-center gap-ax-sm">
-          <span class="font-body-sm text-body-sm text-secondary">工作空间</span>
-          <span class="text-outline-variant font-light">/</span>
-          <span class="font-body-sm text-body-sm text-secondary">控制台</span>
-          <span class="text-outline-variant font-light">/</span>
-          <span class="font-body-sm text-body-sm text-primary font-medium">{{ activeTabTitle }}</span>
+    <div class="ax-flex-1 ax-flex ax-flex-col" style="overflow: hidden; background-color: var(--ax-color-background)">
+      <header class="ax-layout-header">
+        <div class="ax-flex ax-items-center ax-gap-sm">
+          <span class="ax-text-body-sm ax-color-secondary">工作空间</span>
+          <span class="ax-color-outline-variant">/</span>
+          <span class="ax-text-body-sm ax-color-secondary">控制台</span>
+          <span class="ax-color-outline-variant">/</span>
+          <span class="ax-text-body-sm ax-color-primary" style="font-weight: 500">{{ activeTabTitle }}</span>
         </div>
-        <div class="flex items-center gap-ax-md">
-          <div class="font-label-md text-label-md text-secondary border border-outline-variant bg-surface-container-low rounded-lg px-2.5 py-1 flex items-center gap-ax-xs">
-            <span class="material-symbols-outlined text-[14px]">schedule</span>
+        <div class="ax-flex ax-items-center ax-gap-md">
+          <div class="ax-text-label-md ax-color-secondary ax-border ax-bg-surface-container-low ax-rounded-lg ax-flex ax-items-center ax-gap-xs" style="padding: 0.25rem 0.625rem">
+            <AxIcon name="settings" :size="14" />
             <span>{{ liveTime }}</span>
           </div>
-          <div class="relative">
+          <div style="position: relative">
             <AxInput ref="globalSearchInput" v-model="searchQuery" size="lg" placeholder="快速搜索..." class="w-44" @keydown.esc="searchQuery = ''">
-              <template #prefix><span class="material-symbols-outlined text-[14px]">search</span></template>
+              <template #prefix><AxIcon name="search" :size="14" /></template>
             </AxInput>
           </div>
           <AxTooltip content="系统通知日志" placement="bottom">
             <AxButton
               variant="ghost"
               size="icon-lg"
-              icon="notifications"
-              class="border border-outline-variant"
+              icon="settings"
+              class="ax-border"
               @click="showNotificationsPanel = !showNotificationsPanel"
             >
               <template #suffix>
                 <span
                   v-if="activeNotificationCount > 0"
-                  class="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-primary text-[9px] text-on-primary font-bold flex items-center justify-center"
+                  class="ax-bg-primary ax-rounded-full ax-flex ax-items-center ax-justify-center" style="position: absolute; top: -0.25rem; right: -0.25rem; width: 0.875rem; height: 0.875rem; font-size: 9px; color: var(--ax-color-on-primary); font-weight: 700"
                 >{{ activeNotificationCount }}</span>
               </template>
             </AxButton>
@@ -441,7 +407,7 @@ onBeforeUnmount(() => {
         </div>
       </header>
 
-      <main class="flex-1 overflow-y-auto p-margin space-y-ax-lg scrollbar-hide">
+      <main class="ax-layout-main ax-scrollbar-hide">
         <ComponentsView
           v-if="activeTab === 'components'"
           @open-dialog="openDialog"
@@ -461,97 +427,97 @@ onBeforeUnmount(() => {
       </main>
 
       <Transition
-        enter-active-class="transition ease-out duration-300 transform"
-        enter-from-class="translate-x-full"
-        enter-to-class="translate-x-0"
-        leave-active-class="transition ease-in duration-200 transform"
-        leave-from-class="translate-x-0"
-        leave-to-class="translate-x-full"
+        enter-active-class="ax-notification-panel-enter-active"
+        enter-from-class="ax-notification-panel-enter-from"
+        enter-to-class="ax-notification-panel-enter-active"
+        leave-active-class="ax-notification-panel-leave-active"
+        leave-from-class="ax-notification-panel-leave-active"
+        leave-to-class="ax-notification-panel-leave-to"
       >
         <div
           v-show="showNotificationsPanel"
-          class="fixed inset-y-0 right-0 w-80 bg-surface-container-lowest border-l border-outline-variant shadow-2xl z-40 p-ax-md flex flex-col justify-between"
+          class="ax-notification-panel"
         >
           <div>
-            <div class="flex items-center justify-between border-b border-outline-variant pb-ax-sm mb-ax-md">
-              <h3 class="font-headline-sm text-body-md font-semibold text-primary">系统通知历史队列</h3>
+            <div class="ax-flex ax-items-center ax-justify-between ax-border-b" style="padding-bottom: 0.5rem; margin-bottom: 1rem">
+              <h3 class="ax-text-headline-sm ax-color-primary" style="font-size: 14px; font-weight: 600">系统通知历史队列</h3>
               <AxButton variant="ghost" size="icon" icon="close" icon-size="16px" @click="showNotificationsPanel = false" />
             </div>
-            <div class="space-y-ax-sm overflow-y-auto max-h-[70vh] pr-1">
-              <div v-for="log in notificationHistory" :key="log.id" class="border border-outline-variant rounded-lg p-ax-sm bg-surface-container-low">
-                <div class="flex items-center justify-between">
-                  <span class="font-label-md text-[10px] text-secondary">{{ log.time }}</span>
+            <div class="ax-space-y-sm ax-scrollbar-hide" style="overflow-y: auto; max-height: 70vh; padding-right: 0.25rem">
+              <div v-for="log in notificationHistory" :key="log.id" class="ax-notification-log">
+                <div class="ax-flex ax-items-center ax-justify-between">
+                  <span class="ax-notification-log__time">{{ log.time }}</span>
                   <span
-                    class="font-label-md text-[9px] px-1 rounded uppercase font-semibold"
+                    class="ax-notification-log__badge"
                     :class="{
-                      'bg-surface-container text-primary border border-outline': log.type === 'info',
-                      'bg-error-container text-on-error-container': log.type === 'error',
-                      'bg-secondary-container text-on-secondary-container': log.type === 'secondary',
-                      'bg-secondary-container text-primary': log.type === 'success',
+                      'ax-notification-log__badge--info': log.type === 'info',
+                      'ax-notification-log__badge--error': log.type === 'error',
+                      'ax-notification-log__badge--secondary': log.type === 'secondary',
+                      'ax-notification-log__badge--success': log.type === 'success',
                     }"
                   >{{ log.type }}</span>
                 </div>
-                <h5 class="font-body-sm text-[11px] font-semibold text-primary mt-1">{{ log.title }}</h5>
-                <p class="font-body-sm text-[10px] text-on-surface-variant leading-relaxed mt-0.5">{{ log.message }}</p>
+                <h5 class="ax-notification-log__title">{{ log.title }}</h5>
+                <p class="ax-notification-log__message">{{ log.message }}</p>
               </div>
-              <div v-if="notificationHistory.length === 0" class="py-12 text-center text-secondary font-body-sm text-body-sm">当前尚无系统交互历史记录</div>
+              <div v-if="notificationHistory.length === 0" class="ax-color-secondary ax-text-body-sm" style="text-align: center; padding: 3rem 0">当前尚无系统交互历史记录</div>
             </div>
           </div>
           <AxButton
             variant="outline"
             block
-            icon="delete_sweep"
+            icon="delete"
             :disabled="notificationHistory.length === 0"
             @click="clearLogs"
           >清空所有日志</AxButton>
         </div>
       </Transition>
 
-      <footer class="h-12 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between px-margin select-none shrink-0 text-body-sm text-secondary">
-        <div class="flex items-center gap-ax-md">
-          <div class="flex items-center gap-ax-xs">
-            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      <footer class="ax-layout-footer">
+        <div class="ax-flex ax-items-center ax-gap-md">
+          <div class="ax-flex ax-items-center ax-gap-xs">
+            <span class="ax-inline-block ax-rounded-full" style="width: 0.5rem; height: 0.5rem; background-color: #10b981; animation: pulse 2s infinite"></span>
             <span>核心系统: 正常运行 (Operational)</span>
           </div>
-          <span class="text-outline-variant">|</span>
-          <span class="font-label-md text-[11px]">API 往返延时: {{ latestLatency }}ms</span>
+          <span class="ax-color-outline-variant">|</span>
+          <span class="ax-text-label-md" style="font-size: 11px">API 往返延时: {{ latestLatency }}ms</span>
         </div>
-        <div class="flex items-center gap-ax-sm">
+        <div class="ax-flex ax-items-center ax-gap-sm">
           <span>Axiom Studio © 2026</span>
-          <span class="text-outline-variant">•</span>
-          <a href="#" class="text-primary font-label-md hover:underline flex items-center gap-ax-xs text-[11px]">
+          <span class="ax-color-outline-variant">•</span>
+          <a href="#" class="ax-color-primary ax-text-label-md ax-flex ax-items-center ax-gap-xs" style="font-size: 11px">
             <span>系统架构白皮书</span>
-            <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
+            <AxIcon name="arrow_back" :size="12" />
           </a>
         </div>
       </footer>
     </div>
 
-    <AxDialog v-model="showDialog" title="高危底层重置规程 (Security Authorization)" icon="lock_open" @close="onDialogClose">
+    <AxDialog v-model="showDialog" title="高危底层重置规程 (Security Authorization)" icon="search" @close="onDialogClose">
       <AxAlert type="error" :dismissible="false" title="高风险行为警告">
         您正试图执行系统核心重构恢复方案。这会直接洗刷掉所有内存缓存历史日志，并重置控制台内的一切算力及安全防御设置。请保证已备份完毕。
       </AxAlert>
-      <div class="space-y-ax-sm">
-        <label class="font-label-md text-label-md font-semibold text-primary block">第一步：在输入框内确认您的重置声明书</label>
-        <p class="font-body-sm text-[11px] text-secondary">
-          请精确键入 "<span class="font-label-md font-bold text-primary select-text">CONFIRM</span>" 来开启下方的二次确认授权锁定。
+      <div class="ax-space-y-sm">
+        <label class="ax-text-label-md ax-color-primary ax-block" style="font-weight: 600">第一步：在输入框内确认您的重置声明书</label>
+        <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">
+          请精确键入 "<span class="ax-text-label-md ax-color-primary" style="font-weight: 700">CONFIRM</span>" 来开启下方的二次确认授权锁定。
         </p>
         <AxInput ref="confirmInput" v-model="dialogConfirmText" placeholder="CONFIRM" />
       </div>
-      <div class="space-y-ax-xs">
-        <label class="font-label-md text-label-md font-semibold text-primary block">第二步：确定重置后分配给初始化进程的限制等级</label>
-        <div class="bg-surface-container-low rounded-lg p-ax-sm border border-outline-variant">
+      <div class="ax-space-y-xs">
+        <label class="ax-text-label-md ax-color-primary ax-block" style="font-weight: 600">第二步：确定重置后分配给初始化进程的限制等级</label>
+        <div class="ax-bg-surface-container-low ax-border ax-rounded-lg" style="padding: 0.5rem">
           <AxSlider v-model="dialogSliderVal" :min="5" :max="95" show-value :value-label="dialogSliderVal + '%'" />
         </div>
       </div>
       <template #footer="{ close }">
         <AxButton variant="outline" @click="close">取消物理回退</AxButton>
-        <AxButton icon="security" :disabled="dialogConfirmText !== 'CONFIRM'" @click="executeSystemReset">执行系统回滚</AxButton>
+        <AxButton icon="search" :disabled="dialogConfirmText !== 'CONFIRM'" @click="executeSystemReset">执行系统回滚</AxButton>
       </template>
     </AxDialog>
 
     <AxDialog v-model="showSimpleDialog" title="系统提示" icon="info" max-width="max-w-sm">
-      <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">这是一个简单的提示对话框，仅包含文字内容。点击关闭按钮或按 ESC 键即可关闭。</p>
+      <p class="ax-text-body-sm ax-color-on-surface-variant" style="line-height: 1.6">这是一个简单的提示对话框，仅包含文字内容。点击关闭按钮或按 ESC 键即可关闭。</p>
       <template #footer="{ close }">
         <AxButton @click="close">知道了</AxButton>
       </template>

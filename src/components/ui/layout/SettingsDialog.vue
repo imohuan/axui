@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
+import AxIcon from '../AxIcon.vue'
 
 // ── 侧边栏导航项 ──
 interface NavSection {
@@ -62,94 +63,93 @@ const config = reactive({
 
 <template>
   <AxDialog v-model="isOpen" :title="title ?? '系统设置中心'" icon="settings" max-width="max-w-[820px]" body-class="!p-0" @close="close">
-    <div class="flex h-[520px] overflow-hidden">
+    <div class="ax-flex" style="height: 520px; overflow: hidden">
       <!-- ══════ 左侧导航栏 ══════ -->
       <aside
-        class="w-48 shrink-0 border-r border-outline-variant bg-surface-container-lowest flex flex-col py-ax-sm px-ax-sm select-none">
-        <div class="mb-ax-md px-2">
-          <h2 class="font-headline-sm text-headline-sm text-primary font-bold">
+        class="ax-layout-sidebar" style="width: 192px; padding: 0.5rem">
+        <div style="margin-bottom: 1rem; padding: 0 0.5rem">
+          <h2 class="ax-text-headline-sm ax-color-primary" style="font-weight: 700">
             {{ title ?? 'Configuration' }}
           </h2>
-          <p class="font-body-sm text-[10px] text-secondary mt-0.5">
+          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 10px; margin-top: 0.125rem">
             {{ subtitle ?? '管理系统运行参数' }}
           </p>
         </div>
 
-        <nav class="flex-1 space-y-0.5">
+        <nav class="ax-flex-1 ax-space-y-xs">
           <button v-for="item in navItems" :key="item.id" :class="[
             activeTab === item.id
-              ? 'bg-secondary-container text-on-secondary-container font-medium scale-[0.98]'
-              : 'text-secondary hover:bg-surface-container-low',
+              ? 'ax-nav-item--active'
+              : 'ax-nav-item--inactive',
           ]"
-            class="flex items-center gap-ax-sm rounded-xl py-1.5 px-2 font-label-md text-label-md transition-all duration-100 cursor-pointer w-full text-left"
+            class="ax-nav-item"
             @click="activeTab = item.id">
-            <span class="material-symbols-outlined text-[16px]"
-              :style="{ fontVariationSettings: activeTab === item.id ? '\'FILL\' 1' : '\'FILL\' 0' }">{{ item.icon
-              }}</span>
-            <span>{{ item.label }}</span>
+            <div class="ax-flex ax-items-center ax-gap-sm">
+              <AxIcon :name="item.icon" :size="16" />
+              <span>{{ item.label }}</span>
+            </div>
           </button>
         </nav>
 
-        <div v-if="bottomNavItems?.length" class="border-t border-outline-variant pt-ax-sm space-y-0.5">
+        <div v-if="bottomNavItems?.length" class="ax-border-t ax-space-y-xs" style="padding-top: 0.5rem">
           <button v-for="item in bottomNavItems" :key="item.id"
-            class="flex items-center gap-ax-sm rounded-xl py-1.5 px-2 font-label-md text-label-md text-secondary hover:bg-surface-container-low transition-colors cursor-pointer w-full text-left"
+            class="ax-nav-subitem"
             @click="emit('navClick', item)">
-            <span class="material-symbols-outlined text-[16px]">{{ item.icon }}</span>
+            <AxIcon :name="item.icon" :size="16" />
             <span>{{ item.label }}</span>
           </button>
         </div>
       </aside>
 
       <!-- ══════ 右侧主内容区 ══════ -->
-      <div class="flex-1 flex flex-col min-w-0">
-        <!-- ══════ 内容区（按 tab 切换） ══════ -->
-        <div class="flex-1 overflow-y-auto p-margin space-y-ax-md scrollbar-hide">
+      <div class="ax-flex-1 ax-flex ax-flex-col" style="min-width: 0">
+        <div class="ax-flex-1 ax-layout-main ax-scrollbar-hide">
 
           <!-- ──── 通用设置 ──── -->
           <template v-if="activeTab === 'general'">
-            <div class="border-b border-outline-variant pb-ax-sm mb-ax-sm">
-              <h3 class="font-headline-sm text-headline-sm text-primary">通用设置</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">配置控制台基本运行参数与展示选项。</p>
+            <div class="ax-border-b" style="padding-bottom: 0.5rem; margin-bottom: 0.5rem">
+              <h3 class="ax-text-headline-sm ax-color-primary">通用设置</h3>
+              <p class="ax-text-body-sm ax-color-on-surface-variant" style="margin-top: 0.25rem">配置控制台基本运行参数与展示选项。</p>
             </div>
             <section
-              class="bg-white border border-outline-variant rounded-lg p-ax-md divide-y divide-outline-variant/40">
+              class="ax-bg-surface-container-lowest ax-border ax-rounded-lg" style="padding: 1rem">
               <!-- 站点名称 (Input) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">站点名称</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">显示在顶栏和浏览器标签页中的控制台名称</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">站点名称</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">显示在顶栏和浏览器标签页中的控制台名称</p>
                 </div>
-                <AxInput v-model="config.siteName" size="sm" class="!w-44 shrink-0" />
+                <AxInput v-model="config.siteName" size="sm" class="!w-44 ax-flex-shrink-0" />
               </div>
               <!-- 上传限制 (Slider) -->
-              <div class="py-3">
-                <div class="flex items-center justify-between">
-                  <p class="font-label-md text-label-md font-semibold text-primary">文件上传大小限制</p>
-                  <span class="font-label-md text-[12px] font-bold text-primary tabular-nums">{{ config.maxUploadSize }}
+              <div style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex ax-justify-between ax-items-center">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">文件上传大小限制</p>
+                  <span class="ax-text-label-md ax-color-primary" style="font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums">{{ config.maxUploadSize }}
                     MB</span>
                 </div>
-                <p class="font-body-sm text-[11px] text-secondary mt-0.5 mb-2">单个文件上传的最大容量限制</p>
+                <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem; margin-bottom: 0.5rem">单个文件上传的最大容量限制</p>
                 <AxSlider v-model="config.maxUploadSize" :min="1" :max="500" :step="1" show-labels show-value
                   label-left="1 MB" label-right="500 MB" :value-label="config.maxUploadSize + ' MB'" />
               </div>
               <!-- 会话超时 (Slider) -->
-              <div class="py-3">
-                <div class="flex items-center justify-between">
-                  <p class="font-label-md text-label-md font-semibold text-primary">会话超时时间</p>
-                  <span class="font-label-md text-[12px] font-bold text-primary tabular-nums">{{ config.sessionTimeout
+              <div style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex ax-justify-between ax-items-center">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">会话超时时间</p>
+                  <span class="ax-text-label-md ax-color-primary" style="font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums">{{ config.sessionTimeout
                   }} 分钟</span>
                 </div>
-                <p class="font-body-sm text-[11px] text-secondary mt-0.5 mb-2">用户无操作后自动登出的等待时长</p>
+                <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem; margin-bottom: 0.5rem">用户无操作后自动登出的等待时长</p>
                 <AxSlider v-model="config.sessionTimeout" :min="5" :max="240" :step="5" show-labels show-value
                   label-left="5 分钟" label-right="240 分钟" :value-label="config.sessionTimeout + ' 分钟'" />
               </div>
               <!-- 保留天数 (Select) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">日志保留天数</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">系统操作日志自动清理前的保留周期</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">日志保留天数</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">系统操作日志自动清理前的保留周期</p>
                 </div>
-                <div class="max-w-[160px] ml-auto">
+                <div class="ax-flex-shrink-0" style="max-width: 160px; margin-left: auto">
                   <AxSelect v-model="config.retentionDays" size="sm" dropdownWidth="120px" placement="bottom-end"
                     :options="[
                       { value: 7, label: '7 天' },
@@ -165,19 +165,19 @@ const config = reactive({
 
           <!-- ──── 性能与算力 ──── -->
           <template v-if="activeTab === 'performance'">
-            <div class="border-b border-outline-variant pb-ax-sm mb-ax-sm">
-              <h3 class="font-headline-sm text-headline-sm text-primary">性能与算力</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">调整系统资源分配与计算性能参数。</p>
+            <div class="ax-border-b" style="padding-bottom: 0.5rem; margin-bottom: 0.5rem">
+              <h3 class="ax-text-headline-sm ax-color-primary">性能与算力</h3>
+              <p class="ax-text-body-sm ax-color-on-surface-variant" style="margin-top: 0.25rem">调整系统资源分配与计算性能参数。</p>
             </div>
             <section
-              class="bg-white border border-outline-variant rounded-lg p-ax-md divide-y divide-outline-variant/40">
+              class="ax-bg-surface-container-lowest ax-border ax-rounded-lg" style="padding: 1rem">
               <!-- 线程数 (Select) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">工作线程数</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">并行处理任务的线程池大小，影响吞吐与延迟</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">工作线程数</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">并行处理任务的线程池大小，影响吞吐与延迟</p>
                 </div>
-                <div class="max-w-[160px] ml-auto">
+                <div class="ax-flex-shrink-0" style="max-width: 160px; margin-left: auto">
                   <AxSelect v-model="config.threadCount" size="sm" dropdownWidth="120px" placement="bottom-end"
                     :options="[
                       { value: 1, label: '1 线程' },
@@ -189,37 +189,31 @@ const config = reactive({
                 </div>
               </div>
               <!-- CPU 限制 (Slider) -->
-              <div class="py-3">
-                <div class="flex items-center justify-between">
-                  <p class="font-label-md text-label-md font-semibold text-primary">CPU 使用上限</p>
-                  <span class="font-label-md text-[12px] font-bold text-primary tabular-nums">{{ config.cpuLimit
+              <div style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex ax-justify-between ax-items-center">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">CPU 使用上限</p>
+                  <span class="ax-text-label-md ax-color-primary" style="font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums">{{ config.cpuLimit
                   }}%</span>
                 </div>
-                <p class="font-body-sm text-[11px] text-secondary mt-0.5 mb-2">限制系统最大 CPU 占用比例，防止过载</p>
+                <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem; margin-bottom: 0.5rem">限制系统最大 CPU 占用比例，防止过载</p>
                 <AxSlider v-model="config.cpuLimit" :min="10" :max="100" :step="5" show-labels show-value
                   label-left="低负载" label-right="满负载" :value-label="config.cpuLimit + '%'" />
               </div>
               <!-- 硬件加速 (Switch) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">硬件加速</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">启用 GPU 加速提升渲染与计算性能</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">硬件加速</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">启用 GPU 加速提升渲染与计算性能</p>
                 </div>
-                <button role="switch" :aria-checked="config.hwAccel"
-                  :class="config.hwAccel ? 'bg-primary' : 'bg-outline'"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-                  @click="config.hwAccel = !config.hwAccel">
-                  <span :class="config.hwAccel ? 'translate-x-4' : 'translate-x-0'"
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out" />
-                </button>
+                <AxSwitch :model-value="config.hwAccel" size="sm" @update:model-value="config.hwAccel = $event" />
               </div>
               <!-- GPU 厂商 (Select) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">首选 GPU 厂商</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">硬件加速时优先使用的显卡品牌</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">首选 GPU 厂商</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">硬件加速时优先使用的显卡品牌</p>
                 </div>
-                <div class="max-w-[160px] ml-auto">
+                <div class="ax-flex-shrink-0" style="max-width: 160px; margin-left: auto">
                   <AxSelect v-model="config.gpuVendor" size="sm" dropdownWidth="120px" placement="bottom-end" :options="[
                     { value: 'nvidia', label: 'NVIDIA' },
                     { value: 'amd', label: 'AMD' },
@@ -233,19 +227,19 @@ const config = reactive({
 
           <!-- ──── 安全与权限 ──── -->
           <template v-if="activeTab === 'security'">
-            <div class="border-b border-outline-variant pb-ax-sm mb-ax-sm">
-              <h3 class="font-headline-sm text-headline-sm text-primary">安全与权限</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">配置身份验证、权限控制与审计策略。</p>
+            <div class="ax-border-b" style="padding-bottom: 0.5rem; margin-bottom: 0.5rem">
+              <h3 class="ax-text-headline-sm ax-color-primary">安全与权限</h3>
+              <p class="ax-text-body-sm ax-color-on-surface-variant" style="margin-top: 0.25rem">配置身份验证、权限控制与审计策略。</p>
             </div>
             <section
-              class="bg-white border border-outline-variant rounded-lg p-ax-md divide-y divide-outline-variant/40">
+              class="ax-bg-surface-container-lowest ax-border ax-rounded-lg" style="padding: 1rem">
               <!-- 认证方式 (Select) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">认证方式</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">用户登录时使用的身份验证协议</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">认证方式</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">用户登录时使用的身份验证协议</p>
                 </div>
-                <div class="max-w-[160px] ml-auto">
+                <div class="ax-flex-shrink-0" style="max-width: 160px; margin-left: auto">
                   <AxSelect v-model="config.authMethod" size="sm" dropdownWidth="120px" placement="bottom-end" :options="[
                     { value: 'password', label: '密码登录' },
                     { value: 'sso', label: 'SSO 单点登录' },
@@ -255,56 +249,38 @@ const config = reactive({
                 </div>
               </div>
               <!-- 双因素认证 (Switch) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">双因素认证</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">登录时强制要求手机验证码或硬件密钥</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">双因素认证</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">登录时强制要求手机验证码或硬件密钥</p>
                 </div>
-                <button role="switch" :aria-checked="config.twoFactor"
-                  :class="config.twoFactor ? 'bg-primary' : 'bg-outline'"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-                  @click="config.twoFactor = !config.twoFactor">
-                  <span :class="config.twoFactor ? 'translate-x-4' : 'translate-x-0'"
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out" />
-                </button>
+                <AxSwitch :model-value="config.twoFactor" size="sm" @update:model-value="config.twoFactor = $event" />
               </div>
-              <!-- 审计日志 (Switch + 复选框级的 Select 联动) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">操作审计日志</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">记录所有用户操作，用于安全审查与合规</p>
+              <!-- 审计日志 (Switch) -->
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">操作审计日志</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">记录所有用户操作，用于安全审查与合规</p>
                 </div>
-                <button role="switch" :aria-checked="config.auditLog"
-                  :class="config.auditLog ? 'bg-primary' : 'bg-outline'"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-                  @click="config.auditLog = !config.auditLog">
-                  <span :class="config.auditLog ? 'translate-x-4' : 'translate-x-0'"
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out" />
-                </button>
+                <AxSwitch :model-value="config.auditLog" size="sm" @update:model-value="config.auditLog = $event" />
               </div>
               <!-- 速率限制 (Switch + Slider) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">请求速率限制</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">限制 API 调用频率防止滥用与 DDoS 攻击</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">请求速率限制</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">限制 API 调用频率防止滥用与 DDoS 攻击</p>
                 </div>
-                <button role="switch" :aria-checked="config.rateLimit"
-                  :class="config.rateLimit ? 'bg-primary' : 'bg-outline'"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-                  @click="config.rateLimit = !config.rateLimit">
-                  <span :class="config.rateLimit ? 'translate-x-4' : 'translate-x-0'"
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out" />
-                </button>
+                <AxSwitch :model-value="config.rateLimit" size="sm" @update:model-value="config.rateLimit = $event" />
               </div>
               <!-- 开启速率限制后显示 Slider -->
               <div v-show="config.rateLimit"
-                class="py-3 pl-4 border-l-2 border-outline-variant bg-surface-container-lowest rounded-r-md">
-                <div class="flex items-center justify-between">
-                  <p class="font-label-md text-label-md font-semibold text-primary">每分钟请求上限</p>
-                  <span class="font-label-md text-[12px] font-bold text-primary tabular-nums">{{ config.rateLimitCount
+                class="ax-bg-surface-container-lowest" style="padding: 0.75rem 0 0.75rem 1rem; border-left: 2px solid var(--ax-color-outline-variant); border-radius: 0 var(--ax-radius-md) var(--ax-radius-md) 0">
+                <div class="ax-flex ax-justify-between ax-items-center">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">每分钟请求上限</p>
+                  <span class="ax-text-label-md ax-color-primary" style="font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums">{{ config.rateLimitCount
                   }} 次</span>
                 </div>
-                <p class="font-body-sm text-[11px] text-secondary mt-0.5 mb-2">超出限制的请求将被自动拒绝</p>
+                <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem; margin-bottom: 0.5rem">超出限制的请求将被自动拒绝</p>
                 <AxSlider v-model="config.rateLimitCount" :min="10" :max="1000" :step="10" show-labels show-value
                   label-left="10" label-right="1000" :value-label="config.rateLimitCount + ' 次/分'" />
               </div>
@@ -313,115 +289,89 @@ const config = reactive({
 
           <!-- ──── 通知与告警 ──── -->
           <template v-if="activeTab === 'notifications'">
-            <div class="border-b border-outline-variant pb-ax-sm mb-ax-sm">
-              <h3 class="font-headline-sm text-headline-sm text-primary">通知与告警</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">管理事件通知类别与推送偏好。</p>
+            <div class="ax-border-b" style="padding-bottom: 0.5rem; margin-bottom: 0.5rem">
+              <h3 class="ax-text-headline-sm ax-color-primary">通知与告警</h3>
+              <p class="ax-text-body-sm ax-color-on-surface-variant" style="margin-top: 0.25rem">管理事件通知类别与推送偏好。</p>
             </div>
             <section
-              class="bg-white border border-outline-variant rounded-lg p-ax-md divide-y divide-outline-variant/40">
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">CPU 使用率告警</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">当 CPU 使用率超过阈值时推送通知</p>
+              class="ax-bg-surface-container-lowest ax-border ax-rounded-lg" style="padding: 1rem">
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">CPU 使用率告警</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">当 CPU 使用率超过阈值时推送通知</p>
                 </div>
-                <button role="switch" :aria-checked="true"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 bg-primary">
-                  <span
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out translate-x-4" />
-                </button>
+                <AxSwitch :model-value="true" size="sm" />
               </div>
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">磁盘空间告警</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">存储空间不足时向管理员发送紧急通知</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">磁盘空间告警</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">存储空间不足时向管理员发送紧急通知</p>
                 </div>
-                <button role="switch" :aria-checked="true"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 bg-primary">
-                  <span
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out translate-x-4" />
-                </button>
+                <AxSwitch :model-value="true" size="sm" />
               </div>
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">备份完成通知</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">自动备份任务完成后推送确认消息</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">备份完成通知</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">自动备份任务完成后推送确认消息</p>
                 </div>
-                <button role="switch" :aria-checked="false"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 bg-outline">
-                  <span
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out translate-x-0" />
-                </button>
+                <AxSwitch :model-value="false" size="sm" />
               </div>
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">异地登录提醒</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">检测到异地或异常设备登录时发出警告</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">异地登录提醒</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">检测到异地或异常设备登录时发出警告</p>
                 </div>
-                <button role="switch" :aria-checked="true"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 bg-primary">
-                  <span
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out translate-x-4" />
-                </button>
+                <AxSwitch :model-value="true" size="sm" />
               </div>
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">系统更新提醒</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">有新版本或安全补丁时在控制台展示通知</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">系统更新提醒</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">有新版本或安全补丁时在控制台展示通知</p>
                 </div>
-                <button role="switch" :aria-checked="false"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 bg-outline">
-                  <span
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out translate-x-0" />
-                </button>
+                <AxSwitch :model-value="false" size="sm" />
               </div>
             </section>
           </template>
 
           <!-- ──── 高级配置 ──── -->
           <template v-if="activeTab === 'advanced'">
-            <div class="border-b border-outline-variant pb-ax-sm mb-ax-sm">
-              <h3 class="font-headline-sm text-headline-sm text-primary">高级配置</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">开发者工具、备份与系统级调试选项。</p>
+            <div class="ax-border-b" style="padding-bottom: 0.5rem; margin-bottom: 0.5rem">
+              <h3 class="ax-text-headline-sm ax-color-primary">高级配置</h3>
+              <p class="ax-text-body-sm ax-color-on-surface-variant" style="margin-top: 0.25rem">开发者工具、备份与系统级调试选项。</p>
             </div>
             <section
-              class="bg-white border border-outline-variant rounded-lg p-ax-md divide-y divide-outline-variant/40">
+              class="ax-bg-surface-container-lowest ax-border ax-rounded-lg" style="padding: 1rem">
               <!-- 自动备份 (Switch) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">自动备份</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">按定时计划自动备份数据库和配置文件</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">自动备份</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">按定时计划自动备份数据库和配置文件</p>
                 </div>
-                <button role="switch" :aria-checked="config.enableAutoBackup"
-                  :class="config.enableAutoBackup ? 'bg-primary' : 'bg-outline'"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-                  @click="config.enableAutoBackup = !config.enableAutoBackup">
-                  <span :class="config.enableAutoBackup ? 'translate-x-4' : 'translate-x-0'"
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out" />
-                </button>
+                <AxSwitch :model-value="config.enableAutoBackup" size="sm" @update:model-value="config.enableAutoBackup = $event" />
               </div>
               <!-- 备份路径 (Input) -->
-              <div class="py-3">
-                <label class="font-label-md text-label-md font-semibold text-primary block">备份存储路径</label>
-                <p class="font-body-sm text-[11px] text-secondary mt-0.5 mb-2">自动备份文件的目标目录</p>
+              <div style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <label class="ax-text-label-md ax-color-primary ax-block" style="font-weight: 600">备份存储路径</label>
+                <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem; margin-bottom: 0.5rem">自动备份文件的目标目录</p>
                 <AxInput v-model="config.backupPath" size="md">
-                  <template #prefix><span class="material-symbols-outlined text-[16px]">folder</span></template>
+                  <template #prefix><AxIcon name="search" :size="16" /></template>
                 </AxInput>
               </div>
-              <!-- 备份时间 (Input + Select 组合) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">每日备份时间</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">自动备份任务的执行时间点 (HH:MM)</p>
+              <!-- 备份时间 (Input) -->
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">每日备份时间</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">自动备份任务的执行时间点 (HH:MM)</p>
                 </div>
-                <AxInput v-model="config.backupTime" size="sm" class="!w-32 shrink-0" />
+                <AxInput v-model="config.backupTime" size="sm" class="!w-32 ax-flex-shrink-0" />
               </div>
               <!-- 日志级别 (Select) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">日志输出级别</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">控制运行时日志的详细程度</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">日志输出级别</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">控制运行时日志的详细程度</p>
                 </div>
-                <div class="max-w-[160px] ml-auto">
+                <div class="ax-flex-shrink-0" style="max-width: 160px; margin-left: auto">
                   <AxSelect v-model="config.logLevel" size="sm" dropdownWidth="120px" placement="bottom-end" :options="[
                     { value: 'error', label: '仅错误' },
                     { value: 'warn', label: '警告及以上' },
@@ -431,18 +381,12 @@ const config = reactive({
                 </div>
               </div>
               <!-- 调试模式 (Switch) -->
-              <div class="flex items-center gap-ax-md py-3">
-                <div class="flex-1">
-                  <p class="font-label-md text-label-md font-semibold text-primary">开发者调试模式</p>
-                  <p class="font-body-sm text-[11px] text-secondary mt-0.5">输出详细堆栈信息和性能分析报告</p>
+              <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0">
+                <div class="ax-flex-1">
+                  <p class="ax-text-label-md ax-color-primary" style="font-weight: 600">开发者调试模式</p>
+                  <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">输出详细堆栈信息和性能分析报告</p>
                 </div>
-                <button role="switch" :aria-checked="config.debugMode"
-                  :class="config.debugMode ? 'bg-primary' : 'bg-outline'"
-                  class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-                  @click="config.debugMode = !config.debugMode">
-                  <span :class="config.debugMode ? 'translate-x-4' : 'translate-x-0'"
-                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out" />
-                </button>
+                <AxSwitch :model-value="config.debugMode" size="sm" @update:model-value="config.debugMode = $event" />
               </div>
             </section>
           </template>

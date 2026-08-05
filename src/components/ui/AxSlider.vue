@@ -29,13 +29,9 @@ const emit = defineEmits<{
   'update:modelValue': [value: number]
 }>()
 
-// 内部值：拖拽时实时更新，松手后同步回 props.modelValue
-// - v-model 场景：emit → 父组件更新 prop → nextTick 同步到新值 → 留在新位置
-// - :model-value 固定值场景：emit 被忽略 → prop 不变 → nextTick 同步回原值 → 弹回原位
 const internalValue = ref(props.modelValue)
 const isDragging = ref(false)
 
-// 外部 prop 变化时同步（仅在非拖拽中）
 watch(() => props.modelValue, (val) => {
   if (!isDragging.value) {
     internalValue.value = val
@@ -56,85 +52,72 @@ const onInput = (e: Event) => {
   isDragging.value = true
   const val = Number((e.target as HTMLInputElement).value)
   internalValue.value = val
-  // 拖拽过程中实时触发 v-model，父组件同步感知变化
   emit('update:modelValue', val)
 }
 
 const onChange = async () => {
   isDragging.value = false
-  // 等父组件响应后，用 prop 值同步回来
-  // v-model → prop 已更新 → 保持新值（input 阶段已 emit）
-  // :model-value → prop 未变 → 弹回原值
   await nextTick()
   internalValue.value = props.modelValue
 }
 </script>
 
 <template>
-  <!-- right 布局：轨道在左，标签在右 -->
-  <div v-if="labelPosition === 'right' && (showLabels || showValue)" class="flex items-center gap-ax-sm w-full">
-    <div class="relative flex-1 flex items-center group py-1">
-      <div
-        class="absolute h-1.5 w-full bg-surface-container rounded-full pointer-events-none inset-y-0 my-auto"
-      />
-      <div
-        :style="{ width: percent + '%' }"
-        class="absolute h-1.5 bg-primary rounded-full pointer-events-none inset-y-0 my-auto"
-      />
+  <!-- right layout: track left, labels right -->
+  <div v-if="labelPosition === 'right' && (showLabels || showValue)" class="ax-flex ax-items-center ax-gap-sm ax-slider">
+    <div class="ax-slider">
+      <div class="ax-slider__track-bg" />
+      <div :style="{ width: percent + '%' }" class="ax-slider__track-fill" />
       <input
         type="range"
         :value="internalValue"
         :min="min"
         :max="max"
-        class="w-full h-1.5 appearance-none bg-transparent cursor-pointer outline-none focus:outline-none relative z-10"
+        class="ax-slider__input"
         @input="onInput"
         @change="onChange"
       />
     </div>
-    <div class="flex items-center gap-ax-xs shrink-0">
-      <span v-if="showLabels" class="text-[11px] font-label-md text-secondary">{{ labelLeft }}</span>
+    <div class="ax-flex ax-items-center ax-gap-xs ax-flex-shrink-0">
+      <span v-if="showLabels" class="ax-text-label-md ax-color-secondary" style="font-size: 11px">{{ labelLeft }}</span>
       <span
         v-if="showValue"
-        class="text-[11px] font-label-md text-primary font-bold px-1 bg-surface-container border border-outline-variant rounded tabular-nums"
+        class="ax-text-label-md ax-color-primary"
+        style="font-size: 11px; font-weight: 700; padding: 0 0.25rem; background-color: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-sm); font-variant-numeric: tabular-nums"
       >
         {{ displayValue }}
       </span>
-      <span v-if="showLabels" class="text-[11px] font-label-md text-secondary">{{ labelRight }}</span>
+      <span v-if="showLabels" class="ax-text-label-md ax-color-secondary" style="font-size: 11px">{{ labelRight }}</span>
     </div>
   </div>
 
-  <!-- top 布局：标签在上，轨道在下 -->
-  <div v-else class="relative w-full">
+  <!-- top layout: labels above, track below -->
+  <div v-else class="ax-slider">
     <div
       v-if="showLabels || showValue"
       :class="[
-        'text-[11px] font-label-md text-secondary mb-1',
-        showLabels ? 'flex justify-between' : 'flex justify-end',
+        showLabels ? 'ax-flex ax-justify-between' : 'ax-flex ax-justify-end',
       ]"
+      style="font-size: 11px; font-family: var(--ax-font-label-md); color: var(--ax-color-secondary); margin-bottom: 0.25rem"
     >
       <span v-if="showLabels">{{ labelLeft }}</span>
       <span
         v-if="showValue"
-        class="text-primary font-bold px-1 bg-surface-container border border-outline-variant rounded"
+        style="color: var(--ax-color-primary); font-weight: 700; padding: 0 0.25rem; background-color: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-sm)"
       >
         {{ displayValue }}
       </span>
       <span v-if="showLabels">{{ labelRight }}</span>
     </div>
-    <div class="relative flex items-center group py-2">
-      <div
-        class="absolute h-1.5 w-full bg-surface-container rounded-full pointer-events-none inset-y-0 my-auto"
-      />
-      <div
-        :style="{ width: percent + '%' }"
-        class="absolute h-1.5 bg-primary rounded-full pointer-events-none inset-y-0 my-auto"
-      />
+    <div class="ax-slider" style="padding-top: 0.5rem; padding-bottom: 0.5rem">
+      <div class="ax-slider__track-bg" />
+      <div :style="{ width: percent + '%' }" class="ax-slider__track-fill" />
       <input
         type="range"
         :value="internalValue"
         :min="min"
         :max="max"
-        class="w-full h-1.5 appearance-none bg-transparent cursor-pointer outline-none focus:outline-none relative z-10"
+        class="ax-slider__input"
         @input="onInput"
         @change="onChange"
       />

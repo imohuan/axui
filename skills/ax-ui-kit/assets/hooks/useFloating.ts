@@ -7,7 +7,6 @@ import {
   flip,
   shift,
   arrow,
-  autoPlacement
 } from '@floating-ui/vue'
 
 export interface UseFloatingOptions {

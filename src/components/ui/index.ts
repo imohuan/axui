@@ -12,6 +12,7 @@ import AxSwitch from './AxSwitch.vue'
 import AxImage from './AxImage.vue'
 import AxJsonViewer from './AxJsonViewer.vue'
 import AxImageViewer from './AxImageViewer.vue'
+import AxIcon from './AxIcon.vue'
 
 const components = {
   AxButton,
@@ -27,6 +28,7 @@ const components = {
   AxImage,
   AxJsonViewer,
   AxImageViewer,
+  AxIcon,
 }
 
 export function registerComponents(app: App) {
@@ -49,6 +51,7 @@ export {
   AxImage,
   AxJsonViewer,
   AxImageViewer,
+  AxIcon,
 }
 
 export { default as AxiomUI } from './plugin'
@@ -57,5 +60,22 @@ export { useNotify } from './hooks/useNotify'
 export { useFloating } from './hooks/useFloating'
 export { provideTeleportTarget, useTeleportTarget } from './hooks/useTeleportTarget'
 export type * from './types'
+
+export { registerIcons, getIcon, getAllIcons } from '../../icons'
+export type { IconDefinition } from '../../icons'
+
+export { ThemeEngine, materialTheme, fluentTheme, iosTheme } from '../../theme'
+export type {
+  ThemeColors,
+  ThemeSpacing,
+  ThemeRadius,
+  ThemeShadows,
+  ThemeBorders,
+  ThemeTypography,
+  TypographyScale,
+  AxiomTheme,
+  DeepPartial,
+  ThemeConfig,
+} from '../../theme'
 
 export * from './functional'

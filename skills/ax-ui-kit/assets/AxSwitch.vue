@@ -2,12 +2,28 @@
 import { computed } from 'vue'
 import type { ControlSize } from './types'
 
-const SIZE_CLASSES: Record<ControlSize, { track: string; thumb: string; translate: string }> = {
-  xs: { track: 'h-[18px] w-[30px]', thumb: 'h-3 w-3', translate: 'translate-x-3.5' },
-  sm: { track: 'h-5 w-[34px]', thumb: 'h-3.5 w-3.5', translate: 'translate-x-4' },
-  md: { track: 'h-6 w-10', thumb: 'h-4 w-4', translate: 'translate-x-5' },
-  lg: { track: 'h-7 w-11', thumb: 'h-5 w-5', translate: 'translate-x-5' },
-  xl: { track: 'h-8 w-12', thumb: 'h-6 w-6', translate: 'translate-x-5' },
+const SIZE_CLASSES: Record<ControlSize, string> = {
+  xs: 'ax-switch--xs',
+  sm: 'ax-switch--sm',
+  md: 'ax-switch--md',
+  lg: 'ax-switch--lg',
+  xl: 'ax-switch--xl',
+}
+
+const THUMB_ON_CLASSES: Record<ControlSize, string> = {
+  xs: 'ax-switch__thumb--on-xs',
+  sm: 'ax-switch__thumb--on-sm',
+  md: 'ax-switch__thumb--on-md',
+  lg: 'ax-switch__thumb--on-lg',
+  xl: 'ax-switch__thumb--on-xl',
+}
+
+const THUMB_SIZE_CLASSES: Record<ControlSize, string> = {
+  xs: 'ax-switch__thumb--xs',
+  sm: 'ax-switch__thumb--sm',
+  md: 'ax-switch__thumb--md',
+  lg: 'ax-switch__thumb--lg',
+  xl: 'ax-switch__thumb--xl',
 }
 
 const props = withDefaults(
@@ -27,24 +43,18 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean]
 }>()
 
-const trackClasses = computed(() => {
-  const s = SIZE_CLASSES[props.size]
-  return [
-    'relative inline-flex flex-shrink-0 items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-primary',
-    s.track,
-    props.modelValue ? 'bg-primary' : 'bg-outline',
-    props.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
-  ]
-})
+const trackClasses = computed(() => [
+  'ax-switch',
+  SIZE_CLASSES[props.size],
+  props.modelValue ? 'ax-switch--on' : 'ax-switch--off',
+  props.disabled ? 'ax-switch--disabled' : 'ax-switch--enabled',
+])
 
-const thumbClasses = computed(() => {
-  const s = SIZE_CLASSES[props.size]
-  return [
-    'pointer-events-none inline-block transform rounded-full bg-white shadow transition duration-200 ease-in-out',
-    s.thumb,
-    props.modelValue ? s.translate : 'translate-x-0',
-  ]
-})
+const thumbClasses = computed(() => [
+  'ax-switch__thumb',
+  THUMB_SIZE_CLASSES[props.size],
+  props.modelValue ? THUMB_ON_CLASSES[props.size] : 'ax-switch__thumb--off',
+])
 </script>
 
 <template>

@@ -131,29 +131,26 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="containerRef" class="relative text-left">
+  <div ref="containerRef" class="ax-dropdown">
     <div ref="triggerRef" v-bind="triggerEvents">
       <slot name="trigger" :open="isOpen" :toggle="toggle" :close="close" />
     </div>
 
     <Teleport :to="teleportTarget" :disabled="!teleport">
       <Transition
-        enter-active-class="transition ease-out duration-100"
-        enter-from-class="transform opacity-0 scale-95"
-        enter-to-class="transform opacity-100 scale-100"
-        leave-active-class="transition ease-in duration-75"
-        leave-from-class="transform opacity-100 scale-100"
-        leave-to-class="transform opacity-0 scale-95"
+        enter-active-class="ax-dropdown-enter-active"
+        enter-from-class="ax-dropdown-enter-from"
+        enter-to-class="ax-dropdown-enter-active"
+        leave-active-class="ax-dropdown-leave-active"
+        leave-from-class="ax-dropdown-leave-active"
+        leave-to-class="ax-dropdown-leave-to"
       >
         <div
           v-if="isOpen"
           ref="menuRef"
           :style="menuStyle"
           v-bind="panelEvents"
-          :class="[
-            'z-50 rounded-xl bg-surface-container-lowest border border-outline-variant shadow-lg ring-1 ring-black ring-opacity-5 pro-shadow',
-            bodyClass,
-          ]"
+          :class="['ax-dropdown__menu', bodyClass]"
           role="menu"
         >
           <slot :close="close" />

@@ -1,20 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, type Ref } from 'vue'
 import type { ButtonSize, ButtonVariant, RoundedSize } from './types'
-import { ROUNDED_CLASSES, CONTROL_SIZE_CLASSES } from './common'
-
-const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: 'bg-primary text-on-primary hover:opacity-90',
-  outline: 'text-primary bg-white hover:bg-surface-container-high',
-  ghost: 'text-secondary hover:bg-surface-container-low',
-  danger: 'text-error hover:bg-error-container hover:text-on-error-container',
-}
-
-const SIZE_CLASSES: Record<ButtonSize, string> = {
-  ...CONTROL_SIZE_CLASSES,
-  icon: 'w-6 h-6 p-0',
-  'icon-lg': 'w-7 h-7 p-0',
-}
+import { ROUNDED_CLASSES } from './common'
+import AxIcon from './AxIcon.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -23,7 +11,7 @@ const props = withDefaults(
     rounded?: RoundedSize
     disabled?: boolean
     icon?: string
-    iconSize?: string
+    iconSize?: string | number
     type?: 'button' | 'submit' | 'reset'
     block?: boolean
     loading?: boolean
@@ -34,7 +22,7 @@ const props = withDefaults(
     rounded: 'md',
     disabled: false,
     icon: '',
-    iconSize: '16px',
+    iconSize: 16,
     type: 'button',
     block: false,
     loading: false,
@@ -60,14 +48,13 @@ const isIconOnly = computed(() =>
 )
 
 const classes = computed(() => [
-  'relative overflow-hidden inline-flex items-center justify-center gap-ax-xs font-label-md transition-colors outline-none border-0 shrink-0',
+  'ax-button',
+  `ax-button--${props.size}`,
+  `ax-button--${props.variant}`,
   ROUNDED_CLASSES[props.rounded],
-  isIconOnly.value ? 'leading-none' : '',
-  isIconOnly.value ? 'leading-none' : '',
-  VARIANT_CLASSES[props.variant],
-  SIZE_CLASSES[props.size],
-  props.block ? 'w-full' : '',
-  props.disabled ? 'opacity-30 cursor-not-allowed pointer-events-none' : 'cursor-pointer',
+  props.block ? 'ax-button--block' : '',
+  props.disabled ? 'ax-button--disabled' : '',
+  props.loading ? 'ax-button--loading' : '',
 ])
 
 const rippleClass = computed(() =>
@@ -116,13 +103,13 @@ const onClick = (e: MouseEvent) => {
       }"
     />
 
-    <span v-if="loading" class="inline-flex items-center justify-center leading-none">
-      <svg class="animate-spin" :style="{ width: iconSize, height: iconSize }" viewBox="0 0 24 24" fill="none">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+    <span v-if="loading" class="ax-button__spinner">
+      <svg :style="{ width: iconSize + 'px', height: iconSize + 'px' }" viewBox="0 0 24 24" fill="none">
+        <circle class="ax-button__spinner-track" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="ax-button__spinner-head" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
       </svg>
     </span>
-    <span v-else-if="icon" class="material-symbols-outlined leading-none" :style="{ fontSize: iconSize }">{{ icon }}</span>
+    <AxIcon v-else-if="icon" :name="icon" :size="iconSize" />
     <slot name="prefix" />
     <slot v-if="!isIconOnly" />
     <slot name="suffix" />
@@ -150,6 +137,31 @@ const onClick = (e: MouseEvent) => {
   to {
     transform: scale(1);
     opacity: 0;
+  }
+}
+
+.ax-button__spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.ax-button__spinner svg {
+  animation: ax-button-spin 1s linear infinite;
+}
+
+.ax-button__spinner-track {
+  opacity: 0.25;
+}
+
+.ax-button__spinner-head {
+  opacity: 0.75;
+}
+
+@keyframes ax-button-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>

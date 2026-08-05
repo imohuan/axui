@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { SelectOption } from '../types'
+import AxIcon from '../AxIcon.vue'
 
 export interface AppSettings {
   language: string
@@ -69,26 +70,26 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
 </script>
 
 <template>
-  <div class="space-y-ax-lg max-w-2xl">
+  <div class="ax-space-y-lg" style="max-width: 42rem">
     <!-- 页头 -->
-    <div class="border-b border-outline-variant pb-ax-md">
-      <h2 class="font-headline-sm text-headline-md text-primary">系统设置</h2>
-      <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">在此配置控制台的全局运行参数、安全策略及个性化选项。</p>
+    <div class="ax-border-b" style="padding-bottom: 1rem">
+      <h2 class="ax-text-headline-sm ax-color-primary" style="font-size: 20px; line-height: 28px">系统设置</h2>
+      <p class="ax-text-body-sm ax-color-on-surface-variant" style="margin-top: 0.25rem">在此配置控制台的全局运行参数、安全策略及个性化选项。</p>
     </div>
 
     <!-- ═══════ 通用设置 ═══════ -->
-    <section id="section-general" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
-        <span class="material-symbols-outlined text-[16px] text-secondary">tune</span>
-        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">通用设置</span>
+    <section id="section-general" class="ax-card scroll-mt-4">
+      <div class="ax-card__header">
+        <AxIcon name="settings" :size="16" class="ax-color-secondary" />
+        <span class="ax-card__header-title">通用设置</span>
       </div>
-      <div class="p-ax-md divide-y divide-outline-variant/40">
-        <div class="flex items-center gap-ax-md py-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">系统语言</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">控制台界面显示语言</p>
+      <div class="ax-card__body">
+        <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">系统语言</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">控制台界面显示语言</p>
           </div>
-          <div class="w-40 ml-auto">
+          <div class="ax-flex-shrink-0" style="width: 10rem; margin-left: auto">
             <AxSelect
               v-model="settings.language"
               :options="[
@@ -100,12 +101,12 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             />
           </div>
         </div>
-        <div class="flex items-center gap-ax-md py-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">时区设置</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">日志时间戳所使用的时区</p>
+        <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">时区设置</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">日志时间戳所使用的时区</p>
           </div>
-          <div class="w-48 ml-auto">
+          <div class="ax-flex-shrink-0" style="width: 12rem; margin-left: auto">
             <AxSelect
               v-model="settings.timezone"
               :options="[
@@ -117,19 +118,19 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             />
           </div>
         </div>
-        <div class="flex items-center gap-ax-md py-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">控制台名称</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">显示在顶栏和浏览器标签页中的名称</p>
+        <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">控制台名称</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">显示在顶栏和浏览器标签页中的名称</p>
           </div>
-          <AxInput v-model="settings.consoleName" size="sm" placeholder="Axiom Console" class="!w-44 ml-auto" />
+          <AxInput v-model="settings.consoleName" size="sm" placeholder="Axiom Console" class="!w-44 ax-flex-shrink-0" style="margin-left: auto" />
         </div>
-        <div class="flex items-center gap-ax-md py-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">外观主题</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">控制台整体配色方案</p>
+        <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">外观主题</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">控制台整体配色方案</p>
           </div>
-          <div class="flex items-center bg-surface-container rounded-lg p-0.5 gap-0.5 ml-auto">
+          <div class="ax-segmented" style="margin-left: auto">
             <button
               v-for="t in [
                 { v: 'light', i: 'light_mode' },
@@ -137,49 +138,38 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
                 { v: 'auto', i: 'computer' },
               ]"
               :key="t.v"
-              :class="settings.theme === t.v ? 'bg-primary text-on-primary shadow-sm' : 'text-secondary hover:text-primary'"
-              class="font-label-md text-[10px] px-2 py-1 rounded-md transition-all flex items-center gap-ax-xs"
+              :class="settings.theme === t.v ? 'ax-button--primary' : 'ax-button--ghost'"
+              class="ax-button ax-button--sm ax-flex ax-items-center ax-gap-xs"
               @click="settings.theme = t.v"
             >
-              <span class="material-symbols-outlined text-[14px]">{{ t.i }}</span>
+              <AxIcon :name="t.i" :size="14" />
               <span>{{ { light: '浅色', dark: '深色', auto: '跟随系统' }[t.v as 'light' | 'dark' | 'auto'] }}</span>
             </button>
           </div>
         </div>
-        <div class="flex items-center gap-ax-md py-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">自动保存配置</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">变更后自动持久化系统设置</p>
+        <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">自动保存配置</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">变更后自动持久化系统设置</p>
           </div>
-          <button
-            role="switch"
-            :aria-checked="settings.autoSave"
-            :class="settings.autoSave ? 'bg-primary' : 'bg-outline'"
-            class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200 focus:outline-none focus:ring-1 focus:ring-primary"
-            @click="toggle(settings, 'autoSave')"
-          >
-            <span
-              :class="settings.autoSave ? 'translate-x-4' : 'translate-x-0'"
-              class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out"
-            />
-          </button>
+          <AxSwitch :model-value="settings.autoSave" size="sm" @update:model-value="toggle(settings, 'autoSave')" />
         </div>
       </div>
     </section>
 
     <!-- ═══════ 性能与算力 ═══════ -->
-    <section id="section-performance" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
-        <span class="material-symbols-outlined text-[16px] text-secondary">speed</span>
-        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">性能与算力</span>
+    <section id="section-performance" class="ax-card scroll-mt-4">
+      <div class="ax-card__header">
+        <AxIcon name="settings" :size="16" class="ax-color-secondary" />
+        <span class="ax-card__header-title">性能与算力</span>
       </div>
-      <div class="p-ax-md space-y-ax-md">
-        <div class="space-y-ax-xs">
-          <div class="flex items-center justify-between">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">算力限制上限</p>
-            <span class="font-label-md text-[12px] font-bold text-primary tabular-nums">{{ cpuLimit }}%</span>
+      <div class="ax-card__body ax-space-y-md">
+        <div class="ax-space-y-xs">
+          <div class="ax-flex ax-justify-between ax-items-center">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">算力限制上限</p>
+            <span class="ax-text-label-md ax-color-primary" style="font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums">{{ cpuLimit }}%</span>
           </div>
-          <p class="font-body-sm text-[11px] text-secondary">设置系统允许占用的最大计算资源百分比</p>
+          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px">设置系统允许占用的最大计算资源百分比</p>
           <AxSlider
             :model-value="cpuLimit"
             :min="10" :max="100"
@@ -190,12 +180,12 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             @update:model-value="onCpuChange"
           />
         </div>
-        <div class="flex items-center gap-ax-md border-t border-outline-variant/40 pt-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">后台任务并发数</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">同时运行的最大后台工作线程数量</p>
+        <div class="ax-flex ax-items-center ax-gap-md" style="border-top: 1px solid rgba(200, 197, 202, 0.4); padding-top: 0.75rem">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">后台任务并发数</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">同时运行的最大后台工作线程数量</p>
           </div>
-          <div class="w-32 ml-auto">
+          <div class="ax-flex-shrink-0" style="width: 8rem; margin-left: auto">
             <AxSelect
               v-model="settings.workerCount"
               :options="[
@@ -208,40 +198,29 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             />
           </div>
         </div>
-        <div class="flex items-center gap-ax-md border-t border-outline-variant/40 pt-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">硬件加速</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">启用 GPU 加速渲染提升界面流畅度</p>
+        <div class="ax-flex ax-items-center ax-gap-md" style="border-top: 1px solid rgba(200, 197, 202, 0.4); padding-top: 0.75rem">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">硬件加速</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">启用 GPU 加速渲染提升界面流畅度</p>
           </div>
-          <button
-            role="switch"
-            :aria-checked="settings.hwAccel"
-            :class="settings.hwAccel ? 'bg-primary' : 'bg-outline'"
-            class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-            @click="toggleNotify(settings, 'hwAccel', '硬件加速已启用', '硬件加速已关闭', 'info')"
-          >
-            <span
-              :class="settings.hwAccel ? 'translate-x-4' : 'translate-x-0'"
-              class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out"
-            />
-          </button>
+          <AxSwitch :model-value="settings.hwAccel" size="sm" @update:model-value="toggleNotify(settings, 'hwAccel', '硬件加速已启用', '硬件加速已关闭', 'info')" />
         </div>
       </div>
     </section>
 
     <!-- ═══════ 安全与权限 ═══════ -->
-    <section id="section-security" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
-        <span class="material-symbols-outlined text-[16px] text-secondary">security</span>
-        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">安全与权限</span>
+    <section id="section-security" class="ax-card scroll-mt-4">
+      <div class="ax-card__header">
+        <AxIcon name="search" :size="16" class="ax-color-secondary" />
+        <span class="ax-card__header-title">安全与权限</span>
       </div>
-      <div class="p-ax-md divide-y divide-outline-variant/40">
-        <div class="flex items-center gap-ax-md pb-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">防御等级</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">系统安全扫描与防御响应强度</p>
+      <div class="ax-card__body">
+        <div class="ax-flex ax-items-center ax-gap-md" style="padding-bottom: 0.75rem; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">防御等级</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">系统安全扫描与防御响应强度</p>
           </div>
-          <div class="w-52 ml-auto">
+          <div class="ax-flex-shrink-0" style="width: 13rem; margin-left: auto">
             <AxSelect
               :model-value="selectedClearance"
               :options="clearanceOptions"
@@ -251,12 +230,12 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             />
           </div>
         </div>
-        <div class="py-3">
-          <div class="flex items-center justify-between">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">会话超时时间</p>
-            <span class="font-label-md text-[12px] font-bold text-primary tabular-nums">{{ settings.sessionTimeout }} 分钟</span>
+        <div style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <div class="ax-flex ax-justify-between ax-items-center">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">会话超时时间</p>
+            <span class="ax-text-label-md ax-color-primary" style="font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums">{{ settings.sessionTimeout }} 分钟</span>
           </div>
-          <p class="font-body-sm text-[11px] text-secondary mt-0.5 mb-2">无操作自动注销的等待时间（分钟）</p>
+          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem; margin-bottom: 0.5rem">无操作自动注销的等待时间（分钟）</p>
           <AxSlider
             v-model="settings.sessionTimeout"
             :min="5" :max="120" :step="5"
@@ -266,48 +245,27 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
             :value-label="settings.sessionTimeout + ' 分钟'"
           />
         </div>
-        <div class="flex items-center gap-ax-md py-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">双因素认证</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">登录时强制要求二次身份验证</p>
+        <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">双因素认证</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">登录时强制要求二次身份验证</p>
           </div>
-          <button
-            role="switch"
-            :aria-checked="settings.twoFactor"
-            :class="settings.twoFactor ? 'bg-primary' : 'bg-outline'"
-            class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-            @click="toggleNotify(settings, 'twoFactor', '双因素认证已启用', '双因素认证已关闭，请注意安全风险', settings.twoFactor ? 'success' : 'error')"
-          >
-            <span
-              :class="settings.twoFactor ? 'translate-x-4' : 'translate-x-0'"
-              class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out"
-            />
-          </button>
+          <AxSwitch :model-value="settings.twoFactor" size="sm" @update:model-value="toggleNotify(settings, 'twoFactor', '双因素认证已启用', '双因素认证已关闭，请注意安全风险', settings.twoFactor ? 'success' : 'error')" />
         </div>
-        <div class="flex items-center gap-ax-md py-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">IP 白名单过滤</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">仅允许来自指定 IP 范围的访问请求</p>
+        <div class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">IP 白名单过滤</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">仅允许来自指定 IP 范围的访问请求</p>
           </div>
-          <button
-            role="switch"
-            :aria-checked="settings.ipWhitelist"
-            :class="settings.ipWhitelist ? 'bg-primary' : 'bg-outline'"
-            class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-            @click="toggle(settings, 'ipWhitelist')"
-          >
-            <span
-              :class="settings.ipWhitelist ? 'translate-x-4' : 'translate-x-0'"
-              class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out"
-            />
-          </button>
+          <AxSwitch :model-value="settings.ipWhitelist" size="sm" @update:model-value="toggle(settings, 'ipWhitelist')" />
         </div>
-        <div v-show="settings.ipWhitelist" class="pt-3">
-          <label class="font-label-md text-[11px] font-semibold text-primary block mb-1">IP 白名单列表</label>
+        <div v-show="settings.ipWhitelist" style="padding-top: 0.75rem">
+          <label class="ax-text-label-md ax-color-primary ax-block" style="font-size: 11px; font-weight: 600; margin-bottom: 0.25rem">IP 白名单列表</label>
           <textarea
             v-model="settings.ipList"
             rows="3"
-            class="w-full p-2.5 font-label-md text-[11px] bg-surface-container-low border border-outline-variant rounded-md focus:ring-1 focus:ring-primary focus:border-primary resize-none placeholder:text-outline transition-all"
+            class="ax-input ax-input--textarea ax-input--textarea-sm"
+            style="width: 100%; padding: 0.625rem; font-size: 11px; resize: none"
             placeholder="每行输入一个 IP 或 CIDR 段&#10;例如: 192.168.1.0/24&#10;     10.0.0.1"
           />
         </div>
@@ -315,76 +273,55 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
     </section>
 
     <!-- ═══════ 通知与告警 ═══════ -->
-    <section id="section-notifications" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
-        <span class="material-symbols-outlined text-[16px] text-secondary">notifications</span>
-        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">通知与告警</span>
+    <section id="section-notifications" class="ax-card scroll-mt-4">
+      <div class="ax-card__header">
+        <AxIcon name="settings" :size="16" class="ax-color-secondary" />
+        <span class="ax-card__header-title">通知与告警</span>
       </div>
-      <div class="p-ax-md divide-y divide-outline-variant/40">
-        <div v-for="notif in notifSettings" :key="notif.key" class="flex items-center gap-ax-md py-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">{{ notif.label }}</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">{{ notif.desc }}</p>
+      <div class="ax-card__body">
+        <div v-for="notif in notifSettings" :key="notif.key" class="ax-flex ax-items-center ax-gap-md" style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">{{ notif.label }}</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">{{ notif.desc }}</p>
           </div>
-          <button
-            role="switch"
-            :aria-checked="settings.notifications[notif.key]"
-            :class="settings.notifications[notif.key] ? 'bg-primary' : 'bg-outline'"
-            class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-            @click="settings.notifications[notif.key] = !settings.notifications[notif.key]"
-          >
-            <span
-              :class="settings.notifications[notif.key] ? 'translate-x-4' : 'translate-x-0'"
-              class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out"
-            />
-          </button>
+          <AxSwitch :model-value="settings.notifications[notif.key]" size="sm" @update:model-value="settings.notifications[notif.key] = $event" />
         </div>
       </div>
     </section>
 
     <!-- ═══════ 高级配置 ═══════ -->
-    <section id="section-advanced" class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden pro-shadow scroll-mt-4">
-      <div class="px-ax-md py-ax-sm border-b border-outline-variant bg-surface-container-low flex items-center gap-ax-sm">
-        <span class="material-symbols-outlined text-[16px] text-secondary">build</span>
-        <span class="font-label-md text-[11px] font-semibold text-primary uppercase tracking-wider">高级配置</span>
+    <section id="section-advanced" class="ax-card scroll-mt-4">
+      <div class="ax-card__header">
+        <AxIcon name="settings" :size="16" class="ax-color-secondary" />
+        <span class="ax-card__header-title">高级配置</span>
       </div>
-      <div class="p-ax-md space-y-ax-md divide-y divide-outline-variant/40">
-        <div class="pb-3">
-          <label class="font-label-md text-[13px] font-semibold text-primary block">数据库连接字符串</label>
-          <p class="font-body-sm text-[11px] text-secondary mt-0.5 mb-2">主节点物理地址，支持 MongoDB、PostgreSQL、Redis 格式</p>
+      <div class="ax-card__body ax-space-y-md">
+        <div style="padding-bottom: 0.75rem; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <label class="ax-text-body-sm ax-color-primary ax-block" style="font-size: 13px; font-weight: 600">数据库连接字符串</label>
+          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem; margin-bottom: 0.5rem">主节点物理地址，支持 MongoDB、PostgreSQL、Redis 格式</p>
           <AxInput v-model="settings.dbAddress" size="lg">
-            <template #prefix><span class="material-symbols-outlined text-[16px]">dns</span></template>
+            <template #prefix><AxIcon name="settings" :size="16" /></template>
           </AxInput>
         </div>
-        <div class="pt-3 pb-3">
-          <label class="font-label-md text-[13px] font-semibold text-primary block">系统启动脚本</label>
-          <p class="font-body-sm text-[11px] text-secondary mt-0.5 mb-2">在服务初始化完成后执行的自定义 Shell 脚本片段</p>
+        <div style="padding: 0.75rem 0; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <label class="ax-text-body-sm ax-color-primary ax-block" style="font-size: 13px; font-weight: 600">系统启动脚本</label>
+          <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem; margin-bottom: 0.5rem">在服务初始化完成后执行的自定义 Shell 脚本片段</p>
           <textarea
             v-model="settings.startupScript"
             rows="5"
-            class="w-full p-3 font-label-md text-[11px] bg-surface-container-low border border-outline-variant rounded-md focus:ring-1 focus:ring-primary focus:border-primary resize-none placeholder:text-outline transition-all"
+            class="ax-input ax-input--textarea ax-input--textarea-md"
+            style="width: 100%; padding: 0.75rem; font-size: 11px; resize: none"
             placeholder="#!/bin/bash&#10;# 在此输入启动脚本...&#10;echo 'Axiom Console initializing...'"
           />
         </div>
-        <div class="flex items-center gap-ax-md pt-3">
-          <div class="flex-1">
-            <p class="font-body-sm text-[13px] font-semibold text-primary">调试模式</p>
-            <p class="font-body-sm text-[11px] text-secondary mt-0.5">开启后将在控制台输出详细调试日志</p>
+        <div class="ax-flex ax-items-center ax-gap-md" style="padding-top: 0.75rem; border-bottom: 1px solid rgba(200, 197, 202, 0.4)">
+          <div class="ax-flex-1">
+            <p class="ax-text-body-sm ax-color-primary" style="font-size: 13px; font-weight: 600">调试模式</p>
+            <p class="ax-text-body-sm ax-color-secondary" style="font-size: 11px; margin-top: 0.125rem">开启后将在控制台输出详细调试日志</p>
           </div>
-          <button
-            role="switch"
-            :aria-checked="settings.debugMode"
-            :class="settings.debugMode ? 'bg-primary' : 'bg-outline'"
-            class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors duration-200"
-            @click="toggleNotify(settings, 'debugMode', '调试模式已开启，控制台将输出详细日志', '调试模式已关闭', 'secondary')"
-          >
-            <span
-              :class="settings.debugMode ? 'translate-x-4' : 'translate-x-0'"
-              class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow transition duration-200 ease-in-out"
-            />
-          </button>
+          <AxSwitch :model-value="settings.debugMode" size="sm" @update:model-value="toggleNotify(settings, 'debugMode', '调试模式已开启，控制台将输出详细日志', '调试模式已关闭', 'secondary')" />
         </div>
-        <div class="pt-3 flex justify-end gap-ax-sm">
+        <div class="ax-flex ax-justify-end ax-gap-sm" style="padding-top: 0.75rem">
           <AxButton variant="outline" @click="emit('reset')">重置为默认值</AxButton>
           <AxButton icon="save" @click="emit('save')">保存所有设置</AxButton>
         </div>

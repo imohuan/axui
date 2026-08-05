@@ -56,15 +56,9 @@ const dismiss = () => {
 </script>
 
 <template>
-  <Transition
-    leave-active-class="ax-alert-leave-active"
-    leave-from-class="ax-alert-leave-from"
-    leave-to-class="ax-alert-leave-to"
-  >
-    <div
-      v-show="modelValue"
-      :class="['ax-alert', config.container]"
-    >
+  <Transition leave-active-class="ax-alert-leave-active" leave-from-class="ax-alert-leave-from"
+    leave-to-class="ax-alert-leave-to">
+    <div v-show="modelValue" :class="['ax-alert', config.container]">
       <div class="ax-alert__content">
         <AxIcon :name="config.icon" :size="16" class="ax-alert__icon" />
         <div>
@@ -76,11 +70,7 @@ const dismiss = () => {
           </p>
         </div>
       </div>
-      <button
-        v-if="dismissible"
-        class="ax-alert__close"
-        @click="dismiss"
-      >
+      <button v-if="dismissible" class="ax-alert__close" @click="dismiss">
         <AxIcon name="close" :size="14" />
       </button>
     </div>

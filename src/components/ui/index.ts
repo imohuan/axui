@@ -1,3 +1,8 @@
+import { registerIcons } from '../../icons'
+import { builtinIcons } from '../../icons/builtin'
+
+// Auto-register all builtin icons on module load
+registerIcons(builtinIcons)
 import type { App } from 'vue'
 import AxButton from './AxButton.vue'
 import AxInput from './AxInput.vue'

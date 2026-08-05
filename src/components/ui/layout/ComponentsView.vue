@@ -1,5 +1,5 @@
-﻿<script setup lang="ts">
-import { ref, watch } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import type { PropPanelSchemaItem } from '../types'
 import { FloatingBall } from '../functional'
 import type { FloatingBallPrefs } from '../functional'

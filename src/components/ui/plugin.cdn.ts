@@ -4,6 +4,7 @@ import { builtinIcons } from '../../icons/builtin'
 // import { Toaster } from 'vue-sonner'
 // import 'vue-sonner/style.css'
 import './base.css'
+import 'vue-sonner/style.css'
 import { ThemeEngine } from '../../theme'
 import type { ThemeConfig } from '../../theme'
 

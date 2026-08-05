@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { ref } from 'vue'
 import AxIcon from '../AxIcon.vue'
 
@@ -239,7 +239,7 @@ const settingGroups = [
                   :class="{
                     'ax-bg-surface-container': act.type === 'success',
                     'ax-bg-primary': act.type === 'info',
-                    'ax-bg-surface-container': act.type === 'warning',
+                    'ax-bg-tertiary-container': act.type === 'warning',
                     'ax-bg-error-container': act.type === 'error',
                   }"
                 ></div>
@@ -252,8 +252,8 @@ const settingGroups = [
                     class="ax-text-label-md ax-rounded-sm" style="font-size: 9px; padding: 0 0.25rem; text-transform: uppercase; font-weight: 600"
                     :class="{
                       'ax-bg-surface-container ax-color-primary ax-border': act.type === 'success',
-                      'ax-bg-surface-container ax-color-primary ax-border': act.type === 'info',
-                      'ax-bg-surface-container ax-color-primary ax-border': act.type === 'warning',
+                      'ax-bg-primary-container ax-color-primary ax-border': act.type === 'info',
+                      'ax-bg-tertiary-container ax-color-tertiary ax-border': act.type === 'warning',
                       'ax-bg-error-container ax-color-error ax-border': act.type === 'error',
                     }"
                   >{{ act.type }}</span>

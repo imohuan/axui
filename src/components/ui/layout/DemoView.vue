@@ -209,7 +209,7 @@ const settingGroups = [
                   name="expand_more"
                   :size="16"
                   style="color: var(--ax-color-secondary); flex-shrink: 0"
-                  :class="openFaq === faq.id ? 'ax-select-arrow--open' : ''"
+                  :class="openFaq === faq.id ? 'ax-select-arrow-open' : ''"
                   :style="{ marginLeft: '0.5rem' }"
                 />
               </button>

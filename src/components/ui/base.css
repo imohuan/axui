@@ -6,7 +6,7 @@
    ============================================================ */
 
 body {
-  font-family: 'Geist', sans-serif;
+  font-family: var(--ax-font-family, Geist, sans-serif);
 }
 
 /* 隐藏滚动条 — 应用于 overflow-y: auto 的容器 */

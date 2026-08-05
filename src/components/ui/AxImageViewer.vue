@@ -76,7 +76,7 @@ function handleWheel(e: WheelEvent): void {
 }
 
 function handleMouseDown(e: MouseEvent): void {
-  if ((e.target as HTMLElement).closest('.ax-image-viewer__controls')) return
+  if ((e.target as HTMLElement).closest('.ax-image-viewer-controls')) return
   isDragging.value = true
   dragStartX.value = e.clientX - offsetX.value
   dragStartY.value = e.clientY - offsetY.value
@@ -155,55 +155,55 @@ onBeforeUnmount(() => {
       @mouseup="handleMouseUp"
     >
       <!-- 关闭按钮 -->
-      <button class="ax-image-viewer__close" title="关闭 (Esc)" @click="close">
+      <button class="ax-image-viewer-close" title="关闭 (Esc)" @click="close">
         <AxIcon name="close" :size="20" />
       </button>
 
       <!-- 主内容 -->
-      <div class="ax-image-viewer__container">
+      <div class="ax-image-viewer-container">
         <!-- 上一张 -->
-        <button v-if="isMultiple" class="ax-image-viewer__nav ax-image-viewer__nav--prev" title="上一张 (←)" @click.stop="prevImage">
+        <button v-if="isMultiple" class="ax-image-viewer-nav ax-image-viewer-nav-prev" title="上一张 (←)" @click.stop="prevImage">
           <AxIcon name="chevron_left" :size="24" />
         </button>
 
         <!-- 图片 -->
-        <div class="ax-image-viewer__image-area" @wheel="handleWheel">
+        <div class="ax-image-viewer-image-area" @wheel="handleWheel">
           <img
             v-if="currentImage"
             :src="currentImage"
-            class="ax-image-viewer__image"
-            :class="{ 'ax-image-viewer__image--dragging': isDragging }"
+            class="ax-image-viewer-image"
+            :class="{ 'ax-image-viewer-image-dragging': isDragging }"
             :style="imageStyle"
             draggable="false"
           />
         </div>
 
         <!-- 下一张 -->
-        <button v-if="isMultiple" class="ax-image-viewer__nav ax-image-viewer__nav--next" title="下一张 (→)" @click.stop="nextImage">
+        <button v-if="isMultiple" class="ax-image-viewer-nav ax-image-viewer-nav-next" title="下一张 (→)" @click.stop="nextImage">
           <AxIcon name="chevron_right" :size="24" />
         </button>
       </div>
 
       <!-- 底部控制栏 -->
-      <div class="ax-image-viewer__controls">
-        <div class="ax-image-viewer__controls-inner">
+      <div class="ax-image-viewer-controls">
+        <div class="ax-image-viewer-controls-inner">
           <template v-if="isMultiple">
-            <span class="ax-image-viewer__page">{{ currentIndex + 1 }} / {{ images.length }}</span>
-            <div class="ax-image-viewer__divider" />
+            <span class="ax-image-viewer-page">{{ currentIndex + 1 }} / {{ images.length }}</span>
+            <div class="ax-image-viewer-divider" />
           </template>
 
-          <div class="ax-image-viewer__zoom-group">
-            <button class="ax-image-viewer__btn" title="缩小 (-)" @click="zoomOut"><AxIcon name="zoom_out" :size="14" /></button>
-            <span class="ax-image-viewer__zoom-label">{{ Math.round(scale * 100) }}%</span>
-            <button class="ax-image-viewer__btn" title="放大 (+)" @click="zoomIn"><AxIcon name="zoom_in" :size="14" /></button>
+          <div class="ax-image-viewer-zoom-group">
+            <button class="ax-image-viewer-btn" title="缩小 (-)" @click="zoomOut"><AxIcon name="zoom_out" :size="14" /></button>
+            <span class="ax-image-viewer-zoom-label">{{ Math.round(scale * 100) }}%</span>
+            <button class="ax-image-viewer-btn" title="放大 (+)" @click="zoomIn"><AxIcon name="zoom_in" :size="14" /></button>
           </div>
 
-          <div class="ax-image-viewer__divider" />
-          <button class="ax-image-viewer__btn" title="旋转 (R)" @click="rotateImg"><AxIcon name="rotate_right" :size="14" /></button>
-          <button class="ax-image-viewer__btn" title="翻转 (F)" @click="toggleFlip"><AxIcon name="flip" :size="14" /></button>
-          <button class="ax-image-viewer__btn" title="重置 (0)" @click="reset"><AxIcon name="refresh" :size="14" /></button>
-          <div class="ax-image-viewer__divider" />
-          <button class="ax-image-viewer__btn" title="下载" @click="downloadImage"><AxIcon name="download" :size="14" /></button>
+          <div class="ax-image-viewer-divider" />
+          <button class="ax-image-viewer-btn" title="旋转 (R)" @click="rotateImg"><AxIcon name="rotate_right" :size="14" /></button>
+          <button class="ax-image-viewer-btn" title="翻转 (F)" @click="toggleFlip"><AxIcon name="flip" :size="14" /></button>
+          <button class="ax-image-viewer-btn" title="重置 (0)" @click="reset"><AxIcon name="refresh" :size="14" /></button>
+          <div class="ax-image-viewer-divider" />
+          <button class="ax-image-viewer-btn" title="下载" @click="downloadImage"><AxIcon name="download" :size="14" /></button>
         </div>
       </div>
     </div>

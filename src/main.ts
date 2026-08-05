@@ -6,6 +6,7 @@ import '@fontsource/jetbrains-mono/400.css'
 import '@fontsource/jetbrains-mono/500.css'
 import 'vue-sonner/style.css'
 import './components/ui/base.css'
+import './theme/material.css'
 import App from './App.vue'
 import { registerComponents } from './components/ui'
 

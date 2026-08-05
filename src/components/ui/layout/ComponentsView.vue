@@ -486,7 +486,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
                   <button class="ax-dropdown-item" @click="close()"><AxIcon name="download" :size="16" /><span>导出配置</span></button>
                   <button class="ax-dropdown-item" @click="close()"><AxIcon name="edit" :size="16" /><span>编辑设置</span></button>
                   <div class="ax-dropdown-divider" />
-                  <button class="ax-dropdown-item ax-dropdown-item--danger" @click="close()"><AxIcon name="delete" :size="16" /><span>删除</span></button>
+                  <button class="ax-dropdown-item ax-dropdown-item-danger" @click="close()"><AxIcon name="delete" :size="16" /><span>删除</span></button>
                 </div>
               </template>
             </AxDropdown>
@@ -549,7 +549,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
                       <p class="ax-text-body-sm" style="color: var(--ax-color-secondary); font-size: 11px; line-height: 1.6">新增 Popover 组件，支持富内容展示。</p>
                     </div>
                   </div>
-                  <button class="ax-button ax-button--md ax-button--outline ax-button--block" style="border-radius: var(--ax-radius-md); font-family: var(--ax-font-label-md); font-size: var(--ax-text-label-md-size)" @click="close()">查看全部通知</button>
+                  <button class="ax-button ax-button-outline ax-button-block" style="border-radius: var(--ax-radius-md); font-family: var(--ax-font-label-md); font-size: var(--ax-text-label-md-size)" @click="close()">查看全部通知</button>
                 </div>
               </template>
             </AxDropdown>
@@ -714,7 +714,7 @@ function handleBallSave(prefs: FloatingBallPrefs) {
             </div>
           </div>
           <div style="display: flex; gap: 0.75rem; margin-top: 1rem">
-            <button class="ax-button ax-button--md ax-button--primary" style="border-radius: var(--ax-radius-md)" @click="showBall = !showBall">
+            <button class="ax-button ax-button-primary" style="border-radius: var(--ax-radius-md)" @click="showBall = !showBall">
               {{ showBall ? '隐藏页面悬浮球' : '在页面上展示悬浮球' }}
             </button>
           </div>

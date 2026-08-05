@@ -96,19 +96,19 @@ function handleClick(): void {
   <div
     class="ax-image"
     :class="[
-      !adaptiveAspect ? 'ax-image--fixed' : 'ax-image--auto',
-      adaptiveAspect && loadState !== 'loaded' ? 'ax-image--placeholder' : '',
+      !adaptiveAspect ? 'ax-image-fixed' : 'ax-image-auto',
+      adaptiveAspect && loadState !== 'loaded' ? 'ax-image-placeholder' : '',
     ]"
     @click="handleClick"
   >
     <!-- 加载中 -->
-    <div v-if="loadState === 'loading'" class="ax-image__loading">
+    <div v-if="loadState === 'loading'" class="ax-image-loading">
       <AxIcon name="refresh" :size="20" style="margin-bottom: 0.25rem; animation: spin 1s linear infinite" />
       <span style="font-size: 10px">加载中...</span>
     </div>
 
     <!-- 加载失败 -->
-    <div v-else-if="loadState === 'error'" class="ax-image__error">
+    <div v-else-if="loadState === 'error'" class="ax-image-error">
       <AxIcon name="broken_image" :size="20" style="margin-bottom: 0.25rem" />
       <span style="font-size: 10px; font-weight: 500">加载失败</span>
       <span style="color: var(--ax-color-outline); margin-top: 0.125rem; font-size: 9px">点击重试</span>
@@ -118,10 +118,10 @@ function handleClick(): void {
       :key="imgKey"
       :src="imageSrc"
       :alt="alt"
-      class="ax-image__img"
+      class="ax-image-img"
       :class="[
-        objectFit === 'cover' ? 'ax-image__img--cover' : 'ax-image__img--contain',
-        loadState === 'loaded' ? 'ax-image__img--loaded' : 'ax-image__img--loading',
+        objectFit === 'cover' ? 'ax-image-img-cover' : 'ax-image-img-contain',
+        loadState === 'loaded' ? 'ax-image-img-loaded' : 'ax-image-img-loading',
       ]"
       :loading="imgLoading"
       @load="handleLoad"
@@ -129,7 +129,7 @@ function handleClick(): void {
     />
 
     <!-- Hover 放大提示 -->
-    <div v-if="loadState === 'loaded'" class="ax-image__overlay">
+    <div v-if="loadState === 'loaded'" class="ax-image-overlay">
       <AxIcon name="zoom_in" :size="24" style="color: #fff; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5))" />
     </div>
   </div>

@@ -227,7 +227,7 @@ watch(open, (val) => {
   >
     <!-- ============ Trigger area ============ -->
     <template #trigger="{ open: isOpen }">
-      <div class="ax-select__trigger-wrapper" @click.stop>
+      <div class="ax-select-trigger-wrapper" @click.stop>
         <!-- 搜索模式 -->
         <template v-if="searchable">
           <div
@@ -359,7 +359,7 @@ watch(open, (val) => {
 
     <!-- ============ Dropdown content ============ -->
     <template #default>
-      <div ref="listRef" class="ax-dropdown__body" style="space-y: 2px" @keydown="handleKeydown">
+      <div ref="listRef" class="ax-dropdown-body" style="space-y: 2px" @keydown="handleKeydown">
         <button
           v-for="(opt, index) in filteredOptions"
           :key="opt.value"

@@ -40,15 +40,8 @@
   --ax-color-on-error-container: #93000a;
 
   /* --- Typography --- */
-  --ax-font-display: Geist, sans-serif;
-  --ax-font-headline-lg: Geist, sans-serif;
-  --ax-font-headline-lg-mobile: Geist, sans-serif;
-  --ax-font-headline-md: Geist, sans-serif;
-  --ax-font-headline-sm: Geist, sans-serif;
-  --ax-font-body-lg: Geist, sans-serif;
-  --ax-font-body-sm: Geist, sans-serif;
-  --ax-font-body-md: Geist, sans-serif;
-  --ax-font-label-md: "JetBrains Mono", monospace;
+  --ax-font-family: Geist, sans-serif;
+  --ax-font-mono: "JetBrains Mono", monospace;
 
   /* --- Text Sizes --- */
   --ax-text-display-size: 36px;
@@ -182,7 +175,7 @@
 
 /* ===== Base Styles ===== */
 body {
-  font-family: "Geist", sans-serif;
+  font-family: var(--ax-font-family);
 }
 
 /* ============================================================
@@ -284,20 +277,18 @@ input[type="range"]::-moz-range-thumb {
   align-items: center;
   justify-content: center;
   gap: var(--ax-spacing-xs);
-  font-family: var(--ax-font-label-md);
-  font-size: var(--ax-text-label-md-size);
-  line-height: var(--ax-text-label-md-line-height);
+  font-size: var(--ax-control-font-size);
+  line-height: var(--ax-control-line-height);
   font-weight: var(--ax-text-label-md-weight);
   letter-spacing: var(--ax-text-label-md-letter-spacing);
   transition: background-color var(--ax-transition-normal), opacity var(--ax-transition-normal), color var(--ax-transition-normal);
   outline: none;
   border: 0;
-  border-radius: var(--ax-radius-button);
+  border-radius: var(--ax-control-radius);
   flex-shrink: 0;
   cursor: pointer;
 }
 
-/* --- Button Variants --- */
 .ax-button-primary {
   background-color: var(--ax-color-primary);
   color: var(--ax-color-on-primary);
@@ -420,14 +411,15 @@ input[type="range"]::-moz-range-thumb {
    ============================================================ */
 .ax-input-base {
   width: 100%;
-  font-family: var(--ax-font-label-md);
-  font-size: var(--ax-text-label-md-size);
-  line-height: var(--ax-text-label-md-line-height);
+  height: var(--ax-control-height);
+  padding: var(--ax-control-padding-y) var(--ax-control-padding-x);
+  font-size: var(--ax-control-font-size);
+  line-height: var(--ax-control-line-height);
   font-weight: var(--ax-text-label-md-weight);
   letter-spacing: var(--ax-text-label-md-letter-spacing);
   background-color: var(--ax-color-surface-container-low);
   border: 1px solid var(--ax-color-outline-variant);
-  border-radius: var(--ax-radius-input);
+  border-radius: var(--ax-control-radius);
   transition: border-color var(--ax-transition-fast), box-shadow var(--ax-transition-fast);
   outline: none;
 }
@@ -513,12 +505,12 @@ input[type="range"]::-moz-range-thumb {
    Card 卡片组件 — AxCard.vue
 
    class 层级：
-     .ax-card-base         → 卡片根元素
+     .ax-card         → 卡片根元素
      .ax-card-header       → 卡片头部
      .ax-card-header-title → 头部标题
      .ax-card-body         → 卡片内容区
    ============================================================ */
-.ax-card-base {
+.ax-card {
   background-color: var(--ax-color-surface-container-lowest);
   border: 1px solid var(--ax-color-outline-variant);
   border-radius: var(--ax-radius-card);
@@ -536,7 +528,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-card-header-title {
-  font-family: var(--ax-font-label-md);
   font-size: 11px;
   font-weight: 600;
   color: var(--ax-color-primary);
@@ -580,7 +571,6 @@ input[type="range"]::-moz-range-thumb {
   gap: var(--ax-spacing-sm);
   padding: var(--ax-spacing-xs) var(--ax-spacing-md);
   text-align: left;
-  font-family: var(--ax-font-label-md);
   font-size: var(--ax-text-label-md-size);
   line-height: var(--ax-text-label-md-line-height);
   color: var(--ax-color-primary);
@@ -674,7 +664,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-dialog-title {
-  font-family: var(--ax-font-headline-sm);
   font-size: var(--ax-text-body-md-size);
   font-weight: 600;
   color: var(--ax-color-primary);
@@ -756,7 +745,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-alert-title {
-  font-family: var(--ax-font-body-sm);
   font-size: 11px;
   font-weight: 600;
 }
@@ -913,7 +901,6 @@ input[type="range"]::-moz-range-thumb {
   z-index: 50;
   background-color: var(--ax-color-primary);
   color: var(--ax-color-on-primary);
-  font-family: var(--ax-font-body-sm);
   font-size: 11px;
   padding: var(--ax-spacing-xs) var(--ax-spacing-md);
   border-radius: var(--ax-radius-lg);
@@ -1052,7 +1039,6 @@ input[type="range"]::-moz-range-thumb {
   outline: none;
   color: var(--ax-color-primary);
   font-weight: 500;
-  font-family: var(--ax-font-label-md);
   font-size: var(--ax-text-label-md-size);
   padding: 0;
   margin: 0;
@@ -1069,7 +1055,6 @@ input[type="range"]::-moz-range-thumb {
   gap: var(--ax-spacing-sm);
   padding: var(--ax-spacing-xs) var(--ax-spacing-md);
   text-align: left;
-  font-family: var(--ax-font-label-md);
   font-size: var(--ax-text-label-md-size);
   line-height: var(--ax-text-label-md-line-height);
   border-radius: var(--ax-radius-lg);
@@ -1117,7 +1102,6 @@ input[type="range"]::-moz-range-thumb {
 .ax-select-no-results {
   padding: var(--ax-spacing-md) 0;
   text-align: center;
-  font-family: var(--ax-font-body-sm);
   font-size: 11px;
   color: var(--ax-color-secondary);
 }
@@ -1126,10 +1110,10 @@ input[type="range"]::-moz-range-thumb {
    Icon 图标组件 — AxIcon.vue
 
    class 层级：
-     .ax-icon-base          → 图标根元素
+     .ax-icon          → 图标根元素
      .ax-icon-fallback      → 加载失败回退
    ============================================================ */
-.ax-icon-base {
+.ax-icon {
   display: inline-block;
   vertical-align: middle;
   flex-shrink: 0;
@@ -1146,7 +1130,7 @@ input[type="range"]::-moz-range-thumb {
    Image 图片组件 — AxImage.vue
 
    class 层级：
-     .ax-image-base           → 图片根元素
+     .ax-image           → 图片根元素
      .ax-image-fixed          → 固定高度模式
      .ax-image-auto           → 自适应高度模式
      .ax-image-placeholder    → 占位符模式（1:1）
@@ -1159,7 +1143,7 @@ input[type="range"]::-moz-range-thumb {
      .ax-image-img-loading    → 加载中（opacity: 0）
      .ax-image-overlay        → hover 叠加层
    ============================================================ */
-.ax-image-base {
+.ax-image {
   position: relative;
   width: 100%;
   cursor: pointer;
@@ -1233,7 +1217,7 @@ input[type="range"]::-moz-range-thumb {
   transition: background-color var(--ax-transition-slow), opacity var(--ax-transition-slow);
 }
 
-.ax-image-base:hover .ax-image-overlay {
+.ax-image:hover .ax-image-overlay {
   background-color: rgba(0, 0, 0, 0.3);
   opacity: 1;
 }
@@ -1242,7 +1226,7 @@ input[type="range"]::-moz-range-thumb {
    ImageViewer 图片查看器组件 — AxImageViewer.vue
 
    class 层级：
-     .ax-image-viewer-base        → 查看器根元素（全屏遮罩）
+     .ax-image-viewer        → 查看器根元素（全屏遮罩）
      .ax-image-viewer-close       → 关闭按钮
      .ax-image-viewer-container   → 内容容器
      .ax-image-viewer-nav         → 前后导航按钮
@@ -1259,7 +1243,7 @@ input[type="range"]::-moz-range-thumb {
      .ax-image-viewer-zoom-label  → 缩放百分比
      .ax-image-viewer-btn         → 控制栏按钮
    ============================================================ */
-.ax-image-viewer-base {
+.ax-image-viewer {
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -1384,7 +1368,7 @@ input[type="range"]::-moz-range-thumb {
   color: #71717a;
   letter-spacing: 0.1em;
   padding: 0 6px;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--ax-font-mono);
 }
 
 .ax-image-viewer-divider {
@@ -1408,7 +1392,7 @@ input[type="range"]::-moz-range-thumb {
   text-align: center;
   font-size: 11px;
   color: #ffffff;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--ax-font-mono);
 }
 
 .ax-image-viewer-btn {
@@ -1435,7 +1419,7 @@ input[type="range"]::-moz-range-thumb {
    JsonViewer JSON查看器组件 — AxJsonViewer.vue
 
    class 层级：
-     .ax-json-viewer-base        → 查看器根元素
+     .ax-json-viewer        → 查看器根元素
      .ax-json-viewer-wrap        → 换行模式
      .ax-json-viewer-nowrap      → 不换行模式（横向滚动）
      .ax-json-viewer-row         → 每行
@@ -1455,9 +1439,9 @@ input[type="range"]::-moz-range-thumb {
      .ax-json-viewer-tree-line   → 树形连线
      .ax-json-viewer-children    → 子节点容器
    ============================================================ */
-.ax-json-viewer-base {
+.ax-json-viewer {
   user-select: text;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--ax-font-mono);
   font-size: 12px;
   line-height: 1.5;
 }
@@ -1564,7 +1548,7 @@ input[type="range"]::-moz-range-thumb {
    PropPanel 属性面板组件 — AxPropPanel.vue
 
    class 层级：
-     .ax-prop-panel-base        → 面板根元素
+     .ax-prop-panel        → 面板根元素
      .ax-prop-panel-title       → 面板标题
      .ax-prop-panel-item        → 属性行
      .ax-prop-panel-label-area  → 标签区域
@@ -1572,12 +1556,12 @@ input[type="range"]::-moz-range-thumb {
      .ax-prop-panel-description → 属性描述
      .ax-prop-panel-control     → 控件区域
    ============================================================ */
-.ax-prop-panel-base {
+.ax-prop-panel {
   width: 100%;
 }
 
 .ax-prop-panel-title {
-  font-family: var(--ax-font-label-md);
+  font-family: var(--ax-font-mono);
   font-size: 10px;
   color: var(--ax-color-secondary);
   text-transform: uppercase;
@@ -1602,7 +1586,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-prop-panel-label {
-  font-family: var(--ax-font-body-sm);
   font-size: 12px;
   font-weight: 600;
   color: var(--ax-color-primary);
@@ -1611,7 +1594,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-prop-panel-description {
-  font-family: var(--ax-font-body-sm);
   font-size: 10px;
   color: var(--ax-color-secondary);
   margin-top: 0.125rem;
@@ -1629,9 +1611,9 @@ input[type="range"]::-moz-range-thumb {
    Segmented 分段控制器组件 — AxSegmented.vue
 
    class 层级：
-     .ax-segmented-base → 分段器根元素
+     .ax-segmented → 分段器根元素
    ============================================================ */
-.ax-segmented-base {
+.ax-segmented {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -1701,47 +1683,18 @@ input[type="range"]::-moz-range-thumb {
    Nav Items 导航项
 
    class 层级：
-     .ax-nav-item-base     → 主导航项
+     .ax-nav-item     → 主导航项
      .ax-nav-item-active   → 激活状态
      .ax-nav-item-inactive → 未激活状态
      .ax-nav-subitem       → 子导航项
      .ax-nav-subitem-dot   → 子项小圆点
    ============================================================ */
-.ax-nav-item-base {
+.ax-nav-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: var(--ax-radius-xl);
   padding: var(--ax-spacing-xs) var(--ax-spacing-sm);
-  font-family: var(--ax-font-label-md);
-  font-size: var(--ax-text-label-md-size);
-  line-height: var(--ax-text-label-md-line-height);
-  transition: all var(--ax-transition-fast);
-  cursor: pointer;
-  user-select: none;
-}
-
-.ax-nav-item-active {
-  background-color: var(--ax-color-secondary-container);
-  color: var(--ax-color-on-secondary-container);
-  font-weight: 500;
-}
-
-.ax-nav-item-inactive {
-  color: var(--ax-color-secondary);
-}
-
-.ax-nav-item-inactive:hover {
-  background-color: var(--ax-color-surface-container-low);
-}
-
-.ax-nav-subitem {
-  display: flex;
-  align-items: center;
-  gap: var(--ax-spacing-sm);
-  border-radius: var(--ax-radius-lg);
-  padding: var(--ax-spacing-xs) var(--ax-spacing-sm);
-  font-family: var(--ax-font-body-sm);
   font-size: var(--ax-text-body-sm-size);
   line-height: var(--ax-text-body-sm-line-height);
   color: var(--ax-color-secondary);
@@ -1767,7 +1720,7 @@ input[type="range"]::-moz-range-thumb {
    Notification Panel 通知面板
 
    class 层级：
-     .ax-notification-panel-base → 通知面板根元素
+     .ax-notification-panel → 通知面板根元素
      .ax-notification-log        → 单条通知日志
      .ax-notification-log-time   → 时间戳
      .ax-notification-log-badge  → 徽章
@@ -1778,7 +1731,7 @@ input[type="range"]::-moz-range-thumb {
      .ax-notification-log-title  → 通知标题
      .ax-notification-log-message → 通知内容
    ============================================================ */
-.ax-notification-panel-base {
+.ax-notification-panel {
   position: fixed;
   inset-y: 0;
   right: 0;
@@ -1801,13 +1754,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-notification-log-time {
-  font-family: var(--ax-font-label-md);
-  font-size: 10px;
-  color: var(--ax-color-secondary);
-}
-
-.ax-notification-log-badge {
-  font-family: var(--ax-font-label-md);
   font-size: 9px;
   padding: 0 var(--ax-spacing-xs);
   border-radius: var(--ax-radius-sm);
@@ -1837,7 +1783,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-notification-log-title {
-  font-family: var(--ax-font-body-sm);
   font-size: 11px;
   font-weight: 600;
   color: var(--ax-color-primary);
@@ -1845,7 +1790,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-notification-log-message {
-  font-family: var(--ax-font-body-sm);
   font-size: 10px;
   color: var(--ax-color-on-surface-variant);
   line-height: 1.6;
@@ -1907,11 +1851,11 @@ input[type="range"]::-moz-range-thumb {
    FloatingBall 悬浮球组件 — FloatingBall.vue
 
    class 层级：
-     .ax-floating-ball-base   → 悬浮球根元素
+     .ax-floating-ball   → 悬浮球根元素
      .ax-floating-ball-light  → 亮色主题
      .ax-floating-ball-dark   → 暗色主题
    ============================================================ */
-.ax-floating-ball-base {
+.ax-floating-ball {
   position: fixed;
   z-index: 100;
   border-radius: var(--ax-radius-full);
@@ -1924,7 +1868,7 @@ input[type="range"]::-moz-range-thumb {
   transition: transform var(--ax-transition-fast);
 }
 
-.ax-floating-ball-base:active {
+.ax-floating-ball:active {
   cursor: grabbing;
 }
 
@@ -1953,7 +1897,6 @@ input[type="range"]::-moz-range-thumb {
      .ax-text-label-md      → 标签文字
    ============================================================ */
 .ax-text-display {
-  font-family: var(--ax-font-display);
   font-size: var(--ax-text-display-size);
   line-height: var(--ax-text-display-line-height);
   letter-spacing: var(--ax-text-display-letter-spacing);
@@ -1961,7 +1904,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-text-headline-lg {
-  font-family: var(--ax-font-headline-lg);
   font-size: var(--ax-text-headline-lg-size);
   line-height: var(--ax-text-headline-lg-line-height);
   letter-spacing: var(--ax-text-headline-lg-letter-spacing);
@@ -1969,7 +1911,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-text-headline-md {
-  font-family: var(--ax-font-headline-md);
   font-size: var(--ax-text-headline-md-size);
   line-height: var(--ax-text-headline-md-line-height);
   letter-spacing: var(--ax-text-headline-md-letter-spacing);
@@ -1977,35 +1918,31 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .ax-text-headline-sm {
-  font-family: var(--ax-font-headline-sm);
   font-size: var(--ax-text-headline-sm-size);
   line-height: var(--ax-text-headline-sm-line-height);
   font-weight: var(--ax-text-headline-sm-weight);
 }
 
 .ax-text-body-lg {
-  font-family: var(--ax-font-body-lg);
   font-size: var(--ax-text-body-lg-size);
   line-height: var(--ax-text-body-lg-line-height);
   font-weight: var(--ax-text-body-lg-weight);
 }
 
 .ax-text-body-md {
-  font-family: var(--ax-font-body-md);
   font-size: var(--ax-text-body-md-size);
   line-height: var(--ax-text-body-md-line-height);
   font-weight: var(--ax-text-body-md-weight);
 }
 
 .ax-text-body-sm {
-  font-family: var(--ax-font-body-sm);
   font-size: var(--ax-text-body-sm-size);
   line-height: var(--ax-text-body-sm-line-height);
   font-weight: var(--ax-text-body-sm-weight);
 }
 
 .ax-text-label-md {
-  font-family: var(--ax-font-label-md);
+  font-family: var(--ax-font-mono);
   font-size: var(--ax-text-label-md-size);
   line-height: var(--ax-text-label-md-line-height);
   letter-spacing: var(--ax-text-label-md-letter-spacing);
@@ -2121,3 +2058,260 @@ input[type="range"]::-moz-range-thumb {
 .ax-notification-panel-leave-to {
   transform: translateX(100%);
 }
+
+/* ============================================================
+   Layout 布局辅助 class — ConsoleLayout.vue 侧边栏/顶栏/底栏子元素
+   ============================================================ */
+
+/* 布局根容器 — 全屏 flex 横向布局 */
+.ax-layout-root {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* 主内容弹性区 — flex-1 纵向 flex */
+.ax-layout-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--ax-color-background);
+}
+
+/* --- 侧边栏子元素 --- */
+
+/* 侧边栏品牌区 */
+.ax-sidebar-brand { display: flex; align-items: center; gap: var(--ax-spacing-sm); padding: 0 0.5rem; }
+
+/* 品牌 Logo 容器 */
+.ax-sidebar-brand-logo {
+  width: 1.75rem; height: 1.75rem;
+  background-color: var(--ax-color-primary); border-radius: var(--ax-radius-lg);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ax-color-on-primary);
+}
+
+/* 品牌文字区 */
+.ax-sidebar-brand-text { /* 容器，无额外样式 */ }
+
+/* 版本信息行 */
+.ax-sidebar-brand-version { display: flex; align-items: center; gap: var(--ax-spacing-xs); }
+
+/* 版本状态点 */
+.ax-sidebar-brand-dot {
+  display: inline-block; width: 6px; height: 6px;
+  border-radius: var(--ax-radius-full); background-color: var(--ax-color-primary);
+}
+
+/* 搜索框容器 */
+.ax-sidebar-search { padding: 0 0.5rem; }
+
+/* 搜索框内部 */
+.ax-sidebar-search-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  background-color: var(--ax-color-surface-container-low);
+  border: 1px solid var(--ax-color-outline-variant); border-radius: var(--ax-radius-lg);
+  padding: 0.375rem 0.5rem; cursor: pointer;
+}
+
+/* 搜索框快捷键 */
+.ax-sidebar-search-kbd {
+  font-size: 10px; padding: 0 0.25rem;
+  background-color: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant);
+  border-radius: var(--ax-radius-sm);
+}
+
+/* 导航分组标题 */
+.ax-sidebar-nav-section {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em;
+  padding: 0 0.5rem; padding-bottom: 0.25rem;
+}
+
+/* 导航项左侧图标区 */
+.ax-sidebar-nav-item { display: flex; align-items: center; gap: var(--ax-spacing-sm); }
+
+/* 导航项右侧元数据 */
+.ax-sidebar-nav-item-meta { display: flex; align-items: center; gap: var(--ax-spacing-xs); }
+
+/* 导航项角标 */
+.ax-sidebar-nav-item-badge {
+  font-size: 10px; padding: 0.125rem 0.375rem; font-weight: 500;
+  background-color: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant);
+  border-radius: var(--ax-radius-sm);
+}
+
+/* 导航项展开箭头 */
+.ax-sidebar-nav-item-arrow { flex-shrink: 0; }
+
+/* 子导航容器 */
+.ax-sidebar-nav-sub { /* 由内联 style 控制显示 */ }
+
+/* 用户信息区 */
+.ax-sidebar-user {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 0.5rem; padding-top: 1rem;
+  border-top: 1px solid var(--ax-color-outline-variant);
+  width: 100%;
+}
+
+/* 用户头像 */
+.ax-sidebar-user-avatar {
+  width: 2rem; height: 2rem;
+  background-color: var(--ax-color-surface-container); border: 1px solid var(--ax-color-outline-variant);
+  border-radius: var(--ax-radius-full);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; font-family: var(--ax-font-mono);
+}
+
+/* 用户信息文字 */
+.ax-sidebar-user-info { overflow: hidden; width: 6rem; }
+
+/* --- 顶栏子元素 --- */
+
+/* 面包屑 */
+.ax-header-breadcrumb { display: flex; align-items: center; gap: var(--ax-spacing-sm); }
+
+/* 面包屑分隔符 */
+.ax-header-breadcrumb-sep { color: var(--ax-color-outline-variant); }
+
+/* 面包屑当前页 */
+.ax-header-breadcrumb-current { font-weight: 500; }
+
+/* 顶栏右侧操作区 */
+.ax-header-actions { display: flex; align-items: center; gap: var(--ax-spacing-md); }
+
+/* 时间显示 */
+.ax-header-time {
+  border: 1px solid var(--ax-color-outline-variant);
+  background-color: var(--ax-color-surface-container-low); border-radius: var(--ax-radius-lg);
+  display: flex; align-items: center; gap: var(--ax-spacing-xs);
+  padding: 0.25rem 0.625rem;
+}
+
+/* 搜索框容器 */
+.ax-header-search { position: relative; }
+
+/* 通知按钮 */
+.ax-header-notify-btn { position: relative; }
+
+/* 通知角标 */
+.ax-header-notify-badge {
+  position: absolute; top: -0.25rem; right: -0.25rem;
+  width: 0.875rem; height: 0.875rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700;
+  color: var(--ax-color-on-primary);
+}
+
+/* --- 底栏子元素 --- */
+
+/* 底栏左侧 */
+.ax-footer-left { display: flex; align-items: center; gap: var(--ax-spacing-md); }
+
+/* 底栏状态 */
+.ax-footer-status { display: flex; align-items: center; gap: var(--ax-spacing-xs); }
+
+/* 状态点 */
+.ax-footer-status-dot {
+  display: inline-block; width: 0.5rem; height: 0.5rem;
+  border-radius: var(--ax-radius-full); background-color: #10b981;
+}
+
+/* 底栏右侧 */
+.ax-footer-right { display: flex; align-items: center; gap: var(--ax-spacing-sm); }
+
+/* 底栏链接 */
+.ax-footer-link { display: flex; align-items: center; gap: var(--ax-spacing-xs); font-size: 11px; }
+
+/* 底栏分隔符 */
+.ax-footer-separator { color: var(--ax-color-outline-variant); }
+
+/* --- 通知面板子元素 --- */
+
+/* 面板头部 */
+.ax-notification-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 0.5rem; margin-bottom: 1rem;
+  border-bottom: 1px solid var(--ax-color-outline-variant);
+}
+
+/* 面板滚动区 */
+.ax-notification-panel-body {
+  overflow-y: auto; max-height: 70vh; padding-right: 0.25rem;
+}
+
+/* 面板空状态 */
+.ax-notification-panel-empty { text-align: center; padding: 3rem 0; }
+
+/* --- Dialog 内容辅助 class --- */
+
+/* 对话框内容区块 */
+.ax-dialog-content-section { margin-top: var(--ax-spacing-sm); }
+
+/* 对话框标签 */
+.ax-dialog-content-label { font-weight: 600; display: block; }
+
+/* 对话框描述 */
+.ax-dialog-content-desc { font-size: 11px; }
+
+/* --- Slider 辅助 class --- */
+
+/* 滑块行 */
+.ax-slider-row { display: flex; align-items: center; gap: var(--ax-spacing-sm); }
+
+/* 滑块标签区 */
+.ax-slider-labels { display: flex; align-items: center; gap: var(--ax-spacing-xs); flex-shrink: 0; }
+
+/* 滑块标签 */
+.ax-slider-label { font-size: 11px; color: var(--ax-color-secondary); }
+
+/* 滑块值徽章 */
+.ax-slider-value-badge {
+  font-size: 11px; font-weight: 700;
+  color: var(--ax-color-primary);
+  padding: 0 0.25rem;
+  background-color: var(--ax-color-surface-container);
+  border: 1px solid var(--ax-color-outline-variant);
+  border-radius: var(--ax-radius-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 滑块标签两端对齐 */
+.ax-slider-labels-between { display: flex; justify-content: space-between; }
+
+/* 滑块标签右对齐 */
+.ax-slider-labels-end { display: flex; justify-content: flex-end; }
+
+/* --- PropPanel 辅助 class --- */
+
+/* 属性面板滑块行 */
+.ax-prop-panel-slider-row { display: flex; align-items: center; gap: var(--ax-spacing-sm); }
+
+/* 属性面板值 */
+.ax-prop-panel-value {
+  font-size: 10px; font-weight: 600;
+  font-family: var(--ax-font-mono); color: var(--ax-color-primary);
+  width: 1.5rem; text-align: right; font-variant-numeric: tabular-nums;
+}
+
+/* --- JsonViewer 辅助 class --- */
+
+/* JSON 查看器值默认颜色 */
+.ax-json-viewer-value-default { color: var(--ax-color-primary); }
+
+/* --- FloatingBall 辅助 class --- */
+
+/* 悬浮球外层容器 */
+.ax-floating-ball-wrapper { position: fixed; }
+
+/* --- Tooltip 辅助 class --- */
+
+/* 气泡触发器 */
+.ax-tooltip-trigger { display: inline-flex; }
+
+/* --- Select 辅助 class --- */
+
+/* 选择器触发器外层 */
+.ax-select-trigger-wrapper { /* 容器 */ }

@@ -10,19 +10,19 @@ interface AlertConfig {
 
 const TYPE_CONFIG: Record<AlertType, AlertConfig> = {
   info: {
-    container: 'ax-alert--info',
+    container: 'ax-alert-info',
     icon: 'info',
   },
   error: {
-    container: 'ax-alert--error',
+    container: 'ax-alert-error',
     icon: 'error',
   },
   success: {
-    container: 'ax-alert--success',
+    container: 'ax-alert-success',
     icon: 'check_circle',
   },
   warning: {
-    container: 'ax-alert--warning',
+    container: 'ax-alert-warning',
     icon: 'warning',
   },
 }
@@ -59,18 +59,18 @@ const dismiss = () => {
   <Transition leave-active-class="ax-alert-leave-active" leave-from-class="ax-alert-leave-from"
     leave-to-class="ax-alert-leave-to">
     <div v-show="modelValue" :class="['ax-alert', config.container]">
-      <div class="ax-alert__content">
-        <AxIcon :name="config.icon" :size="16" class="ax-alert__icon" />
+      <div class="ax-alert-content">
+        <AxIcon :name="config.icon" :size="16" class="ax-alert-icon" />
         <div>
-          <p v-if="title" class="ax-alert__title">
+          <p v-if="title" class="ax-alert-title">
             {{ title }}
           </p>
-          <p class="ax-alert__description">
+          <p class="ax-alert-description">
             <slot />
           </p>
         </div>
       </div>
-      <button v-if="dismissible" class="ax-alert__close" @click="dismiss">
+      <button v-if="dismissible" class="ax-alert-close" @click="dismiss">
         <AxIcon name="close" :size="14" />
       </button>
     </div>

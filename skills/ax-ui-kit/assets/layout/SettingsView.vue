@@ -138,8 +138,8 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
                 { v: 'auto', i: 'computer' },
               ]"
               :key="t.v"
-              :class="settings.theme === t.v ? 'ax-button--primary' : 'ax-button--ghost'"
-              class="ax-button ax-button--sm" style="display: flex; align-items: center; gap: 0.5rem"
+              :class="settings.theme === t.v ? 'ax-button-primary' : 'ax-button-ghost'"
+              class="ax-button" style="display: flex; align-items: center; gap: 0.5rem"
               @click="settings.theme = t.v"
             >
               <AxIcon :name="t.i" :size="14" />
@@ -264,7 +264,7 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
           <textarea
             v-model="settings.ipList"
             rows="3"
-            class="ax-input ax-input--textarea ax-input--textarea-sm"
+            class="ax-input ax-input-textarea"
             style="width: 100%; padding: 0.625rem; font-size: 11px; resize: none"
             placeholder="每行输入一个 IP 或 CIDR 段&#10;例如: 192.168.1.0/24&#10;     10.0.0.1"
           />
@@ -309,7 +309,7 @@ function toggleNotify(settings: AppSettings, key: ToggleKey, msgOn: string, msgO
           <textarea
             v-model="settings.startupScript"
             rows="5"
-            class="ax-input ax-input--textarea ax-input--textarea-md"
+            class="ax-input ax-input-textarea"
             style="width: 100%; padding: 0.75rem; font-size: 11px; resize: none"
             placeholder="#!/bin/bash&#10;# 在此输入启动脚本...&#10;echo 'Axiom Console initializing...'"
           />

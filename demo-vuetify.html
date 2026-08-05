@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — Vuetify 3</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.13.0/dist/vuetify.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:400,500,700">
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+    .nav-drawer .v-list-item--active { background: rgba(var(--v-theme-primary), 0.08); }
+    .nav-drawer .v-list-item--active .v-list-item-title { font-weight: 700; }
+    .page-title { font-size: 1.5rem; font-weight: 600; }
+    .stat-card { border-radius: 12px; transition: transform 0.15s, box-shadow 0.15s; }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important; }
+    .v-card.stat-card { box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <!-- Navigation Drawer -->
+      <v-navigation-drawer v-model="drawer" class="nav-drawer" rail expand-on-hover permanent>
+        <v-list density="compact" nav>
+          <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" value="dashboard" color="primary"
+            :active="currentPage === 'dashboard'" @click="currentPage = 'dashboard'"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-group" title="Users" value="users" color="primary"
+            :active="currentPage === 'users'" @click="currentPage = 'users'"></v-list-item>
+          <v-list-item prepend-icon="mdi-cart" title="Orders" value="orders" color="primary"
+            :active="currentPage === 'orders'" @click="currentPage = 'orders'"></v-list-item>
+          <v-list-item prepend-icon="mdi-chart-bar" title="Analytics" value="analytics" color="primary"
+            :active="currentPage === 'analytics'" @click="currentPage = 'analytics'"></v-list-item>
+          <v-list-item prepend-icon="mdi-file-document" title="Documents" value="documents" color="primary"
+            :active="currentPage === 'documents'" @click="currentPage = 'documents'"></v-list-item>
+          <v-list-item prepend-icon="mdi-cog" title="Settings" value="settings" color="primary"
+            :active="currentPage === 'settings'" @click="currentPage = 'settings'"></v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+
+      <!-- App Bar -->
+      <v-app-bar color="primary" elevation="1">
+        <v-app-bar-nav-icon variant="text" @click="drawer = !drawer" color="white"></v-app-bar-nav-icon>
+        <v-app-bar-title class="text-white font-weight-bold">AdminPanel</v-app-bar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon variant="text" color="white">
+          <v-icon>mdi-bell</v-icon>
+          <v-badge v-if="notificationCount > 0" :content="notificationCount" color="error" floating dot offset-x="2" offset-y="2"></v-badge>
+        </v-btn>
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn icon variant="text" color="white" v-bind="props">
+              <v-icon>mdi-account-circle</v-icon>
+            </v-btn>
+          </template>
+          <v-list density="compact">
+            <v-list-item prepend-icon="mdi-account" title="Profile" @click=""></v-list-item>
+            <v-list-item prepend-icon="mdi-logout" title="Logout" @click=""></v-list-item>
+          </v-list>
+        </v-menu>
+      </v-app-bar>
+
+      <v-main style="background: #f5f5f5; height: 100vh;">
+        <v-container fluid class="pa-6">
+
+          <!-- ==================== Dashboard Page ==================== -->
+          <div v-if="currentPage === 'dashboard'">
+            <h2 class="page-title mb-4">Dashboard</h2>
+
+            <!-- Stat Cards -->
+            <v-row>
+              <v-col cols="12" sm="6" lg="3" v-for="stat in stats" :key="stat.title">
+                <v-card class="stat-card pa-4" variant="flat" rounded="lg">
+                  <div class="d-flex align-center justify-space-between mb-2">
+                    <span class="text-caption text-medium-emphasis text-uppercase">{{ stat.title }}</span>
+                    <v-avatar :color="stat.color" size="40" rounded="lg">
+                      <v-icon :icon="stat.icon" color="white" size="22"></v-icon>
+                    </v-avatar>
+                  </div>
+                  <div class="text-h5 font-weight-bold mb-1">{{ stat.value }}</div>
+                  <div class="d-flex align-center">
+                    <v-icon :icon="stat.trend > 0 ? 'mdi-arrow-up' : 'mdi-arrow-down'"
+                      :color="stat.trend > 0 ? 'success' : 'error'" size="16" class="mr-1"></v-icon>
+                    <span :class="stat.trend > 0 ? 'text-success' : 'text-error'" class="text-caption font-weight-medium">
+                      {{ Math.abs(stat.trend) }}%
+                    </span>
+                    <span class="text-caption text-medium-emphasis ml-1">vs last month</span>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+
+            <!-- Charts Row -->
+            <v-row>
+              <v-col cols="12" lg="8">
+                <v-card variant="flat" rounded="lg" class="pa-4">
+                  <v-card-title class="text-subtitle-1 font-weight-bold pa-0 mb-3">Revenue Overview</v-card-title>
+                  <div class="d-flex align-end" style="height: 220px; gap: 16px;">
+                    <div v-for="(bar, i) in chartBars" :key="i" style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                      <span class="text-caption mb-1 font-weight-medium">{{ bar.label }}</span>
+                      <div :style="{ height: bar.height + 'px', width: '100%', maxWidth: '40px', background: 'rgb(var(--v-theme-primary))', borderRadius: '6px 6px 0 0', transition: 'height 0.6s ease' }"></div>
+                      <span class="text-caption mt-1">{{ bar.value }}</span>
+                    </div>
+                  </div>
+                </v-card>
+              </v-col>
+
+              <v-col cols="12" lg="4">
+                <v-card variant="flat" rounded="lg" class="pa-4">
+                  <v-card-title class="text-subtitle-1 font-weight-bold pa-0 mb-3">Recent Activity</v-card-title>
+                  <v-timeline density="compact" side="end" truncate-line="start" align="start">
+                    <v-timeline-item v-for="(event, i) in activityEvents" :key="i"
+                      :dot-color="event.color" size="x-small" :icon="event.icon" fill-dot>
+                      <div class="text-body-2 font-weight-medium">{{ event.text }}</div>
+                      <div class="text-caption text-medium-emphasis">{{ event.time }}</div>
+                    </v-timeline-item>
+                  </v-timeline>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
+
+          <!-- ==================== Users Page ==================== -->
+          <div v-if="currentPage === 'users'">
+            <div class="d-flex align-center justify-space-between mb-4">
+              <h2 class="page-title">Users</h2>
+              <v-btn color="primary" variant="elevated" prepend-icon="mdi-plus" @click="userDialog = true">Add User</v-btn>
+            </div>
+
+            <v-card variant="flat" rounded="lg">
+              <v-card-text class="pa-0">
+                <!-- Search + Filter bar -->
+                <div class="d-flex align-center pa-4" style="gap: 12px;">
+                  <v-text-field v-model="userSearch" prepend-inner-icon="mdi-magnify" label="Search users..."
+                    variant="outlined" density="compact" hide-details clearable style="max-width: 300px;"></v-text-field>
+                  <v-spacer></v-spacer>
+                  <v-select v-model="userRoleFilter" :items="['All', 'Admin', 'Editor', 'Viewer']" label="Role"
+                    variant="outlined" density="compact" hide-details style="max-width: 140px;"></v-select>
+                </div>
+
+                <v-data-table-virtual
+                  v-model:items-per-page="usersPerPage"
+                  v-model:page="usersPage"
+                  :headers="userHeaders"
+                  :items="filteredUsers"
+                  :items-per-page-options="[5, 10, 25]"
+                  :search="userSearch"
+                  hover
+                  item-value="id"
+                >
+                  <template v-slot:item.status="{ item }">
+                    <v-chip :color="item.status === 'Active' ? 'success' : 'error'" size="small" variant="flat"
+                      label>{{ item.status }}</v-chip>
+                  </template>
+                  <template v-slot:item.role="{ item }">
+                    <v-chip size="small" variant="outlined" label>{{ item.role }}</v-chip>
+                  </template>
+                  <template v-slot:item.actions="{ item }">
+                    <v-btn icon variant="text" size="small" color="primary" @click="editUser(item)">
+                      <v-icon size="18">mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn icon variant="text" size="small" color="error" @click="deleteUser(item)">
+                      <v-icon size="18">mdi-delete</v-icon>
+                    </v-btn>
+                  </template>
+                </v-data-table-virtual>
+              </v-card-text>
+            </v-card>
+          </div>
+
+          <!-- ==================== Orders Page ==================== -->
+          <div v-if="currentPage === 'orders'">
+            <h2 class="page-title mb-4">Orders</h2>
+            <v-card variant="flat" rounded="lg">
+              <v-card-text class="pa-0">
+                <div class="d-flex align-center pa-4" style="gap: 12px;">
+                  <v-text-field v-model="orderSearch" prepend-inner-icon="mdi-magnify" label="Search orders..."
+                    variant="outlined" density="compact" hide-details clearable style="max-width: 300px;"></v-text-field>
+                  <v-spacer></v-spacer>
+                  <v-select v-model="orderStatusFilter" :items="['All', 'Completed', 'Pending', 'Cancelled']" label="Status"
+                    variant="outlined" density="compact" hide-details style="max-width: 160px;"></v-select>
+                </div>
+
+                <v-data-table-virtual
+                  v-model:items-per-page="ordersPerPage"
+                  v-model:page="ordersPage"
+                  :headers="orderHeaders"
+                  :items="filteredOrders"
+                  :items-per-page-options="[5, 10, 25]"
+                  :search="orderSearch"
+                  hover
+                  item-value="id"
+                >
+                  <template v-slot:item.status="{ item }">
+                    <v-chip :color="orderStatusColor(item.status)" size="small" variant="flat" label>{{ item.status }}</v-chip>
+                  </template>
+                  <template v-slot:item.amount="{ item }">
+                    <span class="font-weight-medium">${{ item.amount.toLocaleString() }}</span>
+                  </template>
+                </v-data-table-virtual>
+              </v-card-text>
+            </v-card>
+          </div>
+
+          <!-- ==================== Analytics Page ==================== -->
+          <div v-if="currentPage === 'analytics'">
+            <h2 class="page-title mb-4">Analytics</h2>
+            <v-row>
+              <v-col cols="12" md="6" v-for="metric in analyticsMetrics" :key="metric.label">
+                <v-card variant="flat" rounded="lg" class="pa-4">
+                  <div class="text-caption text-medium-emphasis mb-1">{{ metric.label }}</div>
+                  <div class="d-flex align-end justify-space-between">
+                    <div>
+                      <span class="text-h4 font-weight-bold">{{ metric.value }}</span>
+                      <span class="text-body-2 text-medium-emphasis ml-1">{{ metric.unit }}</span>
+                    </div>
+                    <div :class="metric.trend > 0 ? 'text-success' : 'text-error'" class="d-flex align-center">
+                      <v-icon :icon="metric.trend > 0 ? 'mdi-trending-up' : 'mdi-trending-down'" size="20"></v-icon>
+                      <span class="text-caption font-weight-bold">{{ Math.abs(metric.trend) }}%</span>
+                    </div>
+                  </div>
+                  <v-progress-linear :model-value="metric.progress" :color="metric.color" height="6" rounded
+                    class="mt-3"></v-progress-linear>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
+
+          <!-- ==================== Documents Page ==================== -->
+          <div v-if="currentPage === 'documents'">
+            <div class="d-flex align-center justify-space-between mb-4">
+              <h2 class="page-title">Documents</h2>
+              <v-btn color="primary" variant="elevated" prepend-icon="mdi-upload" @click="">Upload</v-btn>
+            </div>
+            <v-row>
+              <v-col cols="12" sm="6" lg="4" v-for="doc in documents" :key="doc.id">
+                <v-card variant="flat" rounded="lg" class="pa-4 stat-card">
+                  <div class="d-flex align-start">
+                    <v-avatar :color="doc.color" size="44" rounded="lg" class="mr-3">
+                      <v-icon :icon="doc.icon" color="white" size="22"></v-icon>
+                    </v-avatar>
+                    <div style="flex: 1;">
+                      <div class="text-body-2 font-weight-bold mb-1">{{ doc.name }}</div>
+                      <div class="text-caption text-medium-emphasis">{{ doc.size }} · {{ doc.modified }}</div>
+                    </div>
+                    <v-menu>
+                      <template v-slot:activator="{ props }">
+                        <v-btn icon variant="text" size="small" v-bind="props"><v-icon size="18">mdi-dots-vertical</v-icon></v-btn>
+                      </template>
+                      <v-list density="compact">
+                        <v-list-item prepend-icon="mdi-download" title="Download"></v-list-item>
+                        <v-list-item prepend-icon="mdi-share-variant" title="Share"></v-list-item>
+                        <v-list-item prepend-icon="mdi-delete" title="Delete"></v-list-item>
+                      </v-list>
+                    </v-menu>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
+
+          <!-- ==================== Settings Page ==================== -->
+          <div v-if="currentPage === 'settings'">
+            <h2 class="page-title mb-4">Settings</h2>
+
+            <v-row>
+              <!-- General Settings -->
+              <v-col cols="12" lg="6">
+                <v-card variant="flat" rounded="lg" class="pa-4">
+                  <v-card-title class="text-subtitle-1 font-weight-bold pa-0 mb-4">General</v-card-title>
+
+                  <v-text-field v-model="settings.siteName" label="Site Name" variant="outlined" density="compact"
+                    class="mb-3"></v-text-field>
+                  <v-text-field v-model="settings.adminEmail" label="Admin Email" variant="outlined" density="compact"
+                    type="email" class="mb-3"></v-text-field>
+                  <v-select v-model="settings.language" :items="['English', '中文', '日本語', '한국어']" label="Language"
+                    variant="outlined" density="compact" class="mb-3"></v-select>
+                  <v-select v-model="settings.timezone" :items="['UTC-8 (PST)', 'UTC-5 (EST)', 'UTC+0 (GMT)', 'UTC+8 (CST)']"
+                    label="Timezone" variant="outlined" density="compact"></v-select>
+                </v-card>
+              </v-col>
+
+              <!-- Appearance -->
+              <v-col cols="12" lg="6">
+                <v-card variant="flat" rounded="lg" class="pa-4">
+                  <v-card-title class="text-subtitle-1 font-weight-bold pa-0 mb-4">Appearance</v-card-title>
+
+                  <v-switch v-model="settings.darkMode" color="primary" label="Dark Mode" hide-details inset
+                    class="mb-4"></v-switch>
+                  <v-switch v-model="settings.compactMode" color="primary" label="Compact Mode" hide-details inset
+                    class="mb-4"></v-switch>
+
+                  <div class="text-body-2 font-weight-medium mb-2">Primary Color</div>
+                  <v-item-group v-model="settings.primaryColor" selected-class="v-item--selected" mandatory>
+                    <v-row dense>
+                      <v-col v-for="c in presetColors" :key="c.color" cols="auto">
+                        <v-item v-slot="{ isSelected, toggle }" :value="c.color">
+                          <v-avatar :color="c.color" size="32" class="color-swatch"
+                            :style="{ cursor: 'pointer', outline: isSelected ? '3px solid ' + c.color : '2px solid transparent', outlineOffset: '2px' }"
+                            @click="toggle"></v-avatar>
+                        </v-item>
+                      </v-col>
+                    </v-row>
+                  </v-item-group>
+                </v-card>
+              </v-col>
+
+              <!-- Notifications -->
+              <v-col cols="12" lg="6">
+                <v-card variant="flat" rounded="lg" class="pa-4">
+                  <v-card-title class="text-subtitle-1 font-weight-bold pa-0 mb-4">Notifications</v-card-title>
+
+                  <v-switch v-model="settings.emailNotif" color="primary" label="Email Notifications" hide-details inset
+                    class="mb-4"></v-switch>
+                  <v-switch v-model="settings.pushNotif" color="primary" label="Push Notifications" hide-details inset
+                    class="mb-4"></v-switch>
+                  <v-switch v-model="settings.orderNotif" color="primary" label="New Order Alerts" hide-details inset
+                    class="mb-4"></v-switch>
+                  <v-switch v-model="settings.userNotif" color="primary" label="New User Alerts" hide-details inset
+                    class="mb-4"></v-switch>
+                  <v-switch v-model="settings.marketingNotif" color="primary" label="Marketing Emails" hide-details inset
+                    class="mb-4"></v-switch>
+
+                  <v-btn color="primary" variant="elevated" block @click="saveSettings">Save Settings</v-btn>
+                </v-card>
+              </v-col>
+
+              <!-- Danger Zone -->
+              <v-col cols="12" lg="6">
+                <v-card variant="flat" rounded="lg" class="pa-4" style="border: 1px solid rgb(var(--v-theme-error));">
+                  <v-card-title class="text-subtitle-1 font-weight-bold pa-0 mb-4 text-error">Danger Zone</v-card-title>
+                  <p class="text-body-2 text-medium-emphasis mb-3">Irreversible actions. Please proceed with caution.</p>
+                  <v-btn color="error" variant="outlined" block class="mb-2" @click="deleteDialog = true">
+                    <v-icon start size="18">mdi-delete</v-icon> Delete Account
+                  </v-btn>
+                  <v-btn color="warning" variant="outlined" block @click="resetDialog = true">
+                    <v-icon start size="18">mdi-refresh</v-icon> Reset All Data
+                  </v-btn>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
+
+        </v-container>
+      </v-main>
+
+      <!-- User Add/Edit Dialog -->
+      <v-dialog v-model="userDialog" max-width="480">
+        <v-card>
+          <v-card-title class="d-flex align-center">
+            <v-icon start icon="mdi-account-plus" color="primary"></v-icon>
+            {{ editingUser ? 'Edit User' : 'Add User' }}
+          </v-card-title>
+          <v-card-text>
+            <v-text-field v-model="userForm.name" label="Name" variant="outlined" density="compact" class="mb-2"></v-text-field>
+            <v-text-field v-model="userForm.email" label="Email" variant="outlined" density="compact" type="email" class="mb-2"></v-text-field>
+            <v-select v-model="userForm.role" :items="['Admin', 'Editor', 'Viewer']" label="Role" variant="outlined" density="compact" class="mb-2"></v-select>
+            <v-select v-model="userForm.status" :items="['Active', 'Inactive']" label="Status" variant="outlined" density="compact"></v-select>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn variant="text" @click="userDialog = false">Cancel</v-btn>
+            <v-btn color="primary" variant="elevated" @click="saveUser">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!-- Delete Confirmation -->
+      <v-dialog v-model="deleteDialog" max-width="400">
+        <v-card>
+          <v-card-title class="text-error">Confirm Deletion</v-card-title>
+          <v-card-text>
+            Are you sure you want to permanently delete your account? This action cannot be undone.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn variant="text" @click="deleteDialog = false">Cancel</v-btn>
+            <v-btn color="error" variant="elevated" @click="deleteDialog = false">Delete</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!-- Reset Confirmation -->
+      <v-dialog v-model="resetDialog" max-width="400">
+        <v-card>
+          <v-card-title class="text-warning">Reset All Data</v-card-title>
+          <v-card-text>
+            This will reset all data to factory defaults. This action cannot be undone.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn variant="text" @click="resetDialog = false">Cancel</v-btn>
+            <v-btn color="warning" variant="elevated" @click="resetDialog = false">Reset</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!-- Settings Saved Snackbar -->
+      <v-snackbar v-model="snackbar" :timeout="3000" color="success" location="top end">
+        <v-icon start size="18">mdi-check-circle</v-icon> Settings saved successfully!
+      </v-snackbar>
+
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@3.13.0/dist/vuetify.js"></script>
+  <script>
+    const { createApp, ref, computed } = Vue;
+    const { createVuetify } = Vuetify;
+
+    const vuetify = createVuetify({
+      theme: { defaultTheme: 'light' }
+    });
+
+    const app = createApp({
+      setup() {
+        const drawer = ref(true);
+        const currentPage = ref('dashboard');
+        const snackbar = ref(false);
+
+        // --- Stats ---
+        const stats = ref([
+          { title: 'Total Revenue', value: '$48,295', icon: 'mdi-currency-usd', color: 'primary', trend: 12.5 },
+          { title: 'Total Users', value: '2,847', icon: 'mdi-account-group', color: 'success', trend: 8.2 },
+          { title: 'Orders', value: '1,423', icon: 'mdi-cart', color: 'warning', trend: -3.1 },
+          { title: 'Conversion', value: '3.24%', icon: 'mdi-trending-up', color: 'info', trend: 2.4 },
+        ]);
+
+        // --- Chart ---
+        const chartBars = ref([
+          { label: 'Jan', value: '$4.2k', height: 80 },
+          { label: 'Feb', value: '$5.1k', height: 100 },
+          { label: 'Mar', value: '$6.8k', height: 130 },
+          { label: 'Apr', value: '$4.9k', height: 95 },
+          { label: 'May', value: '$7.2k', height: 140 },
+          { label: 'Jun', value: '$5.5k', height: 110 },
+          { label: 'Jul', value: '$8.1k', height: 160 },
+          { label: 'Aug', value: '$9.3k', height: 180 },
+          { label: 'Sep', value: '$7.8k', height: 155 },
+          { label: 'Oct', value: '$6.2k', height: 120 },
+          { label: 'Nov', value: '$8.9k', height: 170 },
+          { label: 'Dec', value: '$10.5k', height: 200 },
+        ]);
+
+        // --- Activity ---
+        const activityEvents = ref([
+          { text: 'New user registered', time: '2 minutes ago', icon: 'mdi-account-plus', color: 'success' },
+          { text: 'Order #4829 completed', time: '15 minutes ago', icon: 'mdi-cart-check', color: 'primary' },
+          { text: 'Server deployment finished', time: '1 hour ago', icon: 'mdi-server', color: 'info' },
+          { text: 'Payment failed for #4831', time: '3 hours ago', icon: 'mdi-alert-circle', color: 'error' },
+          { text: 'Backup completed', time: '5 hours ago', icon: 'mdi-backup-restore', color: 'warning' },
+        ]);
+
+        // --- Users ---
+        const userSearch = ref('');
+        const usersPage = ref(1);
+        const usersPerPage = ref(5);
+        const userRoleFilter = ref('All');
+        const userHeaders = ref([
+          { title: 'ID', key: 'id', sortable: true, width: 80 },
+          { title: 'Name', key: 'name', sortable: true },
+          { title: 'Email', key: 'email', sortable: true },
+          { title: 'Role', key: 'role', sortable: true },
+          { title: 'Status', key: 'status', sortable: true },
+          { title: 'Joined', key: 'joined', sortable: true, width: 120 },
+          { title: 'Actions', key: 'actions', sortable: false, width: 100, align: 'center' },
+        ]);
+        const users = ref([
+          { id: 1, name: 'Alice Johnson', email: 'alice@example.com', role: 'Admin', status: 'Active', joined: '2024-01-15' },
+          { id: 2, name: 'Bob Smith', email: 'bob@example.com', role: 'Editor', status: 'Active', joined: '2024-02-20' },
+          { id: 3, name: 'Carol White', email: 'carol@example.com', role: 'Viewer', status: 'Inactive', joined: '2024-03-10' },
+          { id: 4, name: 'David Brown', email: 'david@example.com', role: 'Editor', status: 'Active', joined: '2024-04-05' },
+          { id: 5, name: 'Eve Davis', email: 'eve@example.com', role: 'Admin', status: 'Active', joined: '2024-05-18' },
+          { id: 6, name: 'Frank Miller', email: 'frank@example.com', role: 'Viewer', status: 'Inactive', joined: '2024-06-22' },
+          { id: 7, name: 'Grace Lee', email: 'grace@example.com', role: 'Editor', status: 'Active', joined: '2024-07-30' },
+          { id: 8, name: 'Henry Wilson', email: 'henry@example.com', role: 'Viewer', status: 'Active', joined: '2024-08-14' },
+        ]);
+        const filteredUsers = computed(() => {
+          if (userRoleFilter.value === 'All') return users.value;
+          return users.value.filter(u => u.role === userRoleFilter.value);
+        });
+
+        // --- Orders ---
+        const orderSearch = ref('');
+        const ordersPage = ref(1);
+        const ordersPerPage = ref(5);
+        const orderStatusFilter = ref('All');
+        const orderHeaders = ref([
+          { title: 'Order #', key: 'id', sortable: true, width: 100 },
+          { title: 'Customer', key: 'customer', sortable: true },
+          { title: 'Product', key: 'product', sortable: true },
+          { title: 'Amount', key: 'amount', sortable: true, width: 120 },
+          { title: 'Status', key: 'status', sortable: true, width: 120 },
+          { title: 'Date', key: 'date', sortable: true, width: 120 },
+        ]);
+        const orders = ref([
+          { id: 4829, customer: 'Alice Johnson', product: 'Pro License', amount: 299, status: 'Completed', date: '2024-12-01' },
+          { id: 4830, customer: 'Bob Smith', product: 'Starter Kit', amount: 49, status: 'Completed', date: '2024-12-02' },
+          { id: 4831, customer: 'Carol White', product: 'Enterprise Plan', amount: 999, status: 'Pending', date: '2024-12-03' },
+          { id: 4832, customer: 'David Brown', product: 'Pro License', amount: 299, status: 'Cancelled', date: '2024-12-04' },
+          { id: 4833, customer: 'Eve Davis', product: 'Starter Kit', amount: 49, status: 'Completed', date: '2024-12-05' },
+          { id: 4834, customer: 'Frank Miller', product: 'Enterprise Plan', amount: 999, status: 'Pending', date: '2024-12-06' },
+          { id: 4835, customer: 'Grace Lee', product: 'Pro License', amount: 299, status: 'Completed', date: '2024-12-07' },
+          { id: 4836, customer: 'Henry Wilson', product: 'Starter Kit', amount: 49, status: 'Cancelled', date: '2024-12-08' },
+        ]);
+        const filteredOrders = computed(() => {
+          if (orderStatusFilter.value === 'All') return orders.value;
+          return orders.value.filter(o => o.status === orderStatusFilter.value);
+        });
+        const orderStatusColor = (status) => {
+          const map = { Completed: 'success', Pending: 'warning', Cancelled: 'error' };
+          return map[status] || 'grey';
+        };
+
+        // --- Analytics ---
+        const analyticsMetrics = ref([
+          { label: 'Page Views', value: '128,430', unit: '', trend: 18.2, progress: 78, color: 'primary' },
+          { label: 'Avg. Session', value: '4', unit: 'min 32s', trend: 5.7, progress: 62, color: 'success' },
+          { label: 'Bounce Rate', value: '32.8', unit: '%', trend: -2.1, progress: 45, color: 'warning' },
+          { label: 'Goal Completions', value: '842', unit: '', trend: 12.4, progress: 85, color: 'info' },
+        ]);
+
+        // --- Documents ---
+        const documents = ref([
+          { id: 1, name: 'Q4 Report.pdf', size: '2.4 MB', modified: 'Dec 8, 2024', icon: 'mdi-file-pdf-box', color: 'error' },
+          { id: 2, name: 'Budget 2025.xlsx', size: '1.1 MB', modified: 'Dec 5, 2024', icon: 'mdi-file-excel', color: 'success' },
+          { id: 3, name: 'Design Specs.fig', size: '8.7 MB', modified: 'Dec 3, 2024', icon: 'mdi-file-image', color: 'purple' },
+          { id: 4, name: 'Meeting Notes.docx', size: '340 KB', modified: 'Nov 28, 2024', icon: 'mdi-file-word', color: 'info' },
+          { id: 5, name: 'Presentation.pptx', size: '5.2 MB', modified: 'Nov 25, 2024', icon: 'mdi-file-powerpoint', color: 'orange' },
+          { id: 6, name: 'Contract.pdf', size: '1.8 MB', modified: 'Nov 20, 2024', icon: 'mdi-file-document', color: 'grey' },
+        ]);
+
+        // --- Settings ---
+        const settings = ref({
+          siteName: 'AdminPanel',
+          adminEmail: 'admin@example.com',
+          language: 'English',
+          timezone: 'UTC+8 (CST)',
+          darkMode: false,
+          compactMode: false,
+          primaryColor: 'primary',
+          emailNotif: true,
+          pushNotif: true,
+          orderNotif: true,
+          userNotif: false,
+          marketingNotif: false,
+        });
+        const presetColors = ref([
+          { color: 'primary' }, { color: 'secondary' }, { color: 'success' },
+          { color: 'info' }, { color: 'warning' }, { color: 'error' },
+          { color: '#1E88E5' }, { color: '#43A047' }, { color: '#E53935' },
+          { color: '#8E24AA' }, { color: '#FB8C00' }, { color: '#00ACC1' },
+        ]);
+        const saveSettings = () => { snackbar.value = true; };
+
+        // --- User Form ---
+        const userDialog = ref(false);
+        const editingUser = ref(null);
+        const userForm = ref({ name: '', email: '', role: 'Editor', status: 'Active' });
+        const editUser = (item) => {
+          editingUser.value = item;
+          userForm.value = { ...item };
+          userDialog.value = true;
+        };
+        const deleteUser = (item) => {
+          users.value = users.value.filter(u => u.id !== item.id);
+        };
+        const saveUser = () => {
+          if (editingUser.value) {
+            Object.assign(editingUser.value, userForm.value);
+          } else {
+            users.value.push({ id: Date.now(), ...userForm.value, joined: new Date().toISOString().split('T')[0] });
+          }
+          userDialog.value = false;
+          editingUser.value = null;
+          userForm.value = { name: '', email: '', role: 'Editor', status: 'Active' };
+        };
+
+        // --- Dialogs ---
+        const deleteDialog = ref(false);
+        const resetDialog = ref(false);
+
+        // --- Notifications ---
+        const notificationCount = ref(3);
+
+        return {
+          drawer, currentPage, snackbar,
+          stats, chartBars, activityEvents,
+          userSearch, usersPage, usersPerPage, userRoleFilter, userHeaders, users, filteredUsers,
+          orderSearch, ordersPage, ordersPerPage, orderStatusFilter, orderHeaders, orders, filteredOrders, orderStatusColor,
+          analyticsMetrics,
+          documents,
+          settings, presetColors, saveSettings,
+          userDialog, editingUser, userForm, editUser, deleteUser, saveUser,
+          deleteDialog, resetDialog,
+          notificationCount,
+        };
+      }
+    });
+
+    app.use(vuetify).mount('#app');
+  </script>
+</body>
+</html>
